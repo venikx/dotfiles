@@ -2,6 +2,6 @@
 	name = rangelke
 	email = kevin.rangel@protonmail.com
 [core]
-	editor = emacs
+	editor = emacs -nw
 [credential]
 	helper = cache --timeout=3600

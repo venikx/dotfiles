@@ -50,6 +50,7 @@ values."
      syntax-checking
      ;; version-control
      javascript
+     html
      elm
      )
    ;; List of additional packages that will be installed without being
