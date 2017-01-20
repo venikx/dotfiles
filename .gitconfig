@@ -2,6 +2,7 @@
 	name = rangelke
 	email = kevin.rangel@protonmail.com
 [core]
-	editor = emacs -nw
+	editor = vim
+	excludesfile = /home/caspian/.dotfiles/.gitignore_global
 [credential]
 	helper = cache --timeout=3600
