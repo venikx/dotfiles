@@ -118,6 +118,3 @@ fi
 
 export NVM_DIR="/home/caspian/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-
-# own-path
-export PATH=$PATH:/home/caspian/own-path
