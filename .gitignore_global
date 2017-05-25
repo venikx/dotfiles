@@ -14,3 +14,6 @@
 
 # spacemacs creates lock files to prevent editing those files
 .#*
+
+# node_modules
+node_modules/
