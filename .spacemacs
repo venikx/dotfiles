@@ -348,7 +348,16 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (with-eval-after-load 'org
+    (setq org-directory "~/Dropbox/org/")
+    (setq org-agenda-files '("~/Dropbox/org/"))
+    (setq org-default-notes-file "~/Dropbox/org/refile.org")
+    (setq org-todo-keywords
+          '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "CANCELED"))
+          )
+    )
   )
+
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
