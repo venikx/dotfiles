@@ -183,6 +183,11 @@
   (global-set-key (kbd "C-x g") 'magit-status)
 )
 
+(use-package ivy
+  :ensure t
+  :config
+  (ivy-mode 1))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
