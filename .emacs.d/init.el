@@ -161,8 +161,8 @@
   (setq org-pretty-entities t)
 
   (evil-leader/set-key-for-mode 'org-mode
-    "$"  'org-archive-subtree
-    "a"  'org-agenda
+    "a"  'org-archive-subtree
+    "A"  'org-agenda
     "d"  'org-deadline
     "p"  'org-set-property
     "s"  'org-schedule)
@@ -176,6 +176,12 @@
   (setq org-ellipsis "⤵")
   (setq org-bullets-bullet-list '("•")))
 
+;; Magit
+(use-package magit
+  :ensure t
+  :config
+  (global-set-key (kbd "C-x g") 'magit-status)
+)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
