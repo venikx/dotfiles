@@ -104,11 +104,13 @@
 ;; Project name as title
 (setq frame-title-format "AnaRobynn")
 
-;; Theme
-(use-package zenburn-theme
-  :load-path "themes"
-  :config
-  (load-theme 'zenburn t))
+;; Themes
+(use-package spacemacs-theme :ensure t :defer t)
+(use-package challenger-deep-theme :ensure t :defer t)
+(use-package zenburn-theme :ensure t :defer t)
+(load-theme 'zenburn)
+; (load-theme 'spacemacs-dark)
+; (load-theme 'challenger-deep)
 
 ;; Powerline
 (use-package powerline
@@ -189,23 +191,65 @@
 (use-package magit
   :ensure t
   :config
-  (global-set-key (kbd "C-x g") 'magit-status)
+
+  (setq magit-completing-read-function 'ivy-completing-read)
 )
 
-(use-package ivy
+(use-package counsel
   :ensure t
   :config
-  (ivy-mode 1))
+  (ivy-mode 1)
+  (counsel-mode 1)
+  (setq projectile-completion-system 'ivy))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (evil-leader evil no-easy-keys use-package))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(use-package swiper
+  :ensure t
+  :commands swiper
+  :bind ("C-s" . counsel-grep-or-swiper)
+  :config
+  (require 'counsel))
+
+;; Utilities
+(use-package exec-path-from-shell
+  :ensure t
+  :defer t
+  :config
+  (exec-path-from-shell-initialize))
+
+(use-package rainbow-mode
+  :ensure t
+  :commands rainbow-mode)
+
+(use-package dictionary :ensure t)
+
+(use-package emmet-mode
+  :ensure t
+  :commands emmet-mode)
+
+(use-package which-key
+  :ensure t
+  :diminish ""
+  :config
+  (which-key-mode t))
+
+(use-package projectile
+  :ensure t
+  :defer 1
+  :config
+  (projectile-mode)
+  (setq projectile-enable-caching t)
+  (setq projectile-mode-line
+        '(:eval
+          (format " Proj[%s]"(projectile-project-name)))))
+
+(use-package counsel-projectile
+  :ensure t
+  :defer 1
+  :config
+  (counsel-projectile-mode))
+
+(use-package flycheck
+  :ensure t
+  :commands (flycheck-mode)
+  :config
+  (add-hook 'after-init-hook 'global-flycheck-mode))
