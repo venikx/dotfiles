@@ -81,15 +81,24 @@
 (use-package evil
   :ensure t
   :config
-  (evil-mode 1)
+  (evil-mode 1))
 
-  (use-package evil-leader
-    :ensure t
-    :config
-    (global-evil-leader-mode)
-    (evil-leader/set-leader ",")
-    (evil-leader/set-key
-      "d" 'kill-this-buffer)))
+(use-package general :ensure t
+  :config
+  (general-define-key :keymaps '(normal motion) "SPC" nil)
+
+  (general-define-key
+   :states 'insert
+   :prefix "C-SPC"
+   :non-normal-prefix "C-SPC")
+
+  (general-define-key
+   :states '(normal motion)
+   :prefix "SPC"
+   "g" '(:ignore t :which-key "git")
+   "gs" '(magit-status :which-key "git status"))
+
+  )
 
 ;; UI
 ;; Project name as title
