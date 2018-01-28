@@ -1,10 +1,10 @@
-;; Check Emacs version
+                                        ; Version check
 (let ((minver "25.1"))
   (when (version< emacs-version minver)
 (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
 
-;; General
-;; Configure package repositories
+                                        ; elpa.el
+;; Initialize package repo's
 (require 'package)
 
 (add-to-list 'package-archives
@@ -19,26 +19,31 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
-;; Install new version of use-package
+;; Install new package versions if available
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
 (eval-when-compile
   (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
 
-;; Load sensible defaults
+                                        ; Essential Setting
+;; Sensible defaults
 (load-file "~/.emacs.d/lisp/sensible-defaults.el")
 (sensible-defaults/use-all-settings)
 (sensible-defaults/use-all-keybindings)
 (sensible-defaults/backup-to-temp-directory)
 
-;; Essential settings
+;; Resetting Emacs UI
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (when (boundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 (show-paren-mode 1)
+
+;; Global UI/UX settings
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 (setq-default left-fringe-width nil)
 (setq-default indicate-empty-lines t)
@@ -48,7 +53,8 @@
   (global-hl-line-mode))
 (column-number-mode)
 (setq-default fill-column 80)
-(add-hook 'text-mode-hook 'auto-fill-mode)
+(setq frame-title-format '((:eval (projectile-project-name))))
+(setq scroll-conservatively 100)
 
 (use-package nlinum-relative
   :ensure t
@@ -57,34 +63,49 @@
   (setq nlinum-relative-redisplay-delay 0)
   (add-hook 'prog-mode-hook #'nlinum-relative-mode))
 
-;; disable easy-keys
-(use-package no-easy-keys
-    :ensure t
-    :config
-    (no-easy-keys 1))
-
-;; Setting user config
+                                        ; User configuration
 (setq user-full-name "Kevin aka Ana Robynn"
       user-mail-address "kevin.rangel@protonmail.com"
       calendar-latitude 50.8
       calendar-longitude 4.4
       calendar-location-name "Brussels, Belgium - Europe")
 
-;; EVIL
-;; General evil config
-(use-package evil-escape
-    :ensure t
-    :config
-    (global-set-key [escape] 'evil-escape))
-
-;; Load package
-(use-package evil
+                                        ; Evil Config
+;; Disable easy keys, to properly learn emacs/evil keybindings
+(use-package no-easy-keys
   :ensure t
   :config
-  (evil-mode 1))
+  (no-easy-keys 1))
 
-(use-package general :ensure t
+;; Set ESC to escape from most situations
+(use-package evil-escape
+  :ensure t
   :config
+  (global-set-key [escape] 'evil-escape))
+
+;; Load evil, evil-surround
+(use-package evil
+  :ensure t
+  :diminish ""
+  :commands (evil-mode)
+  :config
+  (evil-mode 1)
+
+  (use-package evil-surround
+    :ensure t
+    :diminish ""
+    :config
+    (global-evil-surround-mode))
+
+  (use-package evil-indent-plus
+    :ensure t
+    :config (evil-indent-plus-default-bindings)))
+
+                                        ; Use general.el to mix evil/global keybindings
+(use-package general :ensure t
+  :diminish ""
+  :config
+  (general-define-key "<left>" nil "<right>" nil "<up>" nil "<down>" nil)
   (general-define-key :keymaps '(normal motion) "SPC" nil)
 
   (general-define-key
@@ -100,37 +121,95 @@
 
   )
 
-;; UI
-;; Project name as title
-(setq frame-title-format "AnaRobynn")
-
+                                        ; UI/UX
 ;; Themes
 (use-package spacemacs-theme :ensure t :defer t)
 (use-package challenger-deep-theme :ensure t :defer t)
 (use-package zenburn-theme :ensure t :defer t)
-(load-theme 'zenburn)
-; (load-theme 'spacemacs-dark)
-; (load-theme 'challenger-deep)
+(load-theme 'zenburn t)
 
 ;; Powerline
-(use-package powerline
-  :ensure t
-  :config
-  (powerline-center-evil-theme))
-
-
-;; UX
-;; Line Formatting
-
+;(use-package powerline
+;  :ensure t
+;  :config
+;  (powerline-center-evil-theme))
 
 ;; Auto-complete
 (use-package company
   :ensure t
+  :diminish ""
   :config
-  (add-hook 'after-init-hook 'global-company-mode))
+  (add-hook 'after-init-hook 'global-company-mode)
+  (setq company-idle-delay 0.4))
 
-;; Coding
-;; Defaults
+                                        ; Utils
+;; Display completion when pressing keys
+(use-package which-key
+  :ensure t
+  :diminish ""
+  :config
+  (which-key-mode t))
+
+;; Dictionary
+(use-package dictionary :ensure t)
+
+;; Syntax checking
+(use-package flycheck
+  :ensure t
+  :commands (flycheck-mode)
+  :config
+  (add-hook 'after-init-hook 'global-flycheck-mode))
+
+;; Load the path into Emacs shell
+(use-package exec-path-from-shell
+  :ensure t
+  :defer t
+  :config
+  (exec-path-from-shell-initialize))
+
+                                        ; Emacs improvements
+;; Projectile
+;; TODO DO THESE CONFIGS
+(use-package projectile
+  :ensure t
+  :defer 1
+  :diminish ""
+  :config
+  (projectile-mode)
+  (setq projectile-enable-caching t)
+  (setq projectile-mode-line
+        '(:eval
+          (format " Proj[%s]"(projectile-project-name)))))
+
+(use-package counsel
+  :ensure t
+  :diminish ""
+  :config
+  (ivy-mode 1)
+  (counsel-mode 1)
+  (setq projectile-completion-system 'ivy)
+  )
+
+
+(use-package counsel-projectile
+  :ensure t
+  :defer 1
+  :config
+  (counsel-projectile-mode))
+
+(use-package swiper
+  :ensure t
+  :commands swiper
+  :bind ("C-s" . counsel-grep-or-swiper)
+  :config
+  (require 'counsel))
+
+
+                                        ; Modes config
+;; Diminish certain modes
+(diminish 'ivy-mode)
+(diminish 'auto-revert-mode)
+(diminish 'undo-tree-mode)
 
 ;; Org-mode
 (use-package org
@@ -195,61 +274,31 @@
   (setq magit-completing-read-function 'ivy-completing-read)
 )
 
-(use-package counsel
-  :ensure t
-  :config
-  (ivy-mode 1)
-  (counsel-mode 1)
-  (setq projectile-completion-system 'ivy))
-
-(use-package swiper
-  :ensure t
-  :commands swiper
-  :bind ("C-s" . counsel-grep-or-swiper)
-  :config
-  (require 'counsel))
-
-;; Utilities
-(use-package exec-path-from-shell
-  :ensure t
-  :defer t
-  :config
-  (exec-path-from-shell-initialize))
-
 (use-package rainbow-mode
   :ensure t
   :commands rainbow-mode)
 
-(use-package dictionary :ensure t)
+(use-package css-mode
+  :ensure t
+  :config
+  (add-hook 'css-mode-hook (lambda ()
+                             (rainbow-mode))))
 
 (use-package emmet-mode
   :ensure t
   :commands emmet-mode)
 
-(use-package which-key
-  :ensure t
-  :diminish ""
-  :config
-  (which-key-mode t))
-
-(use-package projectile
-  :ensure t
-  :defer 1
-  :config
-  (projectile-mode)
-  (setq projectile-enable-caching t)
-  (setq projectile-mode-line
-        '(:eval
-          (format " Proj[%s]"(projectile-project-name)))))
-
-(use-package counsel-projectile
-  :ensure t
-  :defer 1
-  :config
-  (counsel-projectile-mode))
-
-(use-package flycheck
-  :ensure t
-  :commands (flycheck-mode)
-  :config
-  (add-hook 'after-init-hook 'global-flycheck-mode))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   (quote
+    (flycheck counsel-projectile projectile zenburn-theme which-key use-package spacemacs-theme rainbow-mode powerline org-jira org-bullets no-easy-keys nlinum-relative magit general exec-path-from-shell evil-leader evil-escape emmet-mode dictionary counsel company challenger-deep-theme))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
