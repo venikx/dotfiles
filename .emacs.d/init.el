@@ -54,12 +54,13 @@
 (column-number-mode)
 (setq-default fill-column 80)
 (setq frame-title-format '((:eval (projectile-project-name))))
+(global-prettify-symbols-mode t)
 (setq scroll-conservatively 100)
 
 (use-package nlinum-relative
   :ensure t
+  :init (nlinum-relative-setup-evil)
   :config
-  (nlinum-relative-setup-evil)
   (setq nlinum-relative-redisplay-delay 0)
   (add-hook 'prog-mode-hook #'nlinum-relative-mode))
 
@@ -74,34 +75,35 @@
 ;; Disable easy keys, to properly learn emacs/evil keybindings
 (use-package no-easy-keys
   :ensure t
-  :config
-  (no-easy-keys 1))
+  :config (no-easy-keys 1))
 
 ;; Set ESC to escape from most situations
 (use-package evil-escape
   :ensure t
-  :config
-  (global-set-key [escape] 'evil-escape))
+  :init (global-set-key [escape] 'evil-escape))
 
 ;; Load evil, evil-surround
 (use-package evil
   :ensure t
   :diminish ""
+  :init (evil-mode 1)
   :commands (evil-mode)
   :config
-  (evil-mode 1)
-
   (use-package evil-surround
     :ensure t
     :diminish ""
-    :config
-    (global-evil-surround-mode))
+    :init (global-evil-surround-mode 1))
 
   (use-package evil-indent-plus
     :ensure t
-    :config (evil-indent-plus-default-bindings)))
+    :init (evil-indent-plus-default-bindings)))
 
-                                        ; Use general.el to mix evil/global keybindings
+                                        ; Use general.el and which-keys.el to structure keybindings
+(use-package which-key
+  :ensure t
+  :diminish ""
+  :init (which-key-mode t))
+
 (use-package general :ensure t
   :diminish ""
   :config
@@ -116,10 +118,33 @@
   (general-define-key
    :states '(normal motion)
    :prefix "SPC"
-   "g" '(:ignore t :which-key "git")
-   "gs" '(magit-status :which-key "git status"))
+   ;;Buffers
+   "b" '(:ignore t :which-key "buffer")
+   "bs" '(ivy-switch-buffer :which-key "switch")
+   "bk" '(kill-buffer :which-key "delete")
+   "bd" '(kill-this-buffer :which-key "delete")
 
-  )
+   ;; Finder
+   "f" '(:ignore t :which-key "find")
+   "ff" '(counsel-find-file :which-key "file")
+   "fl" '(counsel-locate :which-key "locate")
+   "fd" '(dictionary-search :which-key "definition")
+
+   ;; Git
+   "g" '(:ignore t :which-key "git")
+   "gs" '(magit-status :which-key "status")
+
+   ;; Projectile
+   "p" '(:ignore t :which-key "project")
+   "pa" '(counsel-projectile-ag :which-key "ag")
+   "pg" '(counsel-projectile-ag :which-key "grep")
+   "pp" '(counsel-projectile-switch-project :which-key "switch prj")
+   "pb" '(counsel-projectile-switch-to-buffer :which-key "switch buffer")
+   "pf" '(counsel-projectile-find-file :which-key "find file")
+
+   ;; UI config
+   "u" '(:ignore t :which-key "UI")
+   "ut" '(counsel-load-theme :which-key "change theme")))
 
                                         ; UI/UX
 ;; Themes
@@ -129,10 +154,10 @@
 (load-theme 'zenburn t)
 
 ;; Powerline
-;(use-package powerline
-;  :ensure t
-;  :config
-;  (powerline-center-evil-theme))
+(use-package powerline
+  :ensure t
+  :config
+  (powerline-center-evil-theme))
 
 ;; Auto-complete
 (use-package company
@@ -143,13 +168,6 @@
   (setq company-idle-delay 0.4))
 
                                         ; Utils
-;; Display completion when pressing keys
-(use-package which-key
-  :ensure t
-  :diminish ""
-  :config
-  (which-key-mode t))
-
 ;; Dictionary
 (use-package dictionary :ensure t)
 
@@ -164,53 +182,51 @@
 (use-package exec-path-from-shell
   :ensure t
   :defer t
-  :config
-  (exec-path-from-shell-initialize))
+  :init (exec-path-from-shell-initialize))
 
                                         ; Emacs improvements
 ;; Projectile
-;; TODO DO THESE CONFIGS
 (use-package projectile
   :ensure t
   :defer 1
+  :init (projectile-mode)
   :diminish ""
   :config
-  (projectile-mode)
   (setq projectile-enable-caching t)
   (setq projectile-mode-line
         '(:eval
-          (format " Proj[%s]"(projectile-project-name)))))
+          (format " Proj[%s]"(projectile-project-name))))
+  (setq projectile-switch-project-action 'projectile-dired)
+  (setq projectile-require-project-root nil))
 
 (use-package counsel
   :ensure t
   :diminish ""
-  :config
+  :init
   (ivy-mode 1)
   (counsel-mode 1)
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "%d/%d ")
   (setq projectile-completion-system 'ivy)
-  )
 
+  (use-package counsel-projectile
+    :ensure t
+    :defer 1
+    :init (counsel-projectile-mode))
 
-(use-package counsel-projectile
-  :ensure t
-  :defer 1
-  :config
-  (counsel-projectile-mode))
+  (use-package swiper
+    :ensure t
+    :commands swiper
+    :bind ("C-s" . counsel-grep-or-swiper)
+    :init (require 'counsel)))
 
-(use-package swiper
-  :ensure t
-  :commands swiper
-  :bind ("C-s" . counsel-grep-or-swiper)
-  :config
-  (require 'counsel))
-
-
-                                        ; Modes config
 ;; Diminish certain modes
 (diminish 'ivy-mode)
 (diminish 'auto-revert-mode)
 (diminish 'undo-tree-mode)
 
+                                        ; Modes config
 ;; Org-mode
 (use-package org
   :ensure t
@@ -270,8 +286,10 @@
 (use-package magit
   :ensure t
   :config
-
   (setq magit-completing-read-function 'ivy-completing-read)
+  (setq git-commit-summary-max-length 50)
+  (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
+  (add-hook 'with-editor-mode-hook 'evil-insert-state)
 )
 
 (use-package rainbow-mode
