@@ -104,11 +104,17 @@
   :diminish ""
   :init (which-key-mode t))
 
+(defun ana--run-prettier ()
+  (interactive)
+  (projectile-with-default-dir (projectile-project-root)
+    (call-interactively
+     (async-shell-command "git --no-pager diff --name-only origin | xargs prettier --config ./.prettierrc.yml --write"))))
+
 (use-package general :ensure t
   :diminish ""
   :config
   (general-define-key "<left>" nil "<right>" nil "<up>" nil "<down>" nil)
-  (general-define-key :keymaps '(normal motion) "SPC" nil)
+  (general-define-key :states '(normal motion) "SPC" nil)
 
   (general-define-key
    :states 'insert
@@ -118,9 +124,29 @@
   (general-define-key
    :states '(normal motion)
    :prefix "SPC"
+   ;; Testing commands
+   "t" '(:ignore t :which-key "test command")
+   "tp" '(ana--run-prettier :which-key "prettier")
+
+   ;; M-x
+   "SPC" '(counsel-M-x :which-key "M-x")
+
+   ;; Org-mode
+   "o" '(:ignore t :which-key "org-mode")
+   "oc" '(org-capture :which-key "capture")
+   "oa" '(org-agenda :which-key "agenda")
+
+   ;; Comments
+   "c" '(:ignore t :which-key "comment")
+   "cl" '(comment-line :which-key "line")
+   "cr" '(comment-region :which-key "region")
+   "cb" '(comment-box :which-key "box")
+
    ;;Buffers
    "b" '(:ignore t :which-key "buffer")
    "bs" '(ivy-switch-buffer :which-key "switch")
+   "bp" '(previous-buffer :which-key "previous")
+   "bn" '(next-buffer :which-key "next")
    "bk" '(kill-buffer :which-key "delete")
    "bd" '(kill-this-buffer :which-key "delete")
 
@@ -230,8 +256,7 @@
 ;; Org-mode
 (use-package org
   :ensure t
-  :commands (org capture)
-  :bind (("C-c c" . org-capture))
+  :commands (org-capture org-agenda)
   :config
   (setq org-hide-emphasis-markers t)
   (setq org-use-fast-todo-selection t)
@@ -264,16 +289,7 @@
   (setq org-directory "~/Dropbox/org/")
   (setq org-agenda-files '("~/Dropbox/org/"))
 
-  (setq org-pretty-entities t)
-
-  (evil-leader/set-key-for-mode 'org-mode
-    "a"  'org-archive-subtree
-    "A"  'org-agenda
-    "d"  'org-deadline
-    "p"  'org-set-property
-    "s"  'org-schedule)
-
-  )
+  (setq org-pretty-entities t))
 
 (use-package org-bullets
   :ensure t
@@ -289,8 +305,7 @@
   (setq magit-completing-read-function 'ivy-completing-read)
   (setq git-commit-summary-max-length 50)
   (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
-  (add-hook 'with-editor-mode-hook 'evil-insert-state)
-)
+  (use-package evil-magit :ensure t))
 
 (use-package rainbow-mode
   :ensure t
