@@ -6,6 +6,7 @@
                                         ; elpa.el
 ;; Initialize package repo's
 (require 'package)
+(setq package-list '(use-package diminish bind-key))
 
 (add-to-list 'package-archives
              '("org" . "https://orgmode.org/elpa/"))
@@ -20,9 +21,11 @@
 (package-initialize)
 
 ;; Install new package versions if available
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+
+(dolist (package package-list)
+  (unless (package-installed-p package)
+    (package-refresh-contents)
+    (package-install package)))
 
 (eval-when-compile
   (require 'use-package))
@@ -197,12 +200,35 @@
 ;; Dictionary
 (use-package dictionary :ensure t)
 
+(use-package exec-path-from-shell
+  :ensure t
+  :defer t
+  :init (exec-path-from-shell-initialize))
+
 ;; Syntax checking
 (use-package flycheck
   :ensure t
+  :diminish ""
+  :init (global-flycheck-mode)
   :commands (flycheck-mode)
   :config
-  (add-hook 'after-init-hook 'global-flycheck-mode))
+  (add-hook 'prog-mode-hook 'flycheck-mode)
+  (setq-default flycheck-disabled-checker 'javascript-jshint)
+  (setq-default flycheck-disabled-checker 'json-jsonlist)
+  (setq-default flycheck-disabled-checker 'javascript-eslint)
+  (setq-default flycheck-javascript-eslint-executable "eslint-project-relative")
+
+  (defun my/use-eslint-from-node-modules ()
+    (let* ((root (locate-dominating-file
+                  (or (buffer-file-name) default-directory)
+                  "node_modules"))
+           (eslint (and root
+                        (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                          root))))
+      (when (and eslint (file-executable-p eslint))
+        (setq-local flycheck-javascript-eslint-executable eslint))))
+
+  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
 
 ;; Load the path into Emacs shell
 (use-package exec-path-from-shell
@@ -251,6 +277,7 @@
 (diminish 'ivy-mode)
 (diminish 'auto-revert-mode)
 (diminish 'undo-tree-mode)
+(diminish 'eldoc-mode)
 
                                         ; Modes config
 ;; Org-mode
@@ -307,20 +334,64 @@
   (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
   (use-package evil-magit :ensure t))
 
-(use-package rainbow-mode
-  :ensure t
-  :commands rainbow-mode)
+                                        ; Code
+;; Javascript
+(use-package json-mode :ensure t)
+(use-package npm-mode :ensure t)
+(defun add-node-modules-path ()
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (path (and root
+                    (expand-file-name "node_modules/.bin/" root))))
+    (if root
+        (progn
+          (make-local-variable 'exec-path)
+          (add-to-list 'exec-path path)
+          (message "added node_modules to exec-path"))
+      (message "node_modules not found"))))
 
-(use-package css-mode
+(use-package rjsx-mode
   :ensure t
   :config
-  (add-hook 'css-mode-hook (lambda ()
-                             (rainbow-mode))))
+  (setq js2-basic-offset 2)
+  (setq js2-mode-toggle-warnings-and-errors nil)
+  (setq js2-mode-show-strict-warnings nil)
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode)))
 
-(use-package emmet-mode
+(use-package tide
   :ensure t
-  :commands emmet-mode)
+  :config
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (tide-mode +1)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1)
+    (company-mode +1))
+  (add-hook 'js2-mode-hook #'setup-tide-mode))
 
+(use-package web-mode
+  :ensure t
+  :config
+  (defun my-web-mode-hook ()
+    "Hooks for Web mode. Adjust indents"
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-attr-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)
+    (setq css-indent-offset 2))
+  (add-hook 'web-mode-hook  'my-web-mode-hook)
+
+  (use-package rainbow-mode
+    :ensure t
+    :commands rainbow-mode)
+
+  (use-package emmet-mode
+    :ensure t
+    :commands emmet-mode))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -328,7 +399,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flycheck counsel-projectile projectile zenburn-theme which-key use-package spacemacs-theme rainbow-mode powerline org-jira org-bullets no-easy-keys nlinum-relative magit general exec-path-from-shell evil-leader evil-escape emmet-mode dictionary counsel company challenger-deep-theme))))
+    (emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode evil-magit magit org-bullets counsel-projectile counsel projectile flycheck exec-path-from-shell dictionary company powerline zenburn-theme challenger-deep-theme spacemacs-theme general which-key evil-indent-plus evil-surround evil-escape no-easy-keys nlinum-relative diminish use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
