@@ -38,6 +38,8 @@
 (sensible-defaults/use-all-settings)
 (sensible-defaults/use-all-keybindings)
 (sensible-defaults/backup-to-temp-directory)
+(setq undo-limit 20000000)
+(setq undo-strong-limit 40000000)
 
 ;; Resetting Emacs UI
 (tool-bar-mode -1)
@@ -127,6 +129,7 @@
   (general-define-key
    :states '(normal motion)
    :prefix "SPC"
+   :non-normal-prefix "C-SPC"
    ;; Testing commands
    "t" '(:ignore t :which-key "test command")
    "tp" '(ana--run-prettier :which-key "prettier")
@@ -149,6 +152,7 @@
    "b" '(:ignore t :which-key "buffer")
    "bs" '(ivy-switch-buffer :which-key "switch")
    "bp" '(previous-buffer :which-key "previous")
+   "bl" '(buffer-list :which-key "list")
    "bn" '(next-buffer :which-key "next")
    "bk" '(kill-buffer :which-key "delete")
    "bd" '(kill-this-buffer :which-key "delete")
