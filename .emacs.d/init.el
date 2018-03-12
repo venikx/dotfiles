@@ -1,4 +1,4 @@
-                                        ; Version check
+
 (let ((minver "25.1"))
   (when (version< emacs-version minver)
 (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
@@ -113,7 +113,7 @@
   (interactive)
   (projectile-with-default-dir (projectile-project-root)
     (call-interactively
-     (async-shell-command "git --no-pager diff --name-only origin | xargs prettier --config ./.prettierrc.yml --write"))))
+     (async-shell-command "git --no-pager diff --name-only origin | xargs prettier --config ./.prettierrc.yml --insert-pragma --write"))))
 
 (use-package general :ensure t
   :diminish ""
@@ -206,7 +206,6 @@
 
 (use-package exec-path-from-shell
   :ensure t
-  :defer t
   :init (exec-path-from-shell-initialize))
 
 ;; Syntax checking
