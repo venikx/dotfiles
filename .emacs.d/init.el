@@ -117,36 +117,20 @@
 
 (use-package general :ensure t
   :diminish ""
-  :config
-  (general-define-key "<left>" nil "<right>" nil "<up>" nil "<down>" nil)
-  (general-define-key :states '(normal motion) "SPC" nil)
+  :init
+  (general-define-key :states '(normal motion emacs insert) "<left>" nil "<right>" nil "<up>" nil "<down>" nil)
+  (general-define-key :states '(normal motion emacs) "SPC" nil)
+  (general-define-key
+   :keymaps 'normal
+   "j" 'evil-next-visual-line
+   "k" 'evil-previous-visual-line)
 
   (general-define-key
-   :states 'insert
-   :prefix "C-SPC"
-   :non-normal-prefix "C-SPC")
-
-  (general-define-key
-   :states '(normal motion)
+   :states '(motion emacs)
    :prefix "SPC"
    :non-normal-prefix "C-SPC"
-   ;; Testing commands
-   "t" '(:ignore t :which-key "test command")
-   "tp" '(ana--run-prettier :which-key "prettier")
-
    ;; M-x
    "SPC" '(counsel-M-x :which-key "M-x")
-
-   ;; Org-mode
-   "o" '(:ignore t :which-key "org-mode")
-   "oc" '(org-capture :which-key "capture")
-   "oa" '(org-agenda :which-key "agenda")
-
-   ;; Comments
-   "c" '(:ignore t :which-key "comment")
-   "cl" '(comment-line :which-key "line")
-   "cr" '(comment-region :which-key "region")
-   "cb" '(comment-box :which-key "box")
 
    ;;Buffers
    "b" '(:ignore t :which-key "buffer")
@@ -161,7 +145,25 @@
    "f" '(:ignore t :which-key "find")
    "ff" '(counsel-find-file :which-key "file")
    "fl" '(counsel-locate :which-key "locate")
-   "fd" '(dictionary-search :which-key "definition")
+   "fd" '(dictionary-search :which-key "definition"))
+
+  (general-define-key
+   :states 'motion
+   :prefix "SPC"
+   ;; Testing commands
+   "t" '(:ignore t :which-key "test command")
+   "tp" '(ana--run-prettier :which-key "prettier")
+
+   ;; Org-mode
+   "o" '(:ignore t :which-key "org-mode")
+   "oc" '(org-capture :which-key "capture")
+   "oa" '(org-agenda :which-key "agenda")
+
+   ;; Comments
+   "c" '(:ignore t :which-key "comment")
+   "cl" '(comment-line :which-key "line")
+   "cr" '(comment-region :which-key "region")
+   "cb" '(comment-box :which-key "box")
 
    ;; Git
    "g" '(:ignore t :which-key "git")
@@ -177,7 +179,18 @@
 
    ;; UI config
    "u" '(:ignore t :which-key "UI")
-   "ut" '(counsel-load-theme :which-key "change theme")))
+   "ut" '(counsel-load-theme :which-key "change theme"))
+
+  ;; Major-mode keybindings
+  ;; Rust
+  (general-define-key
+   ;; :keymaps 'rust-mode
+   :states 'motion
+   :prefix "SPC"
+   "mb" 'cargo-process-build
+   "mr" 'cargo-process-run
+   "mt" 'cargo-process-test
+   "mf" 'rust-format-buffer))
 
                                         ; UI/UX
 ;; Themes
@@ -395,6 +408,37 @@
   (use-package emmet-mode
     :ensure t
     :commands emmet-mode))
+
+;; Markdown
+(use-package markdown-mode
+  :ensure t
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))
+
+;; Rust
+(use-package rust-mode
+  :ensure t
+  :commands (rust-format-buffer)
+  :mode ("\\.rs\\'" . rust-mode))
+
+(use-package flycheck-rust
+  :ensure t
+  :config
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+(use-package racer
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode))
+
+(use-package cargo
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook 'cargo-minor-mode))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -402,7 +446,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode evil-magit magit org-bullets counsel-projectile counsel projectile flycheck exec-path-from-shell dictionary company powerline zenburn-theme challenger-deep-theme spacemacs-theme general which-key evil-indent-plus evil-surround evil-escape no-easy-keys nlinum-relative diminish use-package))))
+    (markdown-mode emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode evil-magit magit org-bullets counsel-projectile counsel projectile flycheck exec-path-from-shell dictionary company powerline zenburn-theme challenger-deep-theme spacemacs-theme general which-key evil-indent-plus evil-surround evil-escape no-easy-keys nlinum-relative diminish use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
