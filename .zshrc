@@ -14,6 +14,13 @@ compinit
 # End of lines added by compinstall
 
 # User specific aliases and functions
+bindkey -v
+bindkey '^R' history-incremental-search-backward
+
+export docker_cleanup() {
+  docker volume rm $(docker volume ls -qf dangling=true)
+}
+
 export run_beige() {
   cd ~/git/beige && docker-compose up -d &&
   cd ~/git/login-app && docker-compose up -d &&
