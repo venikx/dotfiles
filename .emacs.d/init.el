@@ -113,7 +113,7 @@
   (interactive)
   (projectile-with-default-dir (projectile-project-root)
     (call-interactively
-     (async-shell-command "git --no-pager diff --name-only origin | xargs prettier --config ./.prettierrc.yml --insert-pragma --write"))))
+     (async-shell-command "prettier --require-pragma  \"src/**/*.js\" --write"))))
 
 (use-package general :ensure t
   :diminish ""
