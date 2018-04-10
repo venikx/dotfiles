@@ -1,0 +1,18 @@
+#+TITLE: So you want to see my dotfiles ehhh?
+#+AUTHOR: AnaRobynn
+#+STARTUP: hideblocks
+
+* Installation
+  Use at own risk!
+
+  1. Clone: git clone git@github.com:AnaRobynn/dotfiles.git
+  2. Run ~dotfiles/linkall~
+  In case it fails, make sure to create an executable out of linkall: ~chmod +x dotfiles/linkall~
+
+* Improvements
+** TODO Create different branches for different systems, which all inherit from the master branch
+   Imagine I have some personal config, which I don't want to share with the system I use at work.
+   The configuration is always tracking master for changes, but changes made on the "personal"
+   are not reflected on the master branch.
+
+   That means I would require an additional step (checking out the correct branch for the correct system)

@@ -1,5 +1,14 @@
-.emacs.d/*
-!.emacs.d/lisp
-!.emacs.d/init.el
-!.emacs.d/sensible-defaults.el
-!.emacs.d/themes
+# Emacs things
+\#*#
+
+# Ignore all of emacs.d, which is mostly compiled/downloaded scripts.
+configs/emacs.d/*
+*.elc
+# But don't ignore these specific locations.
+!configs/emacs.d/eshell/alias
+!configs/emacs.d/lisp
+!configs/emacs.d/snippets
+!configs/emacs.d/init.el
+!configs/emacs.d/custom.el
+!configs/emacs.d/sensible-defaults.el
+!configs/emacs.d/themes
