@@ -14,13 +14,13 @@ alias rm="rm -i"
 alias reload="source ~/.zshrc"
 
 # env
-export HISTFILE="~/.zsh_history"
-export HISTSIZE=1000
-export SAVEHIST=1000
-export EDITOR="vim"
-export KEYTIMEOUT=1
-export PASSWORD_STORE_X_SELECTION="clipboard"
-export PASSWORD_STORE_CLIP_TIME=15
+HISTFILE="~/.zsh_history"
+HISTSIZE=1000
+SAVEHIST=1000
+EDITOR="vim"
+KEYTIMEOUT=1
+PASSWORD_STORE_X_SELECTION="clipboard"
+PASSWORD_STORE_CLIP_TIME=15
 
 # History
 setopt append_history           # append
