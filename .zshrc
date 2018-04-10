@@ -6,11 +6,11 @@ bindkey -v
 bindkey '^R' history-incremental-search-backward
 
 # Aliases
-alias -g ls="ls -F --color=always"
-alias -g ll="ls -la --color=always"
-alias -g cp="cp -i"
-alias -g mv="mv -i"
-alias -g rm="rm -i"
+alias ls="ls -F --color=always"
+alias ll="ls -la --color=always"
+alias cp="cp -i"
+alias mv="mv -i"
+alias rm="rm -i"
 alias reload="source ~/.zshrc"
 
 # env
@@ -52,7 +52,7 @@ precmd() {  # run before each prompt
 # Prompt
 local user_name="%{$fg[cyan]%}%n%{$reset_color%}"
 local host_name="%{$fg[blue]%}%m%{$reset_color%}"
-local path_string="%{$fg[grey]%}%~"
+local path_string="%{$fg[magenta]%}%1d%{$reset_color%}"
 local prompt_string="%{$fg[cyan]%}λ%{$reset_color%}"
 
 setopt PROMPT_SUBST     # allow funky stuff in prompt
@@ -105,4 +105,3 @@ export run_ops() {
   docker start ops &&
   docker exec -it ops bash
 }
-
