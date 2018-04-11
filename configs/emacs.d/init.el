@@ -439,6 +439,15 @@
   :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
+;; Ledger
+(use-package ledger-mode
+  :ensure t
+  :init
+  (setq ledger-clear-whole-transactions 1)
+
+  :config
+  (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
+  :mode "\\.dat\\'")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -446,7 +455,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (markdown-mode emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode evil-magit magit org-bullets counsel-projectile counsel projectile flycheck exec-path-from-shell dictionary company powerline zenburn-theme challenger-deep-theme spacemacs-theme general which-key evil-indent-plus evil-surround evil-escape no-easy-keys nlinum-relative diminish use-package))))
+    (ledger-mode zenburn-theme which-key web-mode use-package tide spacemacs-theme rjsx-mode rainbow-mode racer powerline org-bullets npm-mode no-easy-keys nlinum-relative markdown-mode json-mode general flycheck-rust exec-path-from-shell evil-surround evil-magit evil-indent-plus evil-escape emmet-mode diminish dictionary counsel-projectile company challenger-deep-theme cargo))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
