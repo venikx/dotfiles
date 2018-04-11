@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-DIR="$(pwd)"
+DIR="$( cd "$( dirname "${(%):-%N}")" && pwd)"
 
 function ensure_link {
     test -L "$HOME/$2" || ln -s "$DIR/$1" "$HOME/$2"
