@@ -1,45 +1,78 @@
-#!/bin/zsh -f
+########################################
+# ~/.zshrc
+# Zsh settings
+#
+# Structure:
+#   -> Start-up
+#   -> Navigation
+#   -> Completion
+#   -> History
+#   -> Prompt
+#   -> Quality of Life
+#   -> Variables
+#   -> Keybindings
+#   -> Functions
+########################################
+
+########################################
+# Start-up
+########################################
 autoload -Uz colors && colors
 
-# Key bindings
-bindkey -v
-bindkey '^R' history-incremental-search-backward
+########################################
+# Navigation
+########################################
+# Moving around folders doesn't require cd
+setopt cdable_vars
+setopt auto_cd
+# Automatically follow symlinks
+setopt chase_links
 
-# Aliases
-alias ls="ls -F --color=always"
-alias ll="ls -la --color=always"
-alias cp="cp -i"
-alias mv="mv -i"
-alias rm="rm -i"
-alias reload="source ~/.zshrc"
-
-# env
-HISTFILE="~/.zsh_history"
-HISTSIZE=1000
-SAVEHIST=1000
-EDITOR="vim"
-KEYTIMEOUT=1
-PASSWORD_STORE_X_SELECTION="clipboard"
-PASSWORD_STORE_CLIP_TIME=15
-
-# History
-setopt append_history           # append
-setopt hist_ignore_all_dups     # no duplicate
-unsetopt hist_ignore_space      
-setopt hist_reduce_blanks       # trim blanks
-setopt inc_append_history       # add commands as they are typed, don't wait until shell exit 
-setopt share_history            # share hist between sessions
-
+########################################
 # Completion
+########################################
 autoload -Uz compinit && compinit
-setopt completealiases 
-setopt list_ambiguous           # complete as much as possible
-setopt complete_in_word         # complete from within the word
-setopt always_to_end            # move cursor to end of word, when completing from middle
+setopt completealiases
+# Attempt to autocomplete by itself
+setopt list_ambiguous
+setopt complete_in_word
+setopt always_to_end
+# Display menu with possible completions
+setopt auto_menu
 zstyle ':completion:*' menu select
+# When completing a directory name, add a trailing slash
+setopt auto_param_slash
+# When listing files as completions, show the file type as a symbol
+setopt list_types
 
-# vcs
-# vcs_info is a function that populates a variable for you
+########################################
+# History
+########################################
+# Use fcntl to lock the history file
+setopt hist_fcntl_lock
+# History addition
+setopt inc_append_history
+setopt share_history
+setopt hist_reduce_blanks
+# Remove unwanted history
+setopt hist_ignore_space
+setopt hist_no_store
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+setopt hist_expire_dups_first
+# Search history like bash
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+
+bindkey '^R' history-incremental-search-backward
+bindkey  '^P'  history-beginning-search-backward-end
+bindkey '^N' history-beginning-search-forward-end
+
+########################################
+# Prompt
+########################################
+# vcs => vcs_info is a function that populates a variable for you
 # http://arjanvandergaag.nl/blog/customize-zsh-prompt-with-vcs-info.html
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git svn
@@ -49,7 +82,6 @@ precmd() {  # run before each prompt
   vcs_info
 }
 
-# Prompt
 local user_name="%{$fg[cyan]%}%n%{$reset_color%}"
 local host_name="%{$fg[blue]%}%m%{$reset_color%}"
 local path_string="%{$fg[magenta]%}%1d%{$reset_color%}"
@@ -59,9 +91,9 @@ setopt PROMPT_SUBST     # allow funky stuff in prompt
 PROMPT='${user_name}@${host_name} %{$reset_color%}${prompt_string} '
 RPROMPT='${path_string} ${vcs_info_msg_0_} %{$reset_color%}'
 
+########################################
 # Quality of life
-setopt auto_cd                  # if path, cd into it
-setopt chase_links              # resolve symlinks
+########################################
 setopt print_exit_value         # print return value if non-zero
 unsetopt beep                   # no bell on error
 unsetopt hist_beep              # no bell on error in history
@@ -71,7 +103,32 @@ unsetopt nomatch                # prevent "no matches found" error, when using w
 setopt extended_glob            # activate complex pattern globbing
 setopt glob_dots                # include dotfiles in globbing
 
+########################################
+# Variables
+########################################
+HISTFILE="~/.zsh_history"
+HISTSIZE=1000
+SAVEHIST=1000
+EDITOR="vim"
+KEYTIMEOUT=1
+PASSWORD_STORE_X_SELECTION="clipboard"
+PASSWORD_STORE_CLIP_TIME=15
+
+alias ls="ls -F --color=always"
+alias ll="ls -la --color=always"
+alias cp="cp -i"
+alias mv="mv -i"
+alias rm="rm -i"
+alias reload="source ~/.zshrc"
+
+########################################
+# Keybindings
+########################################
+bindkey -v
+
+########################################
 # Functions
+########################################
 export docker_cleanup() {
   docker volume rm $(docker volume ls -qf dangling=true)
 }
@@ -79,7 +136,7 @@ export docker_cleanup() {
 export run_beige() {
   cd ~/git/beige && docker-compose up -d &&
   cd ~/git/login-app && docker-compose up -d &&
-  cd ~/git/fms && docker-compose up -d && 
+  cd ~/git/fms && docker-compose up -d &&
   cd
 }
 
@@ -97,7 +154,7 @@ export build_ops() {
     --volume $SSH_AUTH_SOCK:/ssh-agent \
     --volume $HOME/.aws:/root/.aws/ \
     --env SSH_AUTH_SOCK=/ssh-agent \
-    --env FAMOCO_USER="kdebaerdemaeker" docker-registry2.dev.famoco.com:5000/ops  
+    --env FAMOCO_USER="kdebaerdemaeker" docker-registry2.dev.famoco.com:5000/ops
 }
 
 export run_ops() {
