@@ -1,13 +1,16 @@
 #!/usr/bin/env zsh
 
 DIR="$( cd "$( dirname "${(%):-%N}")" && pwd)"
+mkdir -p $HOME/.config
 
 function ensure_link {
     test -L "$HOME/$2" || ln -s "$DIR/$1" "$HOME/$2"
 }
 
+ensure_link "configs/xinitrc"       ".xinitrc"
+ensure_link "configs/i3"            ".config/i3"
 ensure_link "configs/zshrc"         ".zshrc"
 ensure_link "configs/zshenv"        ".zshenv"
-ensure_link "configs/gitconfig"     ".gitconfig"
 ensure_link "configs/emacs.d"       ".emacs.d"
+ensure_link "configs/gitconfig"     ".gitconfig"
 ensure_link "configs/prettierrc"    ".prettierrc"
