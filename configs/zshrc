@@ -49,8 +49,6 @@ setopt list_types
 ########################################
 # History
 ########################################
-# Use fcntl to lock the history file
-setopt hist_fcntl_lock
 # History addition
 setopt inc_append_history
 setopt share_history
@@ -125,13 +123,14 @@ alias reload="source ~/.zshrc"
 ########################################
 # Keybindings
 ########################################
-bindkey -v
+bindkey -e
 
 ########################################
 # Functions
 ########################################
 export docker_cleanup() {
   docker volume rm $(docker volume ls -qf dangling=true)
+  docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
 }
 
 export run_beige() {
