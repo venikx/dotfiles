@@ -8,6 +8,7 @@ function ensure_link {
 }
 
 ensure_link "configs/xinitrc"       ".xinitrc"
+ensure_link "configs/Xresources"    ".Xresources"
 ensure_link "configs/i3"            ".config/i3"
 ensure_link "configs/zshrc"         ".zshrc"
 ensure_link "configs/zshenv"        ".zshenv"

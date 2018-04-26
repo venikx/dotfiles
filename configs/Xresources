@@ -1,0 +1,53 @@
+URxvt.scrollBar       : false
+URxvt.secondaryScroll : true
+URxvt.loginShell      : true
+URxvt.saveLines       : 5000
+URxvt.cursorBlink     : true
+URxvt.urgentOnBell    : false
+URxvt.visualBell      : false
+URxvt.letterSpace     : 0
+URxvt.internalBorder  : 1
+URxvt.pointerBlank    : true
+URxvt.hold            : false
+URxvt.buffered        : true
+URxvt.depth           : 32
+
+! Keybindings
+URxvt.iso14755    : false
+URxvt.iso14755_52 : false
+
+! Extensions
+! Copy: C-M-c, Paste: C-M-v
+URxvt.perl-ext-common : selection-to-clipboard
+
+! Font
+Xft.dpi       : 96
+Xft.antialias : true
+Xft.hinting   : true
+Xft.rgba      : rgb
+Xft.autohint  : false
+Xft.hintstyle : hintfull
+Xft.lcdfilter : lcddefault
+URxvt.font    : xft:monospace:size=9:antialias=true
+
+! Colors
+URxvt.cursorColor : #c5c8c6
+URxvt.background  : #1d1f21
+URxvt.foreground  : #c5c8c6
+
+URxvt.color0  : #282a2e
+URxvt.color8  : #373b41
+URxvt.color1  : #a54242
+URxvt.color9  : #cc6666
+URxvt.color2  : #40944b
+URxvt.color10 : #68bd70
+URxvt.color3  : #de935f
+URxvt.color11 : #f0c674
+URxvt.color4  : #42618f
+URxvt.color12 : #69b3cd
+URxvt.color5  : #85678f
+URxvt.color13 : #b294bb
+URxvt.color6  : #17847a
+URxvt.color14 : #31afb6
+URxvt.color7  : #c0c5ce
+URxvt.color15 : #eff1f5
