@@ -1,4 +1,3 @@
-
 (let ((minver "25.1"))
   (when (version< emacs-version minver)
 (error "Your Emacs is too old -- this config requires v%s or higher" minver)))
@@ -6,7 +5,8 @@
                                         ; elpa.el
 ;; Initialize package repo's
 (require 'package)
-(setq package-list '(use-package diminish bind-key))
+(setq package-enable-at-startup nil)
+(defvar package-list '(use-package diminish bind-key))
 
 (add-to-list 'package-archives
              '("org" . "https://orgmode.org/elpa/"))
@@ -17,20 +17,18 @@
 (add-to-list 'package-archives
              '("melpa-stable" . "https://stable.melpa.org/packages/"))
 
-(setq package-enable-at-startup nil)
 (package-initialize)
 
 ;; Install new package versions if available
-
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-refresh-contents)
     (package-install package)))
 
 (eval-when-compile
-  (require 'use-package))
-(require 'diminish)
-(require 'bind-key)
+  (require 'use-package)
+  (require 'diminish)
+  (require 'bind-key))
 
                                         ; Essential Setting
 ;; Sensible defaults
@@ -57,15 +55,22 @@
 (when window-system
   (global-hl-line-mode))
 (column-number-mode)
-(setq-default fill-column 80)
+(setq-default fill-column 90)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'gfm-mode-hook 'turn-on-auto-fill)
+(add-hook 'org-mode-hook 'turn-on-auto-fill)
 (setq frame-title-format '((:eval (projectile-project-name))))
 (global-prettify-symbols-mode t)
 (setq scroll-conservatively 100)
 
+(use-package fill-column-indicator
+  :ensure t
+  :config (add-hook 'text-mode-hook #'fci-mode))
+
 (use-package nlinum-relative
   :ensure t
-  :init (nlinum-relative-setup-evil)
   :config
+  (nlinum-relative-setup-evil)
   (setq nlinum-relative-redisplay-delay 0)
   (add-hook 'prog-mode-hook #'nlinum-relative-mode))
 
@@ -82,18 +87,17 @@
   :ensure t
   :config (no-easy-keys 1))
 
-;; Set ESC to escape from most situations
-(use-package evil-escape
-  :ensure t
-  :init (global-set-key [escape] 'evil-escape))
-
 ;; Load evil, evil-surround
 (use-package evil
   :ensure t
   :diminish ""
-  :init (evil-mode 1)
-  :commands (evil-mode)
+  :init
+  (setq evil-want-C-u-scroll t)
+  (setq evil-vsplit-window-right t)
+  (setq evil-split-window-below t)
   :config
+  (evil-mode)
+
   (use-package evil-surround
     :ensure t
     :diminish ""
@@ -113,7 +117,8 @@
   (interactive)
   (projectile-with-default-dir (projectile-project-root)
     (call-interactively
-     (async-shell-command "prettier --require-pragma  \"src/**/*.js\" --write"))))
+     (async-shell-command
+      "prettier --config ./.prettierrc.yml --require-pragma "src/**/*.js" --write"))))
 
 (use-package general :ensure t
   :diminish ""
@@ -211,7 +216,7 @@
   :diminish ""
   :config
   (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-idle-delay 0.4))
+  (setq company-idle-delay 0))
 
                                         ; Utils
 ;; Dictionary
@@ -246,12 +251,6 @@
 
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
 
-;; Load the path into Emacs shell
-(use-package exec-path-from-shell
-  :ensure t
-  :defer t
-  :init (exec-path-from-shell-initialize))
-
                                         ; Emacs improvements
 ;; Projectile
 (use-package projectile
@@ -280,7 +279,6 @@
 
   (use-package counsel-projectile
     :ensure t
-    :defer 1
     :init (counsel-projectile-mode))
 
   (use-package swiper
@@ -455,7 +453,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (ledger-mode zenburn-theme which-key web-mode use-package tide spacemacs-theme rjsx-mode rainbow-mode racer powerline org-bullets npm-mode no-easy-keys nlinum-relative markdown-mode json-mode general flycheck-rust exec-path-from-shell evil-surround evil-magit evil-indent-plus evil-escape emmet-mode diminish dictionary counsel-projectile company challenger-deep-theme cargo))))
+    (fill-column-indicator zenburn-theme which-key web-mode use-package tide spacemacs-theme rjsx-mode rainbow-mode racer powerline org-bullets npm-mode no-easy-keys nlinum-relative markdown-mode ledger-mode json-mode general flycheck-rust exec-path-from-shell evil-surround evil-magit evil-indent-plus evil-escape emmet-mode diminish dictionary counsel-projectile company challenger-deep-theme cargo))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
