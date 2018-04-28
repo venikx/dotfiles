@@ -122,57 +122,37 @@
 
 (use-package general :ensure t
   :diminish ""
-  :init
-  (general-define-key :states '(normal motion emacs insert) "<left>" nil "<right>" nil "<up>" nil "<down>" nil)
+  :config
   (general-define-key :states '(normal motion emacs) "SPC" nil)
-  (general-define-key
-   :keymaps 'normal
-   "j" 'evil-next-visual-line
-   "k" 'evil-previous-visual-line)
 
+  ;; Global overrides
+  (general-define-key
+   "<left>" nil "<right>" nil "<up>" nil "<down>" nil
+   "M-x" 'counsel-M-x
+   "C-s" 'counsel-grep-or-swiper
+   "<f2> l" 'counsel-find-library
+   "<f2> u" 'counsel-unicode-char
+   )
+
+  ;; C-x overrides
+  (general-define-key
+   "C-x C-f" 'counsel-find-file
+   "C-x C-b" 'ivy-switch-buffer
+   "C-x b" 'ibuffer-list-buffers
+   "C-x k" 'ido-kill-buffer
+   )
+
+  ;; General
   (general-define-key
    :states '(motion emacs)
    :prefix "SPC"
-   :non-normal-prefix "C-SPC"
+   :global-prefix "C-SPC"
    ;; M-x
    "SPC" '(counsel-M-x :which-key "M-x")
 
-   ;;Buffers
-   "b" '(:ignore t :which-key "buffer")
-   "bs" '(ivy-switch-buffer :which-key "switch")
-   "bp" '(previous-buffer :which-key "previous")
-   "bl" '(buffer-list :which-key "list")
-   "bn" '(next-buffer :which-key "next")
-   "bk" '(kill-buffer :which-key "delete")
-   "bd" '(kill-this-buffer :which-key "delete")
-
-   ;; Finder
-   "f" '(:ignore t :which-key "find")
-   "ff" '(counsel-find-file :which-key "file")
-   "fl" '(counsel-locate :which-key "locate")
-   "fd" '(dictionary-search :which-key "definition"))
-
-  (general-define-key
-   :states 'motion
-   :prefix "SPC"
-   ;; Testing commands
-   "t" '(:ignore t :which-key "test command")
-   "tp" '(ana--run-prettier :which-key "prettier")
-
-   ;; Org-mode
-   "o" '(:ignore t :which-key "org-mode")
-   "oc" '(org-capture :which-key "capture")
-   "oa" '(org-agenda :which-key "agenda")
-
-   ;; Comments
-   "c" '(:ignore t :which-key "comment")
-   "cl" '(comment-line :which-key "line")
-   "cr" '(comment-region :which-key "region")
-   "cb" '(comment-box :which-key "box")
-
    ;; Git
    "g" '(:ignore t :which-key "git")
-   "gs" '(magit-status :which-key "status")
+   "gs" 'magit-status
 
    ;; Projectile
    "p" '(:ignore t :which-key "project")
@@ -182,20 +162,53 @@
    "pb" '(counsel-projectile-switch-to-buffer :which-key "switch buffer")
    "pf" '(counsel-projectile-find-file :which-key "find file")
 
+   ;; Org-mode
+   "o" '(:ignore t :which-key "org")
+   "oc" 'org-capture
+   "oa" 'org-agenda
+
+   ;; Finder
+   "f" '(:ignore t :which-key "find")
+   "ff" 'counsel-find-file
+   "fl" 'counsel-locate
+   "fd" 'dictionary-search
+
+   ;; Comments
+   "c" '(:ignore t :which-key "comment")
+   "cl" 'comment-line
+   "cr" 'comment-region
+   "cb" '(comment-box "box")
+
    ;; UI config
    "u" '(:ignore t :which-key "UI")
-   "ut" '(counsel-load-theme :which-key "change theme"))
+   "ut" '(counsel-load-theme :which-key "change theme")
 
-  ;; Major-mode keybindings
-  ;; Rust
+   ;; Testing commands
+   "t" '(:ignore t :which-key "danger zone")
+   )
+
+  ;; Major-mode keybindings (SPC-m then brings up context sensitive keybindings)
   (general-define-key
-   ;; :keymaps 'rust-mode
+   :keymaps 'rjsx-mode-map
    :states 'motion
-   :prefix "SPC"
-   "mb" 'cargo-process-build
-   "mr" 'cargo-process-run
-   "mt" 'cargo-process-test
-   "mf" 'rust-format-buffer))
+   :prefix "SPC m"
+   "p" 'ana--run-prettier
+   )
+
+  (general-define-key
+   :keymaps 'org-mode-map
+   :states 'motion
+   :prefix "SPC m"
+   )
+
+  (general-define-key
+   :keymaps 'rust-mode-map
+   :states 'motion
+   :prefix "SPC m"
+   "b" 'cargo-process-build
+   "r" 'cargo-process-run
+   "t" 'cargo-process-test
+   "f" 'rust-format-buffer))
 
                                         ; UI/UX
 ;; Themes
@@ -281,11 +294,7 @@
     :ensure t
     :init (counsel-projectile-mode))
 
-  (use-package swiper
-    :ensure t
-    :commands swiper
-    :bind ("C-s" . counsel-grep-or-swiper)
-    :init (require 'counsel)))
+  (use-package swiper :ensure t ))
 
 ;; Diminish certain modes
 (diminish 'ivy-mode)
@@ -337,7 +346,7 @@
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   (setq org-ellipsis "⤵")
-  (setq org-bullets-bullet-list '("•")))
+  (setq org-bullets-bullet-list '("■" "◆" "▲" "▶")))
 
 ;; Magit
 (use-package magit
