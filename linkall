@@ -7,6 +7,7 @@ function ensure_link {
     test -L "$HOME/$2" || ln -s "$DIR/$1" "$HOME/$2"
 }
 
+ensure_link "wallpaper.jpg"         ".wallpaper.jpg"
 ensure_link "configs/xinitrc"       ".xinitrc"
 ensure_link "configs/Xresources"    ".Xresources"
 ensure_link "configs/i3"            ".config/i3"
