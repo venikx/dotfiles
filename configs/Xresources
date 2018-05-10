@@ -28,7 +28,9 @@ Xft.rgba      : rgb
 Xft.autohint  : false
 Xft.hintstyle : hintfull
 Xft.lcdfilter : lcddefault
-URxvt.font    : xft:monospace:size=9:antialias=true
+!URxvt.font    : xft:monospace:size=9:antialias=true
+!URxvt.font    : xft:Fira\ Mono:size=9:antialias=true
+URxvt.font    : xft:Source Code Pro:size=9:antialias=true
 
 ! Colors
 URxvt.cursorColor : #c5c8c6
