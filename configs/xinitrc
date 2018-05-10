@@ -1,4 +1,5 @@
 #!/bin/zsh
 [ -f $HOME/.Xresources ] && xrdb -merge $HOME/.Xresources
+xrandr --output Virtual1 --mode 1920x1200
 feh --bg-scale "$HOME/.wallpaper.jpg"
 exec i3
