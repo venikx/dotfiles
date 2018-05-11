@@ -54,7 +54,6 @@ URxvt.cursorColor : grey
 URxvt.background  : light_black
 URxvt.foreground  : white
 
-
 URxvt.color0  : dark_black
 URxvt.color8  : light_black
 URxvt.color1  : dark_red
@@ -72,7 +71,8 @@ URxvt.color14 : light_green
 URxvt.color7  : grey
 URxvt.color15 : white
 
+! rofi
 rofi.color-enabled : true
-rofi.color-window : light_black, dark_black, dark_black
-rofi.color-normal : dark_black, grey, light_black, dark_blue, white
+rofi.color-window : dark_blue, dark_black, light_blue
+rofi.color-normal : dark_blue, white, light_black, dark_red, light_orange
 
