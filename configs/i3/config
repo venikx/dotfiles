@@ -17,7 +17,7 @@ bindsym $mod+Return exec --no-startup-id urxvt
 bindsym $mod+Shift+q kill
 
 # start rofi (a program launcher)
-bindsym $mod+d exec --no-startup-id rofi -show run -lines 5 -width 25 -hide-scrollbar -opacity "85" -font "Source Code Pro 12"
+bindsym $mod+d exec --no-startup-id rofi -show run -lines 5 -width 25 -hide-scrollbar -opacity "95" -font "Source Code Pro 12"
 
 # change focus
 bindsym $mod+h focus left
@@ -157,7 +157,7 @@ for_window [floating] border pixel 10
 for_window [tiling] border pixel 0
 
 smart_gaps on
-gaps inner 10
+gaps inner 5
 gaps outer 0
 smart_borders on
 
@@ -193,3 +193,6 @@ bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86AudioRaiseVolume exec pamixer --increase 5
 bindsym XF86AudioLowerVolume exec pamixer --decrease 5
 bindsym XF86AudioMute exec pamixer -t
+
+# execute
+exec --no-startup-id compton
