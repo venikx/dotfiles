@@ -1,3 +1,20 @@
+#define dark_black #282a2e
+#define light_black #373b41
+#define dark_red #a54242
+#define light_red #cc6666
+#define dark_green #40944b
+#define light_green #68bd70
+#define dark_orange #de935f
+#define light_orange #f0c674
+#define dark_blue  #42618f
+#define light_blue  #69b3cd
+#define dark_purple  #85678f
+#define light_purple #b294bb
+#define dark_green #17847a
+#define light_green #31afb6
+#define grey #c0c5ce
+#define white #eff1f5
+
 URxvt.scrollBar       : false
 URxvt.secondaryScroll : true
 URxvt.loginShell      : true
@@ -33,23 +50,29 @@ Xft.lcdfilter : lcddefault
 URxvt.font    : xft:Source Code Pro:size=9:antialias=true
 
 ! Colors
-URxvt.cursorColor : #c5c8c6
-URxvt.background  : #1d1f21
-URxvt.foreground  : #c5c8c6
+URxvt.cursorColor : grey
+URxvt.background  : light_black
+URxvt.foreground  : white
 
-URxvt.color0  : #282a2e
-URxvt.color8  : #373b41
-URxvt.color1  : #a54242
-URxvt.color9  : #cc6666
-URxvt.color2  : #40944b
-URxvt.color10 : #68bd70
-URxvt.color3  : #de935f
-URxvt.color11 : #f0c674
-URxvt.color4  : #42618f
-URxvt.color12 : #69b3cd
-URxvt.color5  : #85678f
-URxvt.color13 : #b294bb
-URxvt.color6  : #17847a
-URxvt.color14 : #31afb6
-URxvt.color7  : #c0c5ce
-URxvt.color15 : #eff1f5
+
+URxvt.color0  : dark_black
+URxvt.color8  : light_black
+URxvt.color1  : dark_red
+URxvt.color9  : light_red
+URxvt.color2  : dark_green
+URxvt.color10 : light_green
+URxvt.color3  : dark_orange
+URxvt.color11 : light_orange
+URxvt.color4  : dark_blue
+URxvt.color12 : light_blue
+URxvt.color5  : dark_purple
+URxvt.color13 : light_purple
+URxvt.color6  : dark_green
+URxvt.color14 : light_green
+URxvt.color7  : grey
+URxvt.color15 : white
+
+rofi.color-enabled : true
+rofi.color-window : light_black, dark_black, dark_black
+rofi.color-normal : dark_black, grey, light_black, dark_blue, white
+
