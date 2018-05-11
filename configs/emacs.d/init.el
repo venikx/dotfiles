@@ -308,6 +308,7 @@
   :ensure t
   :commands (org-capture org-agenda)
   :config
+  (setq org-src-fontify-natively t)
   (setq org-hide-emphasis-markers t)
   (setq org-use-fast-todo-selection t)
   (setq org-todo-keywords
