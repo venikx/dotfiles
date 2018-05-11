@@ -167,6 +167,17 @@ bar {
         # status_command i3status
 }
 
-# Me own shortcuts
-# Locking the computer screen
+# locking the computer screen
 bindsym $mod+p exec "scrot /tmp/screenshot.png && convert /tmp/screenshot.png -gaussian-blur 2x8 /tmp/screenshotblur.png && i3lock -i /tmp/screenshotblur.png"
+
+# brightness keybindings
+bindsym XF86MonBrightnessUp exec xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec xbacklight -dec 5
+
+# media keybindings
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioRaiseVolume exec pamixer --increase 5
+bindsym XF86AudioLowerVolume exec pamixer --decrease 5
+bindsym XF86AudioMute exec pamixer -t
