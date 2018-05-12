@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  become: true
+  tasks:
+  - name: Install cowsay
+    xbps:
+      name: cowsay
+      state: latest
