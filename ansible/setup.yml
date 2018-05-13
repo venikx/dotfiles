@@ -5,8 +5,12 @@
 #       xbps:
 #         update_cache: yes
 
+  vars_prompt:
+    - name: "configuration"
+      prompt: "What system configuration do you want to install?"
+
   vars_files:
-    - vars/virtualbox.yml
+    - vars/{{configuration}}.yml
 
   vars:
     user: ana
