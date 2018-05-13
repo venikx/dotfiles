@@ -8,4 +8,7 @@
     name: root
     shell: /bin/zsh
 
-# TODO set shell for user
+- name: Set shell for {{ user }}
+  user:
+    name: "{{ user }}"
+    shell: /bin/zsh
