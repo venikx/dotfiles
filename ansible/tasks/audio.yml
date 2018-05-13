@@ -9,5 +9,5 @@
     - playerctl
     - pamixer
 
-
-# TODO symlink the service
+- name: Enable the audio services
+  script: ../scripts/audio.sh
