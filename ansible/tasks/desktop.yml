@@ -8,6 +8,8 @@
     - i3status
     - i3-gaps
     - py3status
+    - python3-pytz
+    - python3-tzlocal
     - compton
 
 - name: Install desktop niceties
