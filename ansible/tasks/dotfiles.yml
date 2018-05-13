@@ -12,5 +12,3 @@
   become_user: "{{ user }}"
   command: ./linkall chdir=~{{ user }}/dotfiles
   changed_when: false
-
-# TODO probably there is something wrong here

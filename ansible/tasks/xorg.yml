@@ -6,30 +6,33 @@
     - xorg-minimal
     - xorg-server
     - xorg-fonts
+    - xprop
+    - xrdb
+    - xrandr
+    - xclipboard
     - xinit
 
-# - name: Setup Xorg for Home Desktop
-#   xbps:
-#     name: {{item}}
-#     state: latest
-#   with_items:
-#     - xf86-video-nouveau
-#   when: model == "Home Desktop"
-#
-# - name: Setup Xorg for Work Laptop
-#   xbps:
-#     name: {{item}}
-#     state: latest
-#   with_items:
-#     - xf86-video-intel
-#   when: model == "Work Laptop"
+- name: Setup Xorg for Home Desktop
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - xf86-video-nouveau
+  when: model == "Home Desktop"
+
+- name: Setup Xorg for Work Laptop
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - xf86-video-intel
+  when: model == "Work Laptop"
 
 - name: Setup Xorg for VM
   xbps:
     name: "{{item}}"
     state: latest
   loop:
+    - open-vm-tools
     - xf86-video-vmware
-#   when: model == "Virtual Machine"
-
-# TODO: Setup gues modules for VM
+  when: model == "Virtual Machine"

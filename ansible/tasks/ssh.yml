@@ -1,4 +1,1 @@
-- name: Install ssh
-  xbps:
-    name: openssh
-    state: latest
+# TODO: Configure ssh keys or something
