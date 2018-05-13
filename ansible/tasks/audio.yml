@@ -1,0 +1,13 @@
+- name: Install audio
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - alsa-utils
+    - pulseaudio
+    - ConsoleKit2
+    - playerctl
+    - pamixer
+
+
+# TODO symlink the service

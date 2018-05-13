@@ -1,0 +1,12 @@
+- name: Install utilities
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - emacs-x11
+    - git
+    - ranger
+    - pass
+    - openvpn
+    - unzip
+    - the_silver_searcher

@@ -1,0 +1,9 @@
+- name: Install fonts
+  xbps:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - font-fira-otf
+    - font-fira-ttf
+    - font-sourcecodepro
+    - font-awesome

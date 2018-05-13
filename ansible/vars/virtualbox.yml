@@ -1,0 +1,11 @@
+users:
+  - ana
+
+user_inc_super:
+  - ana
+  - root
+
+wifi:
+  auto: false
+
+model: Virtual Box

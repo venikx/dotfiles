@@ -1,0 +1,11 @@
+- name: Install zsh
+  xbps:
+    name: zsh
+    state: latest
+
+- name: Set shell for root to zsh
+  user:
+    name: root
+    shell: /bin/zsh
+
+# TODO set shell for user

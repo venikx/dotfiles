@@ -1,0 +1,30 @@
+- name: Install i3
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - i3
+    - i3lock
+    - i3status
+    - i3-gaps
+    - py3status
+    - compton
+
+- name: Install desktop niceties
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - rofi
+    - ImageMagick
+    - feh
+    - scrot
+    - rxvt-unicode
+
+- name: Install browsers
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - chromium
+    - firefox

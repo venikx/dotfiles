@@ -1,8 +1,23 @@
 ---
 - hosts: localhost
   become: true
+#   pre-tasks:
+#     - name: update repositories
+#       xbps:
+#         update_cache: yes
+
+  vars_files:
+    - vars/virtualbox.yml
+
+  vars:
+    user: ana
+
   tasks:
-  - name: Install cowsay
-    xbps:
-      name: cowsay
-      state: latest
+    - include: tasks/ssh.yml
+    - include: tasks/zsh.yml
+    - include: tasks/fonts.yml
+    - include: tasks/xorg.yml
+    - include: tasks/desktop.yml
+    - include: tasks/audio.yml
+    - include: tasks/utilities.yml
+    - include: tasks/dotfiles.yml

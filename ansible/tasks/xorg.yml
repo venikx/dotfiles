@@ -1,0 +1,35 @@
+- name: Install Xorg
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - xorg-minimal
+    - xorg-server
+    - xorg-fonts
+    - xinit
+
+# - name: Setup Xorg for Home Desktop
+#   xbps:
+#     name: {{item}}
+#     state: latest
+#   with_items:
+#     - xf86-video-nouveau
+#   when: model == "Home Desktop"
+#
+# - name: Setup Xorg for Work Laptop
+#   xbps:
+#     name: {{item}}
+#     state: latest
+#   with_items:
+#     - xf86-video-intel
+#   when: model == "Work Laptop"
+
+- name: Setup Xorg for VM
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - xf86-video-vmware
+#   when: model == "Virtual Machine"
+
+# TODO: Setup gues modules for VM
