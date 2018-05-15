@@ -6,6 +6,28 @@
     - emacs-x11
     - vim
 
+- name: install docker
+  xbps:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - docker
+    - docker-compose
+
+- name: add users to docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  loop: "{{ users }}"
+
+- name: start the docker daemon
+  runit:
+    name: docker
+    state: started
+    enabled: yes
+
+
 #- name: install nvm
 
 #- name: install rust
