@@ -1,4 +1,4 @@
-- name: Clone dotfiles for {{ user }}
+- name: clone dotfiles for {{ user }}
   become: yes
   become_user: "{{ user }}"
   git:
@@ -7,7 +7,7 @@
     accept_hostkey: yes
     update: no
 
-- name: Set up dotfiles for {{ user }}
+- name: set up dotfiles for {{ user }}
   become: yes
   become_user: "{{ user }}"
   command: ./linkall chdir=~{{ user }}/dotfiles

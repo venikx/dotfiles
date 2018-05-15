@@ -1,9 +1,14 @@
 - hosts: localhost
-  become: true
 #   pre-tasks:
 #     - name: update repositories
 #       xbps:
 #         update_cache: yes
+
+  vars:
+    user: ana
+    users:
+      - ana
+      - root
 
   vars_prompt:
     - name: "configuration"
@@ -12,15 +17,11 @@
   vars_files:
     - vars/{{configuration}}.yml
 
-  vars:
-    user: ana
-
   tasks:
-    - include: tasks/ssh.yml
     - include: tasks/zsh.yml
-    - include: tasks/fonts.yml
-    - include: tasks/xorg.yml
-    - include: tasks/desktop.yml
-    - include: tasks/audio.yml
-    - include: tasks/utilities.yml
+    - include: tasks/display.yml
+    - include: tasks/media.yml
+    - include: tasks/i3.yml
     - include: tasks/dotfiles.yml
+    - include: tasks/general.yml
+    - include: tasks/dev-setup.yml

@@ -1,0 +1,11 @@
+- name: install editors
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - emacs-x11
+    - vim
+
+#- name: install nvm
+
+#- name: install rust

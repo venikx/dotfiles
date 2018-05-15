@@ -1,4 +1,4 @@
-- name: Install i3
+- name: install i3
   xbps:
     name: "{{item}}"
     state: latest
@@ -12,7 +12,7 @@
     - python3-tzlocal
     - compton
 
-- name: Install desktop niceties
+- name: install extra i3 dependencies
   xbps:
     name: "{{item}}"
     state: latest
@@ -22,11 +22,3 @@
     - feh
     - scrot
     - rxvt-unicode
-
-- name: Install browsers
-  xbps:
-    name: "{{item}}"
-    state: latest
-  loop:
-    - chromium
-    - firefox

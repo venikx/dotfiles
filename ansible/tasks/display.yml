@@ -1,4 +1,4 @@
-- name: Install Xorg
+- name: install xorg
   xbps:
     name: "{{item}}"
     state: latest
@@ -12,27 +12,37 @@
     - xclipboard
     - xinit
 
-- name: Setup Xorg for Home Desktop
+- name: install fonts
+  xbps:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - font-fira-otf
+    - font-fira-ttf
+    - font-sourcecodepro
+    - font-awesome
+
+- name: configure home desktop
   xbps:
     name: "{{item}}"
     state: latest
   loop:
     - xf86-video-nouveau
-  when: model == "Home Desktop"
+  when: model == "home"
 
-- name: Setup Xorg for Work Laptop
+- name: configure work laptop
   xbps:
     name: "{{item}}"
     state: latest
   loop:
     - xf86-video-intel
-  when: model == "Work Laptop"
+  when: model == "work"
 
-- name: Setup Xorg for VM
+- name: configure VM
   xbps:
     name: "{{item}}"
     state: latest
   loop:
     - open-vm-tools
     - xf86-video-vmware
-  when: model == "Virtual Machine"
+  when: model == "vm"

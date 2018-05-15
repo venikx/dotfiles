@@ -1,0 +1,22 @@
+- name: install utilities for audio
+  xbps:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - alsa-utils
+    - pulseaudio
+    - ConsoleKit2
+    - playerctl
+    - pamixer
+
+- name: enable pulseaudio's services on startup
+  script: ../scripts/audio.sh
+
+- name: install additional media software
+  xbps:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - vlc
+    - gimp
+#   - clementine

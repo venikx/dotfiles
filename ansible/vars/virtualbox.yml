@@ -1,8 +1,0 @@
-users:
-  - ana
-
-user_inc_super:
-  - ana
-  - root
-
-model: Virtual Machine
