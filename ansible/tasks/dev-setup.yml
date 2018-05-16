@@ -27,7 +27,20 @@
     state: started
     enabled: yes
 
+- name: clone nvm
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    repo: https://github.com/creationix/nvm.git
+    dest: ~{{ user }}/.nvm
+    version: v0.33.11
 
-#- name: install nvm
+- name: source nvm and install node
+  become: yes
+  become_user: "{{ user }}"
+  shell: "source nvm.sh && nvm install 10.1.0 && nvm alias default 10.1.0"
+  args:
+    chdir: ~{{ user }}/.nvm
+    executable: /bin/zsh
 
 #- name: install rust
