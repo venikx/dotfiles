@@ -10,7 +10,15 @@
     - pamixer
 
 - name: enable pulseaudio's services on startup
-  script: ../scripts/audio.sh
+  runit:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - alsa
+    - dbus
+    - cgmanager
+    - consolekit
 
 - name: install additional media software
   xbps:
