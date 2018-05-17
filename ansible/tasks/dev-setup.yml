@@ -27,6 +27,7 @@
     state: started
     enabled: yes
 
+# node
 - name: clone nvm
   become: yes
   become_user: "{{ user }}"
@@ -43,4 +44,10 @@
     chdir: ~{{ user }}/.nvm
     executable: /bin/zsh
 
-#- name: install rust
+# rust
+- name: install rust
+  become: yes
+  become_user: "{{ user }}"
+  shell: "curl https://sh.rustup.rs -sSf | sh -s -- -y && source ~{{ user }}/.cargo/env"
+  args:
+    executable: /bin/zsh
