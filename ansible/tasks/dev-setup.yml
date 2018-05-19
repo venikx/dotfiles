@@ -51,3 +51,4 @@
   shell: "curl https://sh.rustup.rs -sSf | sh -s -- -y && source ~{{ user }}/.cargo/env"
   args:
     executable: /bin/zsh
+    warn: no
