@@ -1,0 +1,7 @@
+- name: install stuff for home
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - obs
+  when: model == "home"

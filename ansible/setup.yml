@@ -24,4 +24,5 @@
     - include: tasks/i3.yml
     - include: tasks/dotfiles.yml
     - include: tasks/general.yml
+    - include: tasks/special.yml
     - include: tasks/dev-setup.yml
