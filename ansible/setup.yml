@@ -1,8 +1,8 @@
 - hosts: localhost
-#   pre-tasks:
-#     - name: update repositories
-#       xbps:
-#         update_cache: yes
+  pre_tasks:
+    - name: update repositories
+      xbps:
+        update_cache: yes
 
   vars:
     user: ana
