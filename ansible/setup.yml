@@ -26,3 +26,4 @@
     - include: tasks/general.yml
     - include: tasks/special.yml
     - include: tasks/dev-setup.yml
+    - include: tasks/yubi.yml

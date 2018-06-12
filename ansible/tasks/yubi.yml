@@ -1,0 +1,15 @@
+- name: install yubikey deps
+  xbps:
+    name: "{{item}}"
+    state: latest
+  loop:
+    - ykpers
+    - pcsc-acsccid
+    - pcsc-ccid
+    - gnupg2-scdaemon
+
+- name: start the smartcard daemon
+  runit:
+    name: pcscd
+    state: started
+    enabled: yes
