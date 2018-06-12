@@ -9,6 +9,12 @@
   2. Run ~dotfiles/linkall~
   In case it fails, make sure to create an executable out of linkall: ~chmod +x dotfiles/linkall~
 
+* Documentation
+** Configuration / setup of GPG in Yubikey
+   - Setting up the yubikey and generating the keys: https://github.com/drduh/YubiKey-Guide
+   - Using gpg to generate a public ssh key: https://suva.sh/posts/gpg-ssh-smartcard-yubikey-keybase/#using-the-gpg-and-ssh-keys
+   - QR-code as an alternative back-up method: ????
+   - Paperkeys as a last resort: https://github.com/drduh/YubiKey-Guide
 * Improvements
 ** TODO Create different branches for different systems, which all inherit from the master branch
    Imagine I have some personal config, which I don't want to share with the system I use at work.
