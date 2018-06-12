@@ -12,3 +12,6 @@ configs/emacs.d/*
 !configs/emacs.d/custom.el
 !configs/emacs.d/sensible-defaults.el
 !configs/emacs.d/themes
+
+# Ignore py3status generated data
+configs/i3/py3status.data
