@@ -171,7 +171,7 @@ bar {
 	  background $dark_black
 	  statusline $light_green
  	  separator $grey
-          
+
           focused_workspace $dark_blue $dark_blue $white
           active_workspace $dark_blue $dark_blue $light_blue
           inactive_workspace $light_black $light_black $grey
@@ -180,7 +180,7 @@ bar {
 }
 
 # locking the computer screen
-bindsym $mod+p exec "scrot /tmp/screenshot.png && convert /tmp/screenshot.png -gaussian-blur 2x8 /tmp/screenshotblur.png && i3lock -i /tmp/screenshotblur.png"
+bindsym $mod+p exec "scrot /tmp/screenshot.png && convert /tmp/screenshot.png -blur 2x8 /tmp/screenshotblur.png && i3lock -i /tmp/screenshotblur.png"
 
 # brightness keybindings
 bindsym XF86MonBrightnessUp exec xbacklight -inc 5
