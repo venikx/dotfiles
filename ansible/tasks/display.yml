@@ -11,6 +11,7 @@
     - xrandr
     - xclipboard
     - xinit
+    - xbacklight
 
 - name: install fonts
   xbps:
