@@ -146,20 +146,20 @@ set $grey #c0c5ce
 set $white #eff1f5
 
 # window colors
-# #                       border                background           text                 indicator
-# client.focused          $dark_blue            $dark_blue           $white               $light_green
-# client.unfocused        $light_black          $light_black         $grey                $light_green
-# client.focused_inactive $dark_black           $dark_black          $grey                $light_green
-# client.urgent           $dark_red             $dark_red            $light_orange        $light_green
+#                       border                background           text                 indicator
+client.focused          $dark_blue            $dark_blue           $white               $light_green
+client.unfocused        $light_black          $light_black         $grey                $light_green
+client.focused_inactive $dark_black           $dark_black          $grey                $light_green
+client.urgent           $dark_red             $dark_red            $light_orange        $light_green
 
-for_window [class="^.*"] border pixel 0
-for_window [floating] border pixel 10
-for_window [tiling] border pixel 0
+# for_window [class="^.*"] border pixel 0
+# for_window [floating] border pixel 10
+# for_window [tiling] border pixel 0
 
-smart_gaps on
-gaps inner 5
-gaps outer 0
-smart_borders on
+# smart_gaps on
+# gaps inner 5
+# gaps outer 0
+# smart_borders on
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
