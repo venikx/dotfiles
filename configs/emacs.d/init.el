@@ -315,35 +315,52 @@
   (setq org-hide-emphasis-markers t)
   (setq org-use-fast-todo-selection t)
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "WAITING(w@/!)" "|" "DONE(d!)"
-                    "CANCELLED(c@/!)")
-          (sequence "MEETING(m)")
-          (sequence "IDEA(i)")))
+        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+          (sequence "APPT(a)")
+          (sequence "WAITING(w@/!)" "HOLD(h@/!)" "CANCELLED(c@/!)")))
+
+  (setq org-tag-alist (quote (("@errand" . ?e)
+                              ("@mari" . ?m)
+                              ("@reading" . ?r)
+                              ("@computer" . ?c)
+                              ("@famoco" . ?f)
+                              ("@home" . ?h))))
+  (setq org-fast-tag-selection-single-key nil)
 
   (setq org-todo-keyword-faces
         '(("TODO" :foreground "light coral" :weight bold)
-          ("NEXT" :foreground "firebrick" :weight bold)
+          ("NEXT" :foreground "red" :weight bold)
           ("DONE" :foreground "sea green")
+          ("APPT" :foreground "maroon")
           ("WAITING" :foreground "dark orange" :weight bold)
           ("CANCELLED" :foreground "dim gray")
-          ("MEETING" :foreground "maroon")
-          ("IDEA" :foreground "deep sky blue" :weight bold)))
+          ("HOLD" :foreground "deep sky blue" :weight bold)))
 
   (setq org-capture-templates
         '(("t" "Todo" entry (file org-default-notes-file)
-           "* TODO %? \n%U\n")
-          ("m" "Meeting" entry (file org-default-notes-file)
-           "* MEETING with %? :MEETING:\n%U" :clock-in t :clock-resume t)
+           "* TODO %? \nAdded: %U\n")
           ("n" "Next" entry (file org-default-notes-file)
            "* NEXT %? \nDEADLINE: %t")
-          ("i" "Idea" entry (file org-default-notes-file)
-           "* IDEA %? \n%U")))
+          ("j" "Journal" entry (file+olp+datetree "~/Documents/org/journal.org")
+           "* %?\n" :clock-in t :clock-resume t)))
 
-  (setq org-default-notes-file "~/Dropbox/org/refile.org")
-  (setq org-directory "~/Dropbox/org/")
-  (setq org-agenda-files '("~/Dropbox/org/"))
+  (setq org-default-notes-file "~/Documents/org/inbox.org")
+  (setq org-directory "~/Documents/org/")
+  (setq org-agenda-files '("~/Documents/org/gsd.org"))
+
+  (setq org-refile-use-outline-path 'file
+        org-outline-path-complete-in-steps nil)
+  (setq org-refile-allow-creating-parent-nodes 'confirm)
+  (setq org-refile-targets '(("gsd.org" :maxlevel . 1)
+                             ("someday.org" :maxlevel . 1)))
 
   (setq org-pretty-entities t))
+
+(use-package org-pomodoro
+  :ensure t
+  :config
+  (setq org-pomodoro-format "%s"))
+
 
 (use-package org-bullets
   :ensure t
