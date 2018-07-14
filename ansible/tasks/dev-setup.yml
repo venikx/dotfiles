@@ -27,6 +27,13 @@
     state: started
     enabled: yes
 
+- name: install gcc
+  xbps:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - gcc
+
 # node
 - name: clone nvm
   become: yes
