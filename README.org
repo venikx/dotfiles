@@ -1,0 +1,13 @@
+#+TITLE: Automating the boring parts of life
+#+AUTHOR: AnaRobynn
+#+STARTUP: hideblocks
+
+* Void linux installation
+  1. Install via the ISO
+  2. Update voidlinux
+  3. Install git and ansible
+  4. Run the installation
+     #+BEGIN_SRC sh
+     $ sudo ansible-pull -U https://github.com/AnaRobynn/personal-ops.git void-install/setup.yml
+     #+END_SRC
+  5. Well played, mate.
