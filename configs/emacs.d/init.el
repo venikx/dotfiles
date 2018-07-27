@@ -344,9 +344,9 @@
           ("j" "Journal" entry (file+olp+datetree "~/Documents/org/journal.org")
            "* %?\n" :clock-in t :clock-resume t)))
 
-  (setq org-default-notes-file "~/Documents/org/inbox.org")
+  (setq org-default-notes-file "~/Documents/org/gsd/inbox.org")
   (setq org-directory "~/Documents/org/")
-  (setq org-agenda-files '("~/Documents/org/gsd.org"))
+  (setq org-agenda-files '("~/Documents/org/gsd/gsd.org"))
 
   (setq org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil)
