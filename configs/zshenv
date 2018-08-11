@@ -1,10 +1,5 @@
-# Node.js Config
-## NVM
-[ -d "$HOME/.nvm" ]      && export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-
-## NPM Registry
-[ -f $HOME/.npmrc ] && 
+# NPM Registry
+[ -f $HOME/.npmrc ] &&
 	export NPM_TOKEN=$(cat $HOME/.npmrc|grep npm.famoco.com/repository/npm-all|egrep -o "authToken=(.+)" | cut -d= -f2)
 
 # Rust

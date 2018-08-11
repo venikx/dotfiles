@@ -120,6 +120,10 @@ alias mv="mv -i"
 alias rm="rm -i"
 alias reload="source ~/.zshrc"
 
+## NVM
+[ -d "$HOME/.nvm" ]      && export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
 ########################################
 # Keybindings
 ########################################
