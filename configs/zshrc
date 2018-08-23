@@ -132,11 +132,6 @@ bindkey -e
 ########################################
 # Functions
 ########################################
-export docker_cleanup() {
-  docker volume rm $(docker volume ls -qf dangling=true)
-  docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
-}
-
 export run_beige() {
   cd ~/git/beige && docker-compose up -d &&
   cd ~/git/login-app && docker-compose up -d &&
@@ -166,4 +161,3 @@ export run_ops() {
   docker start ops &&
   docker exec -it ops bash
 }
-
