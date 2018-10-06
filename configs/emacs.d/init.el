@@ -1,6 +1,14 @@
+                                        ; Emacs 25
+;; Version check
 (let ((minver "25.1"))
   (when (version< emacs-version minver)
-(error "Your Emacs is too old -- this config requires v%s or higher" minver)))
+(error "Emacs is too old -- this config requires v%s or higher" minver)))
+
+;; Emacs configuration location
+(defvar ana--dotfiles "~/dotfiles/configs/")
+
+;; Change to home directory (needed when running Emacs via chocolaty)
+(cd "~/")
 
                                         ; elpa.el
 ;; Initialize package repo's
@@ -32,7 +40,7 @@
 
                                         ; Essential Setting
 ;; Sensible defaults
-(load-file "~/.emacs.d/lisp/sensible-defaults.el")
+(load-file (concat ana--dotfiles "emacs.d/lisp/sensible-defaults.el"))
 (sensible-defaults/use-all-settings)
 (sensible-defaults/use-all-keybindings)
 (sensible-defaults/backup-to-temp-directory)
@@ -52,6 +60,7 @@
 (setq-default indicate-empty-lines t)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
+(setq-default tab-always-indent 'complete)
 (when window-system
   (global-hl-line-mode))
 (column-number-mode)
@@ -78,11 +87,12 @@
   (add-hook 'prog-mode-hook #'nlinum-relative-mode))
 
                                         ; User configuration
-(setq user-full-name "Kevin aka Ana Robynn"
-      user-mail-address "kevin.rangel@protonmail.com"
-      calendar-latitude 50.8
-      calendar-longitude 4.4
-      calendar-location-name "Brussels, Belgium - Europe")
+(setq
+  user-full-name "Kevin aka Ana Robynn"
+  user-mail-address "kevin.rangel@protonmail.com"
+  calendar-latitude 50.8
+  calendar-longitude 4.4
+  calendar-location-name "Brussels, Belgium - Europe")
 
                                         ; Evil Config
 ;; Disable easy keys, to properly learn emacs/evil keybindings
@@ -134,16 +144,14 @@
    "M-x" 'counsel-M-x
    "C-s" 'counsel-grep-or-swiper
    "<f2> l" 'counsel-find-library
-   "<f2> u" 'counsel-unicode-char
-   )
+   "<f2> u" 'counsel-unicode-char)
 
   ;; C-x overrides
   (general-define-key
    "C-x C-f" 'counsel-find-file
    "C-x C-b" 'ivy-switch-buffer
    "C-x b" 'ibuffer-list-buffers
-   "C-x k" 'ido-kill-buffer
-   )
+   "C-x k" 'ido-kill-buffer)
 
   ;; General
   (general-define-key
@@ -187,22 +195,19 @@
    "ut" '(counsel-load-theme :which-key "change theme")
 
    ;; Testing commands
-   "t" '(:ignore t :which-key "danger zone")
-   )
+   "t" '(:ignore t :which-key "danger zone"))
 
   ;; Major-mode keybindings (SPC-m then brings up context sensitive keybindings)
   (general-define-key
    :keymaps 'rjsx-mode-map
    :states 'motion
    :prefix "SPC m"
-   "p" 'ana--run-prettier
-   )
+   "p" 'ana--run-prettier)
 
   (general-define-key
    :keymaps 'org-mode-map
    :states 'motion
-   :prefix "SPC m"
-   )
+   :prefix "SPC m")
 
   (general-define-key
    :keymaps 'rust-mode-map
@@ -239,8 +244,9 @@
 (use-package dictionary :ensure t)
 
 (use-package exec-path-from-shell
-  :ensure t
-  :init (exec-path-from-shell-initialize))
+ :ensure t
+ :if (memq window-system '(mac ns x))
+ :init (exec-path-from-shell-initialize))
 
 ;; Syntax checking
 (use-package flycheck
@@ -336,7 +342,7 @@
           ("CANCELLED" :foreground "dim gray")
           ("HOLD" :foreground "deep sky blue" :weight bold)))
 
-  (setq org-capture-templates
+  (defvar org-capture-templates
         '(("t" "Todo" entry (file org-default-notes-file)
            "* TODO %? \nAdded: %U\n")
           ("n" "Next" entry (file org-default-notes-file)
