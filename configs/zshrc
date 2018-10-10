@@ -133,8 +133,8 @@ bindkey -e
 # Functions
 ########################################
 export run_beige() {
-  cd ~/git/beige && docker-compose up -d &&
-  cd ~/git/login-app && docker-compose up -d &&
+  cd ~/git/beige && docker-compose up -d --build &&
+  cd ~/git/login-app && docker-compose up -d  --build &&
   cd ~/git/fms && docker-compose up -d &&
   cd
 }
