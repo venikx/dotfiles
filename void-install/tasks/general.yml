@@ -1,3 +1,4 @@
+# not needed in minimal
 - name: install browsers
   xbps:
     name: "{{item}}"

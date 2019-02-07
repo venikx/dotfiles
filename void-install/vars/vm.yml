@@ -1,1 +1,5 @@
 model: vm
+user: venikx
+users:
+  - venikx
+  - root

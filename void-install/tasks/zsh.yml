@@ -3,7 +3,7 @@
     name: zsh
     state: latest
 
-- name: enable zsh as shell for all users (includes root)
+- name: enable zsh as shell for all defined users
   user:
     name: "{{ item }}"
     shell: /bin/zsh

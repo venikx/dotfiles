@@ -1,3 +1,5 @@
+# not needed for minimal config
+
 - name: install i3
   xbps:
     name: "{{item}}"

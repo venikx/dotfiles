@@ -1,19 +1,8 @@
 - hosts: localhost
-  pre_tasks:
-    - name: update repositories
-      xbps:
-        update_cache: yes
-
-  vars:
-    user: ana
-    users:
-      - ana
-      - root
 
   vars_prompt:
     - name: "configuration"
       prompt: "What system configuration do you want to install?"
-
   vars_files:
     - vars/{{configuration}}.yml
 
@@ -21,9 +10,11 @@
     - include: tasks/zsh.yml
     - include: tasks/display.yml
     - include: tasks/media.yml
+      when: model != "minimal"
     - include: tasks/i3.yml
     - include: tasks/dotfiles.yml
     - include: tasks/general.yml
     - include: tasks/special.yml
+      when: model != "home"
     - include: tasks/dev-setup.yml
     - include: tasks/yubi.yml

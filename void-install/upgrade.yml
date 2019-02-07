@@ -1,0 +1,7 @@
+- hosts: localhost
+
+  tasks:
+    - name: upgrade installed packages
+      xbps:
+        update_cache: yes
+        upgrade: yes

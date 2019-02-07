@@ -23,6 +23,7 @@
     - font-sourcecodepro
     - font-awesome
 
+# not suitable for minimal
 - name: configure home desktop
   xbps:
     name: "{{item}}"
@@ -30,14 +31,6 @@
   loop:
     - xf86-video-nouveau
   when: model == "home"
-
-- name: configure work laptop
-  xbps:
-    name: "{{item}}"
-    state: latest
-  loop:
-    - xf86-video-intel
-  when: model == "work"
 
 - name: configure VM
   xbps:

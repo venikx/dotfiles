@@ -4,4 +4,3 @@
     state: latest
   loop:
     - obs
-  when: model == "home"
