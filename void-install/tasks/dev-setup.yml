@@ -41,7 +41,7 @@
   git:
     repo: https://github.com/creationix/nvm.git
     dest: ~{{ user }}/.nvm
-    version: v0.33.11
+    version: v0.34.0
 
 - name: source nvm and install node
   become: yes
