@@ -18,7 +18,7 @@
 # Start-up
 ########################################
 autoload -Uz colors && colors
-[[ "$(tty)" == "/dev/tty1" ]] && exec startx
+[[ $DISPLAY != "" &&  "$(tty)" == "/dev/tty1" ]] && exec startx
 
 ########################################
 # Navigation
