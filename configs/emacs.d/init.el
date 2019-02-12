@@ -1,4 +1,5 @@
                                         ; Emacs 25
+(message "=== Initializing Emacs ===")
 ;; Version check
 (let ((minver "25.1"))
   (when (version< emacs-version minver)
@@ -16,15 +17,10 @@
 (setq package-enable-at-startup nil)
 (defvar package-list '(use-package diminish bind-key))
 
-(add-to-list 'package-archives
-             '("org" . "https://orgmode.org/elpa/"))
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives
-	     '("marmalade" . "https://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/"))
-
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (package-initialize)
 
 ;; Install new package versions if available
@@ -39,6 +35,7 @@
   (require 'bind-key))
 
                                         ; Essential Setting
+(message "=== Configuring sane defaults ===")
 ;; Sensible defaults
 (load-file (concat ana--dotfiles "emacs.d/lisp/sensible-defaults.el"))
 (sensible-defaults/use-all-settings)
@@ -75,6 +72,15 @@
 (global-prettify-symbols-mode t)
 (setq scroll-conservatively 100)
 
+                                        ; User configuration
+(setq
+  user-full-name "Kevin aka venikx"
+  user-mail-address "kevin.rangel@protonmail.com"
+  calendar-location-name "Helsinki, Finland - Europe")
+
+(message "=== Starting... ===")
+
+                                        ; Specific UI's
 (use-package fill-column-indicator
   :ensure t
   :config (add-hook 'text-mode-hook #'fci-mode))
@@ -86,39 +92,51 @@
   (setq nlinum-relative-redisplay-delay 0)
   (add-hook 'prog-mode-hook #'nlinum-relative-mode))
 
-                                        ; User configuration
-(setq
-  user-full-name "Kevin aka Ana Robynn"
-  user-mail-address "kevin.rangel@protonmail.com"
-  calendar-latitude 50.8
-  calendar-longitude 4.4
-  calendar-location-name "Brussels, Belgium - Europe")
-
                                         ; Evil Config
 ;; Disable easy keys, to properly learn emacs/evil keybindings
 (use-package no-easy-keys
   :ensure t
   :config (no-easy-keys 1))
 
-;; Load evil, evil-surround
 (use-package evil
   :ensure t
   :diminish ""
   :init
   (setq evil-want-C-u-scroll t)
-  (setq evil-vsplit-window-right t)
-  (setq evil-split-window-below t)
+  (setq evil-want-keybinding nil)
   :config
-  (evil-mode)
+  (evil-mode 1))
 
-  (use-package evil-surround
-    :ensure t
-    :diminish ""
-    :init (global-evil-surround-mode 1))
+;;  Amazing collection of evil bindings for several packages
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :config (evil-collection-init '(calender company dired ivy)))
 
-  (use-package evil-indent-plus
-    :ensure t
-    :init (evil-indent-plus-default-bindings)))
+(use-package evil-magit
+  :ensure t
+  :after magit)
+
+(use-package evil-org
+  :disabled
+  :ensure t
+  :after evil)
+
+(use-package evil-surround
+  :ensure t
+  :after evil
+  :diminish evil-surround-mode
+  :config (global-evil-surround-mode 1))
+
+(use-package evil-escape
+  :ensure t
+  :after evil
+  :diminish evil-escape-mode
+  :config
+  (evil-escape-mode 1)
+  (setq-default evil-escape-delay 0.2)
+  (setq-default evil-escape-key-sequence "jk")
+  (setq-default evil-escape-excluded-states '(normal visual multiedit emacs motion)))
 
                                         ; Use general.el and which-keys.el to structure keybindings
 (use-package which-key
@@ -381,8 +399,7 @@
   :config
   (setq magit-completing-read-function 'ivy-completing-read)
   (setq git-commit-summary-max-length 50)
-  (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
-  (use-package evil-magit :ensure t))
+  (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
 
                                         ; Code
 ;; Javascript
@@ -492,7 +509,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(fill-column-indicator zenburn-theme which-key web-mode use-package tide spacemacs-theme rjsx-mode rainbow-mode racer powerline org-bullets npm-mode no-easy-keys nlinum-relative markdown-mode ledger-mode json-mode general flycheck-rust exec-path-from-shell evil-surround evil-magit evil-indent-plus evil-escape emmet-mode diminish dictionary counsel-projectile company challenger-deep-theme cargo)))
+   (quote
+    (evil-magit yaml-mode ledger-mode cargo racer flycheck-rust rust-mode markdown-mode emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode magit org-bullets org-pomodoro counsel-projectile counsel projectile flycheck exec-path-from-shell dictionary company powerline zenburn-theme challenger-deep-theme spacemacs-theme general which-key evil-escape evil-surround evil-collection evil no-easy-keys nlinum-relative fill-column-indicator diminish use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
