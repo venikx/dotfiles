@@ -223,7 +223,7 @@
 (use-package spacemacs-theme :ensure t :defer t)
 (use-package challenger-deep-theme :ensure t :defer t)
 (use-package zenburn-theme :ensure t :defer t)
-(load-theme 'zenburn t)
+(load-theme 'challenger-deep t)
 
 ;; Powerline
 (use-package powerline
@@ -492,8 +492,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (fill-column-indicator zenburn-theme which-key web-mode use-package tide spacemacs-theme rjsx-mode rainbow-mode racer powerline org-bullets npm-mode no-easy-keys nlinum-relative markdown-mode ledger-mode json-mode general flycheck-rust exec-path-from-shell evil-surround evil-magit evil-indent-plus evil-escape emmet-mode diminish dictionary counsel-projectile company challenger-deep-theme cargo))))
+   '(fill-column-indicator zenburn-theme which-key web-mode use-package tide spacemacs-theme rjsx-mode rainbow-mode racer powerline org-bullets npm-mode no-easy-keys nlinum-relative markdown-mode ledger-mode json-mode general flycheck-rust exec-path-from-shell evil-surround evil-magit evil-indent-plus evil-escape emmet-mode diminish dictionary counsel-projectile company challenger-deep-theme cargo)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
