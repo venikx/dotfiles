@@ -15,7 +15,7 @@
 ;; Initialize package repo's
 (require 'package)
 (setq package-enable-at-startup nil)
-(defvar package-list '(use-package diminish bind-key))
+(defvar package-list '(use-package delight))
 
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/"))
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -31,8 +31,7 @@
 
 (eval-when-compile
   (require 'use-package)
-  (require 'diminish)
-  (require 'bind-key))
+  (require 'delight))
 
                                         ; Essential Setting
 (message "=== Configuring sane defaults ===")
@@ -80,18 +79,6 @@
 
 (message "=== Starting... ===")
 
-                                        ; Specific UI's
-(use-package fill-column-indicator
-  :ensure t
-  :config (add-hook 'text-mode-hook #'fci-mode))
-
-(use-package nlinum-relative
-  :ensure t
-  :config
-  (nlinum-relative-setup-evil)
-  (setq nlinum-relative-redisplay-delay 0)
-  (add-hook 'prog-mode-hook #'nlinum-relative-mode))
-
                                         ; Evil Config
 ;; Disable easy keys, to properly learn emacs/evil keybindings
 (use-package no-easy-keys
@@ -100,7 +87,6 @@
 
 (use-package evil
   :ensure t
-  :diminish ""
   :init
   (setq evil-want-C-u-scroll t)
   (setq evil-want-keybinding nil)
@@ -115,7 +101,7 @@
 
 (use-package evil-magit
   :ensure t
-  :after magit)
+  :after evil magit)
 
 (use-package evil-org
   :disabled
@@ -125,13 +111,13 @@
 (use-package evil-surround
   :ensure t
   :after evil
-  :diminish evil-surround-mode
+  :delight evil-surround-mode
   :config (global-evil-surround-mode 1))
 
 (use-package evil-escape
   :ensure t
   :after evil
-  :diminish evil-escape-mode
+  :delight evil-escape-mode
   :config
   (evil-escape-mode 1)
   (setq-default evil-escape-delay 0.2)
@@ -141,7 +127,6 @@
                                         ; Use general.el and which-keys.el to structure keybindings
 (use-package which-key
   :ensure t
-  :diminish ""
   :init (which-key-mode t))
 
 (defun ana--run-prettier ()
@@ -152,7 +137,6 @@
       "prettier --config ./.prettierrc.yml --require-pragma "src/**/*.js" --write"))))
 
 (use-package general :ensure t
-  :diminish ""
   :config
   (general-define-key :states '(normal motion emacs) "SPC" nil)
 
@@ -236,23 +220,10 @@
    "t" 'cargo-process-test
    "f" 'rust-format-buffer))
 
-                                        ; UI/UX
-;; Themes
-(use-package spacemacs-theme :ensure t :defer t)
-(use-package challenger-deep-theme :ensure t :defer t)
-(use-package zenburn-theme :ensure t :defer t)
-(load-theme 'challenger-deep t)
-
-;; Powerline
-(use-package powerline
-  :ensure t
-  :config
-  (powerline-center-evil-theme))
 
 ;; Auto-complete
 (use-package company
   :ensure t
-  :diminish ""
   :config
   (add-hook 'after-init-hook 'global-company-mode)
   (setq company-idle-delay 0))
@@ -269,7 +240,6 @@
 ;; Syntax checking
 (use-package flycheck
   :ensure t
-  :diminish ""
   :init (global-flycheck-mode)
   :commands (flycheck-mode)
   :config
@@ -297,7 +267,6 @@
   :ensure t
   :defer 1
   :init (projectile-mode)
-  :diminish ""
   :config
   (setq projectile-enable-caching t)
   (setq projectile-mode-line
@@ -308,7 +277,6 @@
 
 (use-package counsel
   :ensure t
-  :diminish ""
   :init
   (ivy-mode 1)
   (counsel-mode 1)
@@ -322,12 +290,6 @@
     :init (counsel-projectile-mode))
 
   (use-package swiper :ensure t ))
-
-;; Diminish certain modes
-(diminish 'ivy-mode)
-(diminish 'auto-revert-mode)
-(diminish 'undo-tree-mode)
-(diminish 'eldoc-mode)
 
                                         ; Modes config
 ;; Org-mode
@@ -503,6 +465,31 @@
 (use-package yaml-mode
   :ensure t
   :mode "\\.yml\\'")
+
+                                        ; Specific UI/UX
+(use-package fill-column-indicator
+  :ensure t
+  :config (add-hook 'text-mode-hook #'fci-mode))
+
+(use-package nlinum-relative
+  :ensure t
+  :config
+  (nlinum-relative-setup-evil)
+  (setq nlinum-relative-redisplay-delay 0)
+  (add-hook 'prog-mode-hook #'nlinum-relative-mode))
+
+;; Themes
+(use-package spacemacs-theme :ensure t :defer t)
+(use-package challenger-deep-theme :ensure t :defer t)
+(use-package zenburn-theme :ensure t :defer t)
+(load-theme 'challenger-deep t)
+
+;; Powerline
+(use-package powerline
+  :ensure t
+  :config
+  (powerline-center-evil-theme))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
