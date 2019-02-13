@@ -221,21 +221,77 @@
    "f" 'rust-format-buffer))
 
 
-;; Auto-complete
-(use-package company
-  :ensure t
-  :config
-  (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-idle-delay 0))
 
                                         ; Utils
-;; Dictionary
-(use-package dictionary :ensure t)
-
 (use-package exec-path-from-shell
  :ensure t
  :if (memq window-system '(mac ns x))
  :init (exec-path-from-shell-initialize))
+
+;; Emacs Completion
+(use-package ivy
+  :ensure t
+  :defer 0.1
+  :init
+  (ivy-mode 1)
+  :custom
+  (ivy-use-virtual-buffers t)
+  (ivy-count-format "%d/%d")
+  (ivy-height 20)
+  (projectile-completion-system 'ivy))
+
+(use-package ivy-rich
+  :ensure t
+  :delight ivy-rich-mode
+  :after ivy
+  :config
+  (ivy-rich-mode 1))
+
+(use-package counsel
+  :ensure t
+  :delight counsel-mode
+  :after ivy
+  :config
+  (counsel-mode 1))
+
+(use-package counsel-etags
+  :delight counsel-etags-mode
+  :ensure t
+  :after counsel
+  :config
+  (counsel-projectile-mode))
+
+(use-package counsel-projectile
+  :delight counsel-projectile-mode
+  :ensure t
+  :after counsel
+  :config
+  (counsel-projectile-mode))
+
+(use-package swiper
+  :ensure t
+  :after ivy)
+
+;; Code completion
+(use-package company
+  :ensure t
+  :init (global-company-mode 1)
+  :config
+  (setq company-idle-delay 0))
+
+;; Projectile
+(use-package projectile
+  :ensure t
+  :defer 1
+  :init (projectile-mode)
+  :config
+  (setq projectile-enable-caching t)
+  (setq projectile-mode-line
+        '(:eval
+          (format " Proj[%s]"(projectile-project-name))))
+  (setq projectile-switch-project-action 'projectile-dired)
+  (setq projectile-require-project-root nil))
+
 
 ;; Syntax checking
 (use-package flycheck
@@ -261,35 +317,8 @@
 
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
 
-                                        ; Emacs improvements
-;; Projectile
-(use-package projectile
-  :ensure t
-  :defer 1
-  :init (projectile-mode)
-  :config
-  (setq projectile-enable-caching t)
-  (setq projectile-mode-line
-        '(:eval
-          (format " Proj[%s]"(projectile-project-name))))
-  (setq projectile-switch-project-action 'projectile-dired)
-  (setq projectile-require-project-root nil))
-
-(use-package counsel
-  :ensure t
-  :init
-  (ivy-mode 1)
-  (counsel-mode 1)
-  :config
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "%d/%d ")
-  (setq projectile-completion-system 'ivy)
-
-  (use-package counsel-projectile
-    :ensure t
-    :init (counsel-projectile-mode))
-
-  (use-package swiper :ensure t ))
+;; Dictionary
+(use-package dictionary :ensure t)
 
                                         ; Modes config
 ;; Org-mode
@@ -495,9 +524,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ivy-count-format "%d/%d")
+ '(ivy-height 20)
+ '(ivy-use-virtual-buffers t)
  '(package-selected-packages
    (quote
-    (evil-magit yaml-mode ledger-mode cargo racer flycheck-rust rust-mode markdown-mode emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode magit org-bullets org-pomodoro counsel-projectile counsel projectile flycheck exec-path-from-shell dictionary company powerline zenburn-theme challenger-deep-theme spacemacs-theme general which-key evil-escape evil-surround evil-collection evil no-easy-keys nlinum-relative fill-column-indicator diminish use-package))))
+    (evil-magit yaml-mode ledger-mode cargo racer flycheck-rust rust-mode markdown-mode emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode magit org-bullets org-pomodoro counsel-projectile counsel projectile flycheck exec-path-from-shell dictionary company powerline zenburn-theme challenger-deep-theme spacemacs-theme general which-key evil-escape evil-surround evil-collection evil no-easy-keys nlinum-relative fill-column-indicator diminish use-package)))
+ '(projectile-completion-system (quote ivy)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
