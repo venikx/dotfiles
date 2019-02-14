@@ -220,8 +220,6 @@
    "t" 'cargo-process-test
    "f" 'rust-format-buffer))
 
-
-
                                         ; Utils
 (use-package exec-path-from-shell
  :ensure t
@@ -232,6 +230,7 @@
 (use-package ivy
   :ensure t
   :defer 0.1
+  :delight ivy-mode
   :init
   (ivy-mode 1)
   :custom
@@ -257,14 +256,16 @@
 (use-package counsel-etags
   :delight counsel-etags-mode
   :ensure t
-  :after counsel
-  :config
-  (counsel-projectile-mode))
+  :after counsel)
 
 (use-package counsel-projectile
-  :delight counsel-projectile-mode
+  :delight
+  (counsel-projectile-mode)
+  (projectile-mode '(:eval (concat "P:" (projectile-project-name))))
   :ensure t
   :after counsel
+  :custom
+  (projectile-switch-project-ation 'projectile-dired)
   :config
   (counsel-projectile-mode))
 
@@ -275,23 +276,10 @@
 ;; Code completion
 (use-package company
   :ensure t
+  :delight company-mode
   :init (global-company-mode 1)
   :config
   (setq company-idle-delay 0))
-
-;; Projectile
-(use-package projectile
-  :ensure t
-  :defer 1
-  :init (projectile-mode)
-  :config
-  (setq projectile-enable-caching t)
-  (setq projectile-mode-line
-        '(:eval
-          (format " Proj[%s]"(projectile-project-name))))
-  (setq projectile-switch-project-action 'projectile-dired)
-  (setq projectile-require-project-root nil))
-
 
 ;; Syntax checking
 (use-package flycheck
@@ -504,7 +492,6 @@
   :ensure t
   :config
   (nlinum-relative-setup-evil)
-  (setq nlinum-relative-redisplay-delay 0)
   (add-hook 'prog-mode-hook #'nlinum-relative-mode))
 
 ;; Themes
@@ -518,7 +505,6 @@
   :ensure t
   :config
   (powerline-center-evil-theme))
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -529,7 +515,7 @@
  '(ivy-use-virtual-buffers t)
  '(package-selected-packages
    (quote
-    (evil-magit yaml-mode ledger-mode cargo racer flycheck-rust rust-mode markdown-mode emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode magit org-bullets org-pomodoro counsel-projectile counsel projectile flycheck exec-path-from-shell dictionary company powerline zenburn-theme challenger-deep-theme spacemacs-theme general which-key evil-escape evil-surround evil-collection evil no-easy-keys nlinum-relative fill-column-indicator diminish use-package)))
+    (powerline zenburn-theme challenger-deep-theme spacemacs-theme nlinum-relative fill-column-indicator yaml-mode ledger-mode cargo racer flycheck-rust rust-mode markdown-mode emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode org-bullets org-pomodoro dictionary flycheck company counsel-projectile counsel-etags counsel ivy-rich ivy exec-path-from-shell general which-key evil-escape evil-surround evil-magit evil-collection evil no-easy-keys delight use-package)))
  '(projectile-completion-system (quote ivy)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
