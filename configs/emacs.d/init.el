@@ -3,7 +3,7 @@
 ;; Version check
 (let ((minver "25.1"))
   (when (version< emacs-version minver)
-(error "Emacs is too old -- this config requires v%s or higher" minver)))
+    (error "Emacs is too old -- this config requires v%s or higher" minver)))
 
 ;; Emacs configuration location
 (defvar ana--dotfiles "~/dotfiles/configs/")
@@ -63,19 +63,15 @@
 (setq-default fill-column 90)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'gfm-mode-hook 'turn-on-auto-fill)
-(add-hook 'org-mode-hook 'turn-on-auto-fill)
-(add-hook 'git-commit-mode-hook '(lambda ()
-                                   (setq-default fill-column 72)
-                                   (turn-on-auto-fill)))
 (setq frame-title-format '((:eval (projectile-project-name))))
 (global-prettify-symbols-mode t)
 (setq scroll-conservatively 100)
 
                                         ; User configuration
 (setq
-  user-full-name "Kevin aka venikx"
-  user-mail-address "kevin.rangel@protonmail.com"
-  calendar-location-name "Helsinki, Finland - Europe")
+ user-full-name "Kevin aka venikx"
+ user-mail-address "kevin.rangel@protonmail.com"
+ calendar-location-name "Helsinki, Finland - Europe")
 
 (message "=== Starting... ===")
 
@@ -98,10 +94,6 @@
   :ensure t
   :after evil
   :config (evil-collection-init '(calender company dired ivy)))
-
-(use-package evil-magit
-  :ensure t
-  :after evil magit)
 
 (use-package evil-org
   :disabled
@@ -222,9 +214,9 @@
 
                                         ; Utils
 (use-package exec-path-from-shell
- :ensure t
- :if (memq window-system '(mac ns x))
- :init (exec-path-from-shell-initialize))
+  :ensure t
+  :if (memq window-system '(mac ns x))
+  :init (exec-path-from-shell-initialize))
 
 ;; Emacs Completion
 (use-package ivy
@@ -314,71 +306,74 @@
   :ensure t
   :commands (org-capture org-agenda)
   :config
-  (setq org-src-fontify-natively t)
-  (setq org-hide-emphasis-markers t)
-  (setq org-use-fast-todo-selection t)
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-          (sequence "APPT(a)")
-          (sequence "WAITING(w@/!)" "HOLD(h@/!)" "CANCELLED(c@/!)")))
+  (add-hook 'org-mode-hook
+            '(lambda () (setq fill-column 100) (turn-on-auto-fill)))
+  :custom
+  (org-src-fontify-natively t)
+  (org-hide-emphasis-markers t)
+  (org-use-fast-todo-selection t)
+  (org-default-notes-file "~/Documents/org/gsd/inbox.org")
+  (org-directory "~/Documents/org/")
+  (org-agenda-files '("~/Documents/org/gsd/gsd.org"))
+  (org-refile-use-outline-path 'file org-outline-path-complete-in-steps nil)
+  (org-refile-allow-creating-parent-nodes 'confirm)
+  (org-refile-targets
+   '(("gsd.org" :maxlevel . 1)
+     ("someday.org" :maxlevel . 1)))
 
-  (setq org-tag-alist (quote (("@errand" . ?e)
-                              ("@mari" . ?m)
-                              ("@reading" . ?r)
-                              ("@computer" . ?c)
-                              ("@famoco" . ?f)
-                              ("@home" . ?h))))
-  (setq org-fast-tag-selection-single-key nil)
+  (org-todo-keywords
+   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+     (sequence "APPT(a)")
+     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "CANCELLED(c@/!)")))
+  (org-capture-templates
+   '(("t" "Todo" entry (file org-default-notes-file) "* TODO %? \nAdded: %U\n")
+     ("n" "Next" entry (file org-default-notes-file) "* NEXT %? \nDEADLINE: %t")
+     ("j" "Journal" entry
+      (file+olp+datetree "~/Documents/org/journal.org") "* %?\n" :clock-in t :clock-resume t)))
+  (org-tag-alist
+   (quote (("@errand" . ?e) ("@mari" . ?m) ("@reading" . ?r) ("@computer" . ?c)
+           ("@work" . ?w)
+           ("@home" . ?h))))
+  (org-fast-tag-selection-single-key nil)
 
-  (setq org-todo-keyword-faces
-        '(("TODO" :foreground "light coral" :weight bold)
-          ("NEXT" :foreground "red" :weight bold)
-          ("DONE" :foreground "sea green")
-          ("APPT" :foreground "maroon")
-          ("WAITING" :foreground "dark orange" :weight bold)
-          ("CANCELLED" :foreground "dim gray")
-          ("HOLD" :foreground "deep sky blue" :weight bold)))
-
-  (defvar org-capture-templates
-        '(("t" "Todo" entry (file org-default-notes-file)
-           "* TODO %? \nAdded: %U\n")
-          ("n" "Next" entry (file org-default-notes-file)
-           "* NEXT %? \nDEADLINE: %t")
-          ("j" "Journal" entry (file+olp+datetree "~/Documents/org/journal.org")
-           "* %?\n" :clock-in t :clock-resume t)))
-
-  (setq org-default-notes-file "~/Documents/org/gsd/inbox.org")
-  (setq org-directory "~/Documents/org/")
-  (setq org-agenda-files '("~/Documents/org/gsd/gsd.org"))
-
-  (setq org-refile-use-outline-path 'file
-        org-outline-path-complete-in-steps nil)
-  (setq org-refile-allow-creating-parent-nodes 'confirm)
-  (setq org-refile-targets '(("gsd.org" :maxlevel . 1)
-                             ("someday.org" :maxlevel . 1)))
-
-  (setq org-pretty-entities t))
+  (org-todo-keyword-faces
+   '(("TODO" :foreground "light coral" :weight bold)
+     ("NEXT" :foreground "red" :weight bold)
+     ("DONE" :foreground "sea green")
+     ("APPT" :foreground "maroon")
+     ("WAITING" :foreground "dark orange" :weight bold)
+     ("CANCELLED" :foreground "dim gray")
+     ("HOLD" :foreground "deep sky blue" :weight bold)))
+  (org-pretty-entities t))
 
 (use-package org-pomodoro
   :ensure t
-  :config
-  (setq org-pomodoro-format "%s"))
-
+  :after org
+  :custom
+  (org-pomodoro-format "%s"))
 
 (use-package org-bullets
   :ensure t
+  :after org
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  (setq org-ellipsis "⤵")
-  (setq org-bullets-bullet-list '("■" "◆" "▲" "▶")))
+  :custom
+  (org-ellipsis "⤵")
+  (org-bullets-bullet-list '("■" "◆" "▲" "▶")))
 
 ;; Magit
 (use-package magit
   :ensure t
+  :custom
+  (magit-completing-read-function 'ivy-completing-read)
+  (git-commit-summary-max-length 50)
   :config
-  (setq magit-completing-read-function 'ivy-completing-read)
-  (setq git-commit-summary-max-length 50)
-  (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
+  (add-hook 'git-commit-mode-hook
+            '(lambda () (setq fill-column 72) (turn-on-auto-fill))))
+
+(use-package evil-magit
+  :ensure t
+  :after evil magit)
 
                                         ; Code
 ;; Javascript
