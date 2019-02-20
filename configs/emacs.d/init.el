@@ -89,6 +89,13 @@
   :config
   (evil-mode 1))
 
+(use-package origami
+  :ensure t
+  :after evil
+  :commands origami-mode
+  :config
+  (add-hook 'prog-mode-hook 'origami-mode))
+
 ;;  Amazing collection of evil bindings for several packages
 (use-package evil-collection
   :ensure t
