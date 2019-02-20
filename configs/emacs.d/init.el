@@ -200,17 +200,6 @@
 
   ;; Major-mode keybindings (SPC-m then brings up context sensitive keybindings)
   (general-define-key
-   :keymaps 'rjsx-mode-map
-   :states 'motion
-   :prefix "SPC m"
-   "p" 'ana--run-prettier)
-
-  (general-define-key
-   :keymaps 'org-mode-map
-   :states 'motion
-   :prefix "SPC m")
-
-  (general-define-key
    :keymaps 'rust-mode-map
    :states 'motion
    :prefix "SPC m"
@@ -384,8 +373,14 @@
 
                                         ; Code
 ;; Javascript
-(use-package json-mode :ensure t)
-(use-package npm-mode :ensure t)
+(use-package json-mode
+  :ensure t
+  :general
+  (:keymaps 'json-mode-map
+   :states 'motion
+   :prefix "SPC m"
+   "f" 'json-mode-beautify))
+
 (defun add-node-modules-path ()
   (let* ((root (locate-dominating-file
                 (or (buffer-file-name) default-directory)
@@ -401,10 +396,19 @@
 
 (use-package rjsx-mode
   :ensure t
-  :config
-  (setq js2-basic-offset 2)
-  (setq js2-mode-toggle-warnings-and-errors nil)
-  (setq js2-mode-show-strict-warnings nil)
+  :general
+  (:keymaps 'rjsx-mode-map
+   :states 'motion
+   :prefix "SPC m"
+   "f" 'ana--run-prettier
+   "r" 'tide-refactor
+   "e" 'tide-rename-symbol
+   "c" 'tide-rename-file)
+  :custom
+  (js2-basic-offset 2)
+  (js2-mode-toggle-warnings-and-errors nil)
+  (js2-mode-show-strict-warnings nil)
+  :init
   (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode)))
 
 (use-package tide
@@ -512,13 +516,70 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(git-commit-summary-max-length 50)
  '(ivy-count-format "%d/%d")
  '(ivy-height 20)
  '(ivy-use-virtual-buffers t)
+ '(js2-basic-offset 2)
+ '(js2-mode-show-strict-warnings nil)
+ '(js2-mode-toggle-warnings-and-errors nil t)
+ '(magit-completing-read-function (quote ivy-completing-read))
+ '(org-agenda-files (quote ("~/Documents/org/gsd/gsd.org")) t)
+ '(org-capture-templates
+   (quote
+    (("t" "Todo" entry
+      (file org-default-notes-file)
+      "* TODO %?
+Added: %U
+")
+     ("n" "Next" entry
+      (file org-default-notes-file)
+      "* NEXT %?
+DEADLINE: %t")
+     ("j" "Journal" entry
+      (file+olp+datetree "~/Documents/org/journal.org")
+      "* %?
+" :clock-in t :clock-resume t))) t)
+ '(org-default-notes-file "~/Documents/org/gsd/inbox.org" t)
+ '(org-directory "~/Documents/org/" t)
+ '(org-fast-tag-selection-single-key nil t)
+ '(org-hide-emphasis-markers t t)
+ '(org-pretty-entities t t)
+ '(org-refile-allow-creating-parent-nodes (quote confirm) t)
+ '(org-refile-targets
+   (quote
+    (("gsd.org" :maxlevel . 1)
+     ("someday.org" :maxlevel . 1))) t)
+ '(org-refile-use-outline-path (quote file) t)
+ '(org-src-fontify-natively t t)
+ '(org-tag-alist
+   (quote
+    (("@errand" . 101)
+     ("@mari" . 109)
+     ("@reading" . 114)
+     ("@computer" . 99)
+     ("@work" . 119)
+     ("@home" . 104))) t)
+ '(org-todo-keyword-faces
+   (quote
+    (("TODO" :foreground "light coral" :weight bold)
+     ("NEXT" :foreground "red" :weight bold)
+     ("DONE" :foreground "sea green")
+     ("APPT" :foreground "maroon")
+     ("WAITING" :foreground "dark orange" :weight bold)
+     ("CANCELLED" :foreground "dim gray")
+     ("HOLD" :foreground "deep sky blue" :weight bold))) t)
+ '(org-todo-keywords
+   (quote
+    ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+     (sequence "APPT(a)")
+     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "CANCELLED(c@/!)"))) t)
+ '(org-use-fast-todo-selection t t)
  '(package-selected-packages
    (quote
-    (powerline zenburn-theme challenger-deep-theme spacemacs-theme nlinum-relative fill-column-indicator yaml-mode ledger-mode cargo racer flycheck-rust rust-mode markdown-mode emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode org-bullets org-pomodoro dictionary flycheck company counsel-projectile counsel-etags counsel ivy-rich ivy exec-path-from-shell general which-key evil-escape evil-surround evil-magit evil-collection evil no-easy-keys delight use-package)))
- '(projectile-completion-system (quote ivy)))
+    (origami powerline zenburn-theme challenger-deep-theme spacemacs-theme nlinum-relative fill-column-indicator yaml-mode ledger-mode cargo racer flycheck-rust rust-mode markdown-mode emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode org-bullets org-pomodoro dictionary flycheck company counsel-projectile counsel-etags counsel ivy-rich ivy exec-path-from-shell general which-key evil-escape evil-surround evil-magit evil-collection evil no-easy-keys delight use-package)))
+ '(projectile-completion-system (quote ivy))
+ '(projectile-switch-project-ation (quote projectile-dired) t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
