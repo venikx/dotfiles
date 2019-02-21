@@ -412,6 +412,11 @@
   (add-to-list 'auto-mode-alist '("\\.tsx\\'" . rjsx-mode))
   (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode)))
 
+(use-package typescript-mode
+  :ensure t
+  :custom
+  (typescript-indent-level 2))
+
 (use-package tide
   :ensure t
   :preface
