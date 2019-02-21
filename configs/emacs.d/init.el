@@ -409,41 +409,42 @@
   (js2-mode-toggle-warnings-and-errors nil)
   (js2-mode-show-strict-warnings nil)
   :init
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . rjsx-mode))
   (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode)))
 
 (use-package tide
   :ensure t
-  :config
+  :preface
   (defun setup-tide-mode ()
-    (interactive)
     (tide-setup)
-    (tide-mode +1)
-    (flycheck-mode +1)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode +1)
-    (tide-hl-identifier-mode +1)
-    (company-mode +1))
+    (setq flycheck-check-syntax-automatically '(save mode-enabled)))
+  :config
+  (add-hook 'typescript-mode-hook #'setup-tide-mode)
   (add-hook 'js2-mode-hook #'setup-tide-mode))
 
 (use-package web-mode
   :ensure t
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.css\\'" . web-mode))
+  :custom
+  (web-mode-markup-indent-offset 2)
+  (web-mode-attr-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-code-indent-offset 2)
+  (css-indent-offset 2))
+
+(use-package emmet-mode
+  :ensure t
+  :delight
   :config
-  (defun my-web-mode-hook ()
-    "Hooks for Web mode. Adjust indents"
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-attr-indent-offset 2)
-    (setq web-mode-css-indent-offset 2)
-    (setq web-mode-code-indent-offset 2)
-    (setq css-indent-offset 2))
-  (add-hook 'web-mode-hook  'my-web-mode-hook)
+  (add-hook 'web-mode-hook #'emmet-mode)
+  (add-hook 'js2-mode-hook #'emmet-mode))
 
-  (use-package rainbow-mode
-    :ensure t
-    :commands rainbow-mode)
-
-  (use-package emmet-mode
-    :ensure t
-    :commands emmet-mode))
+(use-package rainbow-mode
+  :ensure t
+  :delight
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-mode))
 
 ;; Markdown
 (use-package markdown-mode
