@@ -128,13 +128,6 @@
   :ensure t
   :init (which-key-mode t))
 
-(defun ana--run-prettier ()
-  (interactive)
-  (projectile-with-default-dir (projectile-project-root)
-    (call-interactively
-     (async-shell-command
-      "prettier --config ./.prettierrc.yml --require-pragma "src/**/*.js" --write"))))
-
 (use-package general :ensure t
   :config
   (general-define-key :states '(normal motion emacs) "SPC" nil)
@@ -383,18 +376,22 @@
    :prefix "SPC m"
    "f" 'json-mode-beautify))
 
-(defun add-node-modules-path ()
-  (let* ((root (locate-dominating-file
-                (or (buffer-file-name) default-directory)
-                "node_modules"))
-         (path (and root
-                    (expand-file-name "node_modules/.bin/" root))))
-    (if root
-        (progn
-          (make-local-variable 'exec-path)
-          (add-to-list 'exec-path path)
-          (message "added node_modules to exec-path"))
-      (message "node_modules not found"))))
+(use-package add-node-modules-path
+  :ensure t
+  :config
+  (add-hook 'rjsx-mode-hook #'add-node-modules-path)
+  (add-hook 'typescript-mode-hook #'add-node-modules-path)
+  (add-hook 'js2-mode-hook #'add-node-modules-path)
+  (add-hook 'web-mode-hook #'add-node-modules-path))
+
+(use-package prettier-js
+  :ensure t
+  :after add-node-modules-path
+  :config
+  (add-hook 'rjsx-mode-hook #'prettier-js-mode)
+  (add-hook 'typescript-mode-hook #'prettier-js-mode)
+  (add-hook 'js2-mode-hook #'prettier-js-mode)
+  (add-hook 'web-mode-hook #'prettier-js-mode))
 
 (use-package rjsx-mode
   :ensure t
@@ -402,7 +399,6 @@
   (:keymaps 'rjsx-mode-map
    :states 'motion
    :prefix "SPC m"
-   "f" 'ana--run-prettier
    "r" 'tide-refactor
    "e" 'tide-rename-symbol
    "c" 'tide-rename-file)
@@ -524,14 +520,17 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(css-indent-offset 2 t)
  '(git-commit-summary-max-length 50)
  '(ivy-count-format "%d/%d")
  '(ivy-height 20)
  '(ivy-use-virtual-buffers t)
- '(js2-basic-offset 2)
- '(js2-mode-show-strict-warnings nil)
+ '(js2-basic-offset 2 t)
+ '(js2-mode-show-strict-warnings nil t)
  '(js2-mode-toggle-warnings-and-errors nil t)
+ '(ledger-clear-whole-transactions 1 t)
  '(magit-completing-read-function (quote ivy-completing-read))
+ '(markdown-command "multimarkdown" t)
  '(org-agenda-files (quote ("~/Documents/org/gsd/gsd.org")) t)
  '(org-capture-templates
    (quote
@@ -587,7 +586,12 @@ DEADLINE: %t")
    (quote
     (origami powerline zenburn-theme challenger-deep-theme spacemacs-theme nlinum-relative fill-column-indicator yaml-mode ledger-mode cargo racer flycheck-rust rust-mode markdown-mode emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode org-bullets org-pomodoro dictionary flycheck company counsel-projectile counsel-etags counsel ivy-rich ivy exec-path-from-shell general which-key evil-escape evil-surround evil-magit evil-collection evil no-easy-keys delight use-package)))
  '(projectile-completion-system (quote ivy))
- '(projectile-switch-project-ation (quote projectile-dired) t))
+ '(projectile-switch-project-ation (quote projectile-dired) t)
+ '(typescript-indent-level 2)
+ '(web-mode-attr-indent-offset 2 t)
+ '(web-mode-code-indent-offset 2 t)
+ '(web-mode-css-indent-offset 2 t)
+ '(web-mode-markup-indent-offset 2 t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
