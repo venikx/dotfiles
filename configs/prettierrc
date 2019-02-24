@@ -1,5 +1,5 @@
 ---
 singleQuote: true
-no-semi: false
+no-semi: true
 prose-wrap: always
 

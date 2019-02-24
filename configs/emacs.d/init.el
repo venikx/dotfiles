@@ -6,7 +6,7 @@
     (error "Emacs is too old -- this config requires v%s or higher" minver)))
 
 ;; Emacs configuration location
-(defvar ana--dotfiles "~/dotfiles/configs/")
+(defvar venikx/dotfiles "~/dotfiles/configs/")
 
 ;; Change to home directory (needed when running Emacs via chocolaty)
 (cd "~/")
@@ -36,7 +36,7 @@
                                         ; Essential Setting
 (message "=== Configuring sane defaults ===")
 ;; Sensible defaults
-(load-file (concat ana--dotfiles "emacs.d/lisp/sensible-defaults.el"))
+(load-file (concat venikx/dotfiles "emacs.d/lisp/sensible-defaults.el"))
 (sensible-defaults/use-all-settings)
 (sensible-defaults/use-all-keybindings)
 (sensible-defaults/backup-to-temp-directory)
