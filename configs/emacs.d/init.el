@@ -196,17 +196,7 @@
    "ut" '(counsel-load-theme :which-key "change theme")
 
    ;; Testing commands
-   "t" '(:ignore t :which-key "danger zone"))
-
-  ;; Major-mode keybindings (SPC-m then brings up context sensitive keybindings)
-  (general-define-key
-   :keymaps 'rust-mode-map
-   :states 'motion
-   :prefix "SPC m"
-   "b" 'cargo-process-build
-   "r" 'cargo-process-run
-   "t" 'cargo-process-test
-   "f" 'rust-format-buffer))
+   "t" '(:ignore t :which-key "danger zone")))
 
                                         ; Utils
 (use-package exec-path-from-shell
@@ -463,22 +453,32 @@
 ;; Rust
 (use-package rust-mode
   :ensure t
-  :commands (rust-format-buffer)
+  :general
+  (:keymaps 'rust-mode-map
+   :states 'motion
+   :prefix "SPC m"
+   "f" 'rust-format-buffer
+   "b" 'cargo-process-build
+   "r" 'cargo-process-run
+   "t" 'cargo-process-test)
   :mode ("\\.rs\\'" . rust-mode))
 
 (use-package flycheck-rust
+  :after flycheck rust-mode
   :ensure t
   :config
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (use-package racer
   :ensure t
+  :after rust-mode
   :config
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode))
 
 (use-package cargo
   :ensure t
+  :after rust-mode
   :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
