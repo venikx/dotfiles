@@ -250,8 +250,16 @@
   :ensure t
   :delight company-mode
   :init (global-company-mode 1)
+  :custom
+  (company-idle-delay 0))
+
+(use-package yasnippet
+  :ensure t
   :config
-  (setq company-idle-delay 0))
+  (add-hook 'prog-mode-hook #'yas-minor-mode))
+
+(use-package yasnippet-snippets
+  :ensure t)
 
 ;; Syntax checking
 (use-package flycheck
@@ -528,6 +536,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(company-idle-delay 0)
  '(css-indent-offset 2 t)
  '(git-commit-summary-max-length 50)
  '(ivy-count-format "%d/%d")
