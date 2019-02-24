@@ -371,6 +371,15 @@
   :ensure t
   :after evil magit)
 
+;; Ledger
+(use-package ledger-mode
+  :ensure t
+  :custom
+  (ledger-clear-whole-transactions 1)
+  :config
+  (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
+  :mode "\\.dat\\'")
+
                                         ; Code
 ;; Javascript
 (use-package json-mode
@@ -451,14 +460,6 @@
   :config
   (add-hook 'prog-mode-hook #'rainbow-mode))
 
-;; Markdown
-(use-package markdown-mode
-  :ensure t
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown"))
-
 ;; Rust
 (use-package rust-mode
   :ensure t
@@ -481,15 +482,13 @@
   :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
-;; Ledger
-(use-package ledger-mode
+;; Other crap
+(use-package markdown-mode
   :ensure t
-  :init
-  (setq ledger-clear-whole-transactions 1)
-
-  :config
-  (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
-  :mode "\\.dat\\'")
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :custom (markdown-command "multimarkdown"))
 
 (use-package yaml-mode
   :ensure t
