@@ -158,6 +158,7 @@
    ;; Git
    "g" '(:ignore t :which-key "git")
    "gs" 'magit-status
+   "gt" 'git-timemachine
 
    ;; Projectile
    "p" '(:ignore t :which-key "project")
@@ -343,7 +344,7 @@
   (org-ellipsis "⤵")
   (org-bullets-bullet-list '("■" "◆" "▲" "▶")))
 
-;; Magit
+;; Git
 (use-package magit
   :ensure t
   :custom
@@ -356,6 +357,13 @@
 (use-package evil-magit
   :ensure t
   :after evil magit)
+
+(use-package git-timemachine
+  :ensure t
+  :after evil
+  :config
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
 ;; Ledger
 (use-package ledger-mode
