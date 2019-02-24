@@ -264,24 +264,27 @@
   :ensure t
   :init (global-flycheck-mode)
   :commands (flycheck-mode)
+  :preface
+  (defun venikx/use-eslint-from-node-modules ()
+    (let* ((root (locate-dominating-file
+                  (or (buffer-file-name) default-directory)
+                  "node_modules"))
+           (global-eslint (executable-find "eslint"))
+           (local-eslint (expand-file-name "node_modules/.bin/eslint"
+                                           root))
+           (eslint (if (file-executable-p local-eslint)
+                       local-eslint
+                     global-eslint)))
+      (setq-local flycheck-javascript-eslint-executable eslint)))
   :config
   (add-hook 'prog-mode-hook 'flycheck-mode)
   (setq-default flycheck-disabled-checker 'javascript-jshint)
   (setq-default flycheck-disabled-checker 'json-jsonlist)
   (setq-default flycheck-disabled-checker 'javascript-eslint)
   (setq-default flycheck-javascript-eslint-executable "eslint-project-relative")
-
-  (defun my/use-eslint-from-node-modules ()
-    (let* ((root (locate-dominating-file
-                  (or (buffer-file-name) default-directory)
-                  "node_modules"))
-           (eslint (and root
-                        (expand-file-name "node_modules/eslint/bin/eslint.js"
-                                          root))))
-      (when (and eslint (file-executable-p eslint))
-        (setq-local flycheck-javascript-eslint-executable eslint))))
-
-  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
+  (add-hook 'rjsx-mode-hook #'venikx/use-eslint-from-node-modules)
+  (add-hook 'js2-mode-hook #'venikx/use-eslint-from-node-modules)
+  (add-hook 'web-mode-hook #'venikx/use-eslint-from-node-modules))
 
 ;; Dictionary
 (use-package dictionary :ensure t)
