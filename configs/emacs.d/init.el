@@ -56,6 +56,7 @@
 (blink-cursor-mode)
 
 ;; Global UI/UX settings
+(display-time-mode)
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 (setq-default left-fringe-width nil)
 (setq-default indicate-empty-lines t)
