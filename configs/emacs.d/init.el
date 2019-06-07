@@ -33,6 +33,10 @@
   (require 'use-package)
   (require 'delight))
 
+                                        ; User configuration
+(setq user-full-name "Kevin aka venikx"
+      user-mail-address "kevin.rangel@protonmail.com")
+
                                         ; Essential Setting
 (message "=== Configuring sane defaults ===")
 ;; Sensible defaults
@@ -49,6 +53,7 @@
 (when (boundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
 (show-paren-mode 1)
+(blink-cursor-mode)
 
 ;; Global UI/UX settings
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
@@ -67,11 +72,10 @@
 (global-prettify-symbols-mode t)
 (setq scroll-conservatively 100)
 
-                                        ; User configuration
-(setq
- user-full-name "Kevin aka venikx"
- user-mail-address "kevin.rangel@protonmail.com"
- calendar-location-name "Helsinki, Finland - Europe")
+;; UTF-8 support
+(prefer-coding-system 'utf-8)
+(when (display-graphic-p)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
 (message "=== Starting... ===")
 
