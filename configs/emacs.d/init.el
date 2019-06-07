@@ -537,6 +537,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(company-idle-delay 0)
+ '(company-minimum-prefix-length 3)
  '(css-indent-offset 2 t)
  '(git-commit-summary-max-length 50)
  '(ivy-count-format "%d/%d")
@@ -549,6 +550,7 @@
  '(magit-completing-read-function (quote ivy-completing-read))
  '(markdown-command "multimarkdown" t)
  '(org-agenda-files (quote ("~/Documents/org/gsd/gsd.org")) t)
+ '(org-bullets-bullet-list (quote ("■" "◆" "▲" "▶")))
  '(org-capture-templates
    (quote
     (("t" "Todo" entry
@@ -566,8 +568,10 @@ DEADLINE: %t")
 " :clock-in t :clock-resume t))) t)
  '(org-default-notes-file "~/Documents/org/gsd/inbox.org" t)
  '(org-directory "~/Documents/org/" t)
+ '(org-ellipsis "⤵")
  '(org-fast-tag-selection-single-key nil t)
  '(org-hide-emphasis-markers t t)
+ '(org-pomodoro-format "%s")
  '(org-pretty-entities t t)
  '(org-refile-allow-creating-parent-nodes (quote confirm) t)
  '(org-refile-targets
@@ -601,7 +605,7 @@ DEADLINE: %t")
  '(org-use-fast-todo-selection t t)
  '(package-selected-packages
    (quote
-    (origami powerline zenburn-theme challenger-deep-theme spacemacs-theme nlinum-relative fill-column-indicator yaml-mode ledger-mode cargo racer flycheck-rust rust-mode markdown-mode emmet-mode rainbow-mode web-mode tide rjsx-mode npm-mode json-mode org-bullets org-pomodoro dictionary flycheck company counsel-projectile counsel-etags counsel ivy-rich ivy exec-path-from-shell general which-key evil-escape evil-surround evil-magit evil-collection evil no-easy-keys delight use-package)))
+    (powerline zenburn-theme challenger-deep-theme spacemacs-theme nlinum-relative fill-column-indicator yaml-mode ggtags cargo racer flycheck-rust rust-mode rainbow-mode emmet-mode web-mode tide typescript-mode rjsx-mode prettier-js add-node-modules-path json-mode ledger-mode git-timemachine evil-magit magit org-bullets org-pomodoro dictionary flycheck yasnippet-snippets yasnippet company counsel-projectile counsel-etags counsel ivy-rich ivy exec-path-from-shell general which-key evil-escape evil-surround evil-collection origami evil no-easy-keys delight use-package)))
  '(projectile-completion-system (quote ivy))
  '(projectile-switch-project-ation (quote projectile-dired) t)
  '(typescript-indent-level 2)
