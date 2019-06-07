@@ -5,16 +5,11 @@
   (when (version< emacs-version minver)
     (error "Emacs is too old -- this config requires v%s or higher" minver)))
 
-;; Emacs configuration location
-(defvar venikx/dotfiles "~/dotfiles/configs/")
-
-;; Change to home directory (needed when running Emacs via chocolaty)
-(cd "~/")
-
                                         ; elpa.el
 ;; Initialize package repo's
 (require 'package)
-(setq package-enable-at-startup nil)
+(setq package-enable-at-startup nil
+      load-prefer-newer t)
 (defvar package-list '(use-package delight))
 
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/"))
@@ -29,6 +24,9 @@
     (package-refresh-contents)
     (package-install package)))
 
+(setq-default use-package-verbose t
+              use-package-always-ensure t)
+
 (eval-when-compile
   (require 'use-package)
   (require 'delight))
@@ -40,7 +38,7 @@
                                         ; Essential Setting
 (message "=== Configuring sane defaults ===")
 ;; Sensible defaults
-(load-file (concat venikx/dotfiles "emacs.d/lisp/sensible-defaults.el"))
+(load-file (concat user-emacs-directory "lisp/sensible-defaults.el"))
 (sensible-defaults/use-all-settings)
 (sensible-defaults/use-all-keybindings)
 (sensible-defaults/backup-to-temp-directory)
@@ -82,12 +80,9 @@
 
                                         ; Evil Config
 ;; Disable easy keys, to properly learn emacs/evil keybindings
-(use-package no-easy-keys
-  :ensure t
-  :config (no-easy-keys 1))
+(use-package no-easy-keys :config (no-easy-keys 1))
 
 (use-package evil
-  :ensure t
   :init
   (setq evil-want-C-u-scroll t)
   (setq evil-want-keybinding nil)
@@ -95,7 +90,6 @@
   (evil-mode 1))
 
 (use-package origami
-  :ensure t
   :after evil
   :commands origami-mode
   :config
@@ -103,23 +97,17 @@
 
 ;;  Amazing collection of evil bindings for several packages
 (use-package evil-collection
-  :ensure t
   :after evil
   :config (evil-collection-init '(calender company dired ivy)))
 
-(use-package evil-org
-  :disabled
-  :ensure t
-  :after evil)
+(use-package evil-org :disabled :after evil)
 
 (use-package evil-surround
-  :ensure t
   :after evil
   :delight evil-surround-mode
   :config (global-evil-surround-mode 1))
 
 (use-package evil-escape
-  :ensure t
   :after evil
   :delight evil-escape-mode
   :config
@@ -130,10 +118,10 @@
 
                                         ; Use general.el and which-keys.el to structure keybindings
 (use-package which-key
-  :ensure t
+  :defer 1
   :init (which-key-mode t))
 
-(use-package general :ensure t
+(use-package general
   :config
   (general-define-key :states '(normal motion emacs) "SPC" nil)
 
@@ -199,13 +187,11 @@
 
                                         ; Utils
 (use-package exec-path-from-shell
-  :ensure t
   :if (memq window-system '(mac ns x))
   :init (exec-path-from-shell-initialize))
 
 ;; Emacs Completion
 (use-package ivy
-  :ensure t
   :defer 0.1
   :delight ivy-mode
   :init
@@ -217,58 +203,45 @@
   (projectile-completion-system 'ivy))
 
 (use-package ivy-rich
-  :ensure t
   :delight ivy-rich-mode
   :after ivy
   :config
   (ivy-rich-mode 1))
 
+(use-package swiper :after ivy)
+
 (use-package counsel
-  :ensure t
   :delight counsel-mode
   :after ivy
   :config
   (counsel-mode 1))
 
-(use-package counsel-etags
-  :delight counsel-etags-mode
-  :ensure t
-  :after counsel)
 
 (use-package counsel-projectile
   :delight
   (counsel-projectile-mode)
   (projectile-mode '(:eval (concat "P:" (projectile-project-name))))
-  :ensure t
   :after counsel
   :custom
   (projectile-switch-project-ation 'projectile-dired)
   :config
   (counsel-projectile-mode))
 
-(use-package swiper
-  :ensure t
-  :after ivy)
-
 ;; Code completion
 (use-package company
-  :ensure t
   :delight company-mode
   :init (global-company-mode 1)
   :custom
-  (company-idle-delay 0))
+  (company-idle-delay 0)
+  (company-minimum-prefix-length 3))
 
 (use-package yasnippet
-  :ensure t
-  :config
-  (add-hook 'prog-mode-hook #'yas-minor-mode))
-
-(use-package yasnippet-snippets
-  :ensure t)
+  :defer 3
+  :config (add-hook 'prog-mode-hook #'yas-minor-mode))
+(use-package yasnippet-snippets :after yasnippet)
 
 ;; Syntax checking
 (use-package flycheck
-  :ensure t
   :init (global-flycheck-mode)
   :commands (flycheck-mode)
   :preface
@@ -294,12 +267,11 @@
   (add-hook 'web-mode-hook #'venikx/use-eslint-from-node-modules))
 
 ;; Dictionary
-(use-package dictionary :ensure t)
+(use-package dictionary)
 
                                         ; Modes config
 ;; Org-mode
 (use-package org
-  :ensure t
   :commands (org-capture org-agenda)
   :config
   (add-hook 'org-mode-hook
@@ -343,13 +315,11 @@
   (org-pretty-entities t))
 
 (use-package org-pomodoro
-  :ensure t
   :after org
   :custom
   (org-pomodoro-format "%s"))
 
 (use-package org-bullets
-  :ensure t
   :after org
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
@@ -359,7 +329,7 @@
 
 ;; Git
 (use-package magit
-  :ensure t
+  :defer 3
   :custom
   (magit-completing-read-function 'ivy-completing-read)
   (git-commit-summary-max-length 50)
@@ -367,20 +337,16 @@
   (add-hook 'git-commit-mode-hook
             '(lambda () (setq fill-column 72) (turn-on-auto-fill))))
 
-(use-package evil-magit
-  :ensure t
-  :after evil magit)
+(use-package evil-magit :after evil magit)
 
 (use-package git-timemachine
-  :ensure t
-  :after evil
+  :after evil magit
   :config
   (evil-make-overriding-map git-timemachine-mode-map 'normal)
   (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
 
 ;; Ledger
 (use-package ledger-mode
-  :ensure t
   :custom
   (ledger-clear-whole-transactions 1)
   :config
@@ -390,7 +356,6 @@
                                         ; Code
 ;; Javascript
 (use-package json-mode
-  :ensure t
   :general
   (:keymaps 'json-mode-map
    :states 'motion
@@ -398,7 +363,6 @@
    "f" 'json-mode-beautify))
 
 (use-package add-node-modules-path
-  :ensure t
   :config
   (add-hook 'rjsx-mode-hook #'add-node-modules-path)
   (add-hook 'typescript-mode-hook #'add-node-modules-path)
@@ -406,7 +370,6 @@
   (add-hook 'web-mode-hook #'add-node-modules-path))
 
 (use-package prettier-js
-  :ensure t
   :after add-node-modules-path
   :config
   (add-hook 'rjsx-mode-hook #'prettier-js-mode)
@@ -415,7 +378,6 @@
   (add-hook 'web-mode-hook #'prettier-js-mode))
 
 (use-package rjsx-mode
-  :ensure t
   :general
   (:keymaps 'rjsx-mode-map
    :states 'motion
@@ -432,12 +394,10 @@
   (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode)))
 
 (use-package typescript-mode
-  :ensure t
   :custom
   (typescript-indent-level 2))
 
 (use-package tide
-  :ensure t
   :preface
   (defun setup-tide-mode ()
     (tide-setup)
@@ -447,7 +407,6 @@
   (add-hook 'js2-mode-hook #'setup-tide-mode))
 
 (use-package web-mode
-  :ensure t
   :mode (("\\.html?\\'" . web-mode)
          ("\\.css\\'" . web-mode))
   :custom
@@ -458,21 +417,18 @@
   (css-indent-offset 2))
 
 (use-package emmet-mode
-  :ensure t
   :delight
   :config
   (add-hook 'web-mode-hook #'emmet-mode)
   (add-hook 'js2-mode-hook #'emmet-mode))
 
 (use-package rainbow-mode
-  :ensure t
   :delight
   :config
   (add-hook 'prog-mode-hook #'rainbow-mode))
 
 ;; Rust
 (use-package rust-mode
-  :ensure t
   :general
   (:keymaps 'rust-mode-map
    :states 'motion
@@ -485,57 +441,75 @@
 
 (use-package flycheck-rust
   :after flycheck rust-mode
-  :ensure t
   :config
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (use-package racer
-  :ensure t
   :after rust-mode
   :config
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode))
 
 (use-package cargo
-  :ensure t
   :after rust-mode
   :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
+;; C/C++
+(use-package ggtags
+    :disabled
+    :commands ggtags-mode
+    :config
+    (unbind-key "M-<" ggtags-mode-map)
+    (unbind-key "M->" ggtags-mode-map))
+
+(use-package cc-mode
+    :disabled
+    :config
+    (add-hook 'c-mode-common-hook
+              (lambda ()
+                (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+                  (ggtags-mode 1)))))
+
+;; (use-package lsp-mode)
+
+;;  (use-package emacs-cquery
+;;    :commands lsp-cquery-enable
+;;    :init (setq cquery-executable "~/Programs/cquery/bin/cquery")
+;;    (add-hook 'c-mode-hook #'cquery//enable)
+;;    (add-hook 'c++-mode-hook #'cquery//enable))
+
 ;; Other crap
 (use-package markdown-mode
-  :ensure t
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :custom (markdown-command "multimarkdown"))
 
-(use-package yaml-mode
-  :ensure t
-  :mode "\\.yml\\'")
+(use-package yaml-mode :mode "\\.yml\\'")
 
                                         ; Specific UI/UX
 (use-package fill-column-indicator
-  :ensure t
   :config (add-hook 'text-mode-hook #'fci-mode))
 
 (use-package nlinum-relative
-  :ensure t
   :config
   (nlinum-relative-setup-evil)
   (add-hook 'prog-mode-hook #'nlinum-relative-mode))
 
 ;; Themes
-(use-package spacemacs-theme :ensure t :defer t)
-(use-package challenger-deep-theme :ensure t :defer t)
-(use-package zenburn-theme :ensure t :defer t)
+(use-package spacemacs-theme :defer t)
+(use-package challenger-deep-theme :defer t)
+(use-package zenburn-theme :defer t)
 (load-theme 'challenger-deep t)
 
 ;; Powerline
 (use-package powerline
-  :ensure t
   :config
   (powerline-center-evil-theme))
+
+                                        ; End of custom configuration
+;; The lines under this one are generated by Emacs, do not edit them!
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -548,14 +522,14 @@
  '(ivy-count-format "%d/%d")
  '(ivy-height 20)
  '(ivy-use-virtual-buffers t)
- '(js2-basic-offset 2 t)
- '(js2-mode-show-strict-warnings nil t)
+ '(js2-basic-offset 2)
+ '(js2-mode-show-strict-warnings nil)
  '(js2-mode-toggle-warnings-and-errors nil t)
  '(ledger-clear-whole-transactions 1 t)
  '(magit-completing-read-function (quote ivy-completing-read))
  '(markdown-command "multimarkdown" t)
  '(org-agenda-files (quote ("~/Documents/org/gsd/gsd.org")) t)
- '(org-bullets-bullet-list (quote ("■" "◆" "▲" "▶")))
+ '(org-bullets-bullet-list (quote ("■" "◆" "▲" "▶")) t)
  '(org-capture-templates
    (quote
     (("t" "Todo" entry
@@ -610,7 +584,7 @@ DEADLINE: %t")
  '(org-use-fast-todo-selection t t)
  '(package-selected-packages
    (quote
-    (powerline zenburn-theme challenger-deep-theme spacemacs-theme nlinum-relative fill-column-indicator yaml-mode ggtags cargo racer flycheck-rust rust-mode rainbow-mode emmet-mode web-mode tide typescript-mode rjsx-mode prettier-js add-node-modules-path json-mode ledger-mode git-timemachine evil-magit magit org-bullets org-pomodoro dictionary flycheck yasnippet-snippets yasnippet company counsel-projectile counsel-etags counsel ivy-rich ivy exec-path-from-shell general which-key evil-escape evil-surround evil-collection origami evil no-easy-keys delight use-package)))
+    (powerline zenburn-theme challenger-deep-theme spacemacs-theme nlinum-relative fill-column-indicator yaml-mode ggtags cargo racer flycheck-rust rainbow-mode emmet-mode web-mode tide typescript-mode prettier-js add-node-modules-path ledger-mode git-timemachine evil-magit magit org-bullets org-pomodoro dictionary flycheck yasnippet-snippets yasnippet company counsel-projectile counsel-etags counsel ivy-rich ivy exec-path-from-shell general which-key evil-escape evil-surround evil-collection origami evil no-easy-keys delight use-package)))
  '(projectile-completion-system (quote ivy))
  '(projectile-switch-project-ation (quote projectile-dired) t)
  '(typescript-indent-level 2)
