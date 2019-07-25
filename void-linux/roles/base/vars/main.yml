@@ -1,5 +1,5 @@
 packages:
-  - zsh 
+  - zsh
   - xorg-minimal
   - xorg-server
   - xorg-fonts
@@ -13,7 +13,8 @@ packages:
   - ranger
   - openvpn
   - unzip
-  - the_silver_searcher
+  - ripgrep
+  - bat
   - curl
   - syncthing
   - emacs-x11
