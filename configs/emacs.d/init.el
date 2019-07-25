@@ -1,10 +1,34 @@
-                                        ; Emacs 25
-(message "=== Initializing Emacs ===")
-;; Version check
-(let ((minver "25.1"))
-  (when (version< emacs-version minver)
-    (error "Emacs is too old -- this config requires v%s or higher" minver)))
+;;; venikx --- init.el
+;;; Author: venikx
+;;; Commentary:
+;;; An opinionated Emacs configuration containing all the essentials I use, while programming
+;;;
+;;; The initialization file is only bootstrapping the "actual" config file, which is
+;;; documented in org files and passed through org-babel for Emacs to read from.
+;;;
+;;; Code:
 
+;; Increase the number of bytes, before getting garbage collected
+(defvar file-name-handler-alist-original file-name-handler-alist)
+(setq gc-cons-threshold 402653184
+      gc-cons-percentage 0.6
+      file-name-handler-alist nil
+      site-run-file nil)
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold 20000000
+                  gc-cons-percentage 0.1
+                  file-name-handler-alist file-name-handler-alist-original)
+            (makunbound 'file-name-handler-alist-original)))
+
+(add-hook 'minibuffer-setup-hook (lambda () (setq gc-cons-threshold 40000000)))
+(add-hook 'minibuffer-exit-hook (lambda ()
+                                  (garbage-collect)
+                                  (setq gc-cons-threshold 20000000)))
+
+
+;;; TODO(kevin): Continue
                                         ; elpa.el
 ;; Initialize package repo's
 (require 'package)
