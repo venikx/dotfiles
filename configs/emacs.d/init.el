@@ -98,7 +98,7 @@
 ;;  Amazing collection of evil bindings for several packages
 (use-package evil-collection
   :after evil
-  :config (evil-collection-init '(calender company dired ivy)))
+  :config (evil-collection-init '(calender company ivy)))
 
 (use-package evil-org :disabled :after evil)
 
@@ -155,9 +155,7 @@
 
    ;; Projectile
    "p" '(:ignore t :which-key "project")
-   "pa" '(counsel-projectile-ag :which-key "ag")
-   "pg" '(counsel-projectile-ag :which-key "grep")
-   "pp" '(counsel-projectile-switch-project :which-key "switch prj")
+   "pr" '(counsel-projectile-rg :which-key "ripgrep")
    "pb" '(counsel-projectile-switch-to-buffer :which-key "switch buffer")
    "pf" '(counsel-projectile-find-file :which-key "find file")
 
@@ -169,7 +167,7 @@
    ;; Finder
    "f" '(:ignore t :which-key "find")
    "ff" 'counsel-find-file
-   "fl" 'counsel-locate
+   "fr" 'ranger
    "fd" 'dictionary-search
 
    ;; Comments
@@ -226,6 +224,10 @@
   (projectile-switch-project-ation 'projectile-dired)
   :config
   (counsel-projectile-mode))
+
+(use-package ranger
+  :config
+  (ranger-override-dired-mode t))
 
 ;; Code completion
 (use-package company
