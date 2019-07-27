@@ -249,6 +249,7 @@ Automatically insert matching delimiters.
 #+BEGIN_SRC emacs-lisp
 (use-package which-key
   :defer 1
+  :diminish which-key-mode
   :init (which-key-mode t))
 #+END_SRC
 
@@ -323,12 +324,11 @@ Automatically insert matching delimiters.
 #+BEGIN_SRC emacs-lisp
 (use-package ivy
   :delight ivy-mode
-  :init
-  (ivy-mode 1)
+  :hook (after-init . ivy-mode)
   :custom
   (ivy-use-virtual-buffers t)
   (ivy-count-format "%d/%d")
-  (ivy-height 20)
+  (ivy-height 20))
 
 (use-package ivy-rich
   :defer 0.1
@@ -346,13 +346,13 @@ Automatically insert matching delimiters.
   (counsel-mode 1))
 
 (use-package counsel-projectile
-  :delight
-  (counsel-projectile-mode)
-  (projectile-mode '(:eval (concat "P:" (projectile-project-name))))
+  :delight projectile-mode
   :after counsel
   :custom
   (projectile-switch-project-ation 'projectile-dired)
   :config
+  (setq projectile-sort-order 'recentf
+        projectile-indexing-method 'hybrid)
   (counsel-projectile-mode))
 #+END_SRC
 
@@ -361,6 +361,10 @@ Automatically insert matching delimiters.
 (use-package company
   :delight company-mode
   :hook (prog-mode . company-mode)
+  :config
+  (with-eval-after-load 'company
+    (define-key company-active-map (kbd "C-n") 'company-select-next)
+    (define-key company-active-map (kbd "C-p") 'company-select-previous))
   :custom
   (company-idle-delay 0)
   (company-minimum-prefix-length 1)
@@ -375,15 +379,8 @@ Automatically insert matching delimiters.
 (use-package yasnippet-snippets
   :config
   (yas-global-mode)
-  (advice-add 'company-complete-common
-              :before
-              (lambda ()
-                (setq my-company-point (point))))
-  (advice-add 'company-complete-common
-              :after
-              (lambda ()
-                (when (equal my-company-point (point))
-                  (yas-expand)))))
+  (advice-add 'company-complete-common :before (lambda () (setq my-company-point (point))))
+  (advice-add 'company-complete-common :after (lambda () (when (equal my-company-point (point)) (yas-expand)))))
 #+END_SRC
 
 ** Org
