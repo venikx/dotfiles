@@ -671,9 +671,11 @@ Automatically insert matching delimiters.
 (use-package fill-column-indicator
   :hook (text-mode . fci-mode))
 
-(use-package powerline
-  :defer 2
-  :config (powerline-center-evil-theme))
+(use-package smart-mode-line
+  :config
+  (setq sml/no-confirm-load-theme t
+        sml/theme 'respectful)
+  (sml/setup))
 
 (use-package dimmer
   :init (dimmer-mode)
@@ -693,5 +695,11 @@ Automatically insert matching delimiters.
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns x))
   :init (exec-path-from-shell-initialize))
+#+END_SRC
 
+** Syntax highlighting for numbers, operators and escape sequences
+#+BEGIN_SRC emacs-lisp
+(use-package highlight-numbers :hook (prog-mode . highlight-numbers-mode))
+(use-package highlight-operators :hook (prog-mode . highlight-operators-mode))
+(use-package highlight-escape-sequences :hook (prog-mode . hes-mode))
 #+END_SRC
