@@ -5,13 +5,10 @@
 configs/emacs.d/*
 *.elc
 # But don't ignore these specific locations.
-!configs/emacs.d/eshell/alias
 !configs/emacs.d/lisp
-!configs/emacs.d/snippets
-!configs/emacs.d/init.el
-!configs/emacs.d/custom.el
-!configs/emacs.d/sensible-defaults.el
 !configs/emacs.d/themes
+!configs/emacs.d/init.el
+!configs/emacs.d/config.org
 
 # Ignore py3status generated data
 configs/i3/py3status.data
