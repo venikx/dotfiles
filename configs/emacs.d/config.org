@@ -1,0 +1,665 @@
+#+TITLE: Emacs configuration
+#+AUTHOR: venikx
+#+DATE: 2019
+#+STARTUP: content, indent
+
+* Sane defaults
+Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
+
+** UI
+#+BEGIN_SRC emacs-lisp
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(when (boundp 'scroll-bar-mode)
+  (scroll-bar-mode -1))
+(blink-cursor-mode)
+(global-prettify-symbols-mode t)
+(setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
+(setq-default line-spacing 2
+              left-fringe-width nil)
+#+END_SRC
+
+** UX
+Disables/Enables some annoying/crucial settings to improves the modern Emacs experience.
+#+BEGIN_SRC emacs-lisp
+(display-time-mode)
+(setq-default indicate-empty-lines t
+              indent-tabs-mode nil
+              tab-width 4
+              tab-always-indent 'complete)
+(when window-system
+  (global-hl-line-mode))
+ (column-number-mode +1)
+(setq default-directory "~/"
+      vc-follow-symlinks t
+      frame-title-format '("Pogchamp")
+      ring-bell-function 'ignore
+      scroll-margin 0
+      scroll-conservatively 10000
+      scroll-preserve-screen-position t
+      auto-window-vscroll nil
+      mouse-highlight nil)
+
+;; (setq undo-limit 20000000)
+;; (setq undo-strong-limit 40000000)
+#+END_SRC
+
+Enable UTF-8 support; useful for rendering glyphs.
+#+BEGIN_SRC emacs-lisp
+(prefer-coding-system 'utf-8)
+(when (display-graphic-p)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+#+END_SRC
+
+* Built-in packages
+The external package configurations are handled by ~use-package~, but the library is also able to
+handle internal package configurations.
+
+** Refresh buffers automagically
+#+BEGIN_SRC emacs-lisp
+(use-package autorevert
+  :ensure nil
+  :hook (after-init . global-auto-revert-mode)
+  :config
+  (setq auto-revert-interval 2
+        auto-revert-check-vc-info t
+        auto-revert-verbose nil))
+#+END_SRC
+
+** Kill processes without confirming
+#+BEGIN_SRC emacs-lisp
+(use-package files
+  :ensure nil
+  :config
+  (setq confirm-kill-processes nil))
+#+END_SRC
+
+** Automatically remove whitespace
+#+BEGIN_SRC emacs-lisp
+(use-package whitespace
+  :ensure nil
+  :config (add-hook 'before-save-hook 'whitespace-cleanup))
+#+END_SRC
+
+** Spellcheck words in strings and comments
+#+BEGIN_SRC emacs-lisp
+(use-package flyspell
+  :ensure nil
+  :hook (prog-mode . flyspell-prog-mode))
+#+END_SRC
+
+** Enable eldoc for ~prog_mode~ (perf)
+#+BEGIN_SRC emacs-lisp
+(use-package eldoc
+  :ensure nil
+  :delight eldoc-mode
+  :config
+  (global-eldoc-mode -1)
+  (add-hook 'prog-mode-hook 'eldoc-mode)
+  (setq eldoc-idle-delay 0.4))
+#+END_SRC
+
+** Indentation
+Change formatting style to the standard K&R.
+#+BEGIN_SRC emacs-lisp
+(use-package cc-vars
+  :ensure nil
+  :config
+  (setq-default c-basic-offset 4)
+  (setq c-default-style '((java-mode . "java")
+                          (awk-mode . "awk")
+                          (other . "k&r"))))
+#+END_SRC
+
+Use 2 spaces for js buffers.
+#+BEGIN_SRC emacs-lisp
+(use-package js
+  :ensure nil
+  :config (setq js-indent-level 2))
+#+END_SRC
+
+** Parentheses
+Instantly display the matching parens.
+#+BEGIN_SRC emacs-lisp
+(use-package paren
+  :ensure nil
+  :config
+  (setq show-paren-delay 0)
+  (show-paren-mode))
+#+END_SRC
+
+Automatically insert matching delimiters.
+#+BEGIN_SRC emacs-lisp
+(use-package elec-pair
+  :ensure nil
+  :config (add-hook 'prog-mode-hook 'electric-pair-mode))
+#+END_SRC
+
+** Improve mouse scrolling behavior
+#+BEGIN_SRC emacs-lisp
+(use-package mwheel
+  :ensure nil
+  :config (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
+                mouse-wheel-progressive-speed nil))
+#+END_SRC
+
+* External packages
+** Welcome page
+#+BEGIN_SRC emacs-lisp
+(use-package dashboard
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-startup-banner 'logo
+        dashboard-banner-logo-title "The Chosen One"
+        dashboard-items nil
+        dashboard-set-footer nil))
+#+END_SRC
+
+** EVIL
+#+BEGIN_SRC emacs-lisp
+(use-package evil
+  :init
+  (setq evil-want-C-u-scroll t
+        evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+#+END_SRC
+
+*** Disable easy-keys to learn evil bindings
+#+BEGIN_SRC emacs-lisp
+(use-package no-easy-keys :config (no-easy-keys 1))
+#+END_SRC
+
+*** Enable relative line numbers
+#+BEGIN_SRC emacs-lisp
+(use-package nlinum-relative
+  :after evil
+  :hook (prog-mode . nlinum-relative-mode)
+  :config (nlinum-relative-setup-evil))
+#+END_SRC
+
+*** Improve folding
+#+BEGIN_SRC emacs-lisp
+(use-package origami
+  :after evil
+  :commands origami-mode
+  :config
+  (add-hook 'prog-mode-hook 'origami-mode))
+#+END_SRC
+
+*** Enable surround
+#+BEGIN_SRC emacs-lisp
+(use-package evil-surround
+  :after evil
+  :delight evil-surround-mode
+  :config (global-evil-surround-mode 1))
+#+END_SRC
+
+*** Enable EVIL for certain modes
+#+BEGIN_SRC emacs-lisp
+(use-package evil-org :disabled :after evil)
+
+(use-package evil-collection
+  :after evil
+  :config (evil-collection-init '(calender company ivy)))
+
+(use-package evil-escape
+  :after evil
+  :delight evil-escape-mode
+  :config
+  (evil-escape-mode 1)
+  (setq-default evil-escape-delay 0.2
+                evil-escape-key-sequence "jk"
+                evil-escape-excluded-states '(normal visual multiedit emacs motion)))
+#+END_SRC
+
+** Keybindings
+*** Explain possible key configurations
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :defer 1
+  :init (which-key-mode t))
+#+END_SRC
+
+*** General
+#+BEGIN_SRC emacs-lisp
+(use-package general
+  :config
+  (general-define-key :states '(normal motion emacs) "SPC" nil)
+
+  ;; Global overrides
+  (general-define-key
+   "<left>" nil "<right>" nil "<up>" nil "<down>" nil
+   "M-x" 'counsel-M-x
+   "C-s" 'counsel-grep-or-swiper
+   "<f2> l" 'counsel-find-library
+   "<f2> u" 'counsel-unicode-char)
+
+  ;; C-x overrides
+  (general-define-key
+   "C-x C-f" 'counsel-find-file
+   "C-x C-b" 'ivy-switch-buffer
+   "C-x b" 'ibuffer-list-buffers
+   "C-x k" 'ido-kill-buffer)
+
+  ;; General
+  (general-define-key
+   :states '(motion emacs)
+   :prefix "SPC"
+   :global-prefix "C-SPC"
+   ;; M-x
+   "SPC" '(counsel-M-x :which-key "M-x")
+
+   ;; Git
+   "g" '(:ignore t :which-key "git")
+   "gs" 'magit-status
+   "gt" 'git-timemachine
+
+   ;; Projectile
+   "p" '(:ignore t :which-key "project")
+   "pr" '(counsel-projectile-rg :which-key "ripgrep")
+   "pb" '(counsel-projectile-switch-to-buffer :which-key "switch buffer")
+   "pf" '(counsel-projectile-find-file :which-key "find file")
+
+   ;; Org-mode
+   "o" '(:ignore t :which-key "org")
+   "oc" 'org-capture
+   "oa" 'org-agenda
+
+   ;; Finder
+   "f" '(:ignore t :which-key "find")
+   "ff" 'counsel-find-file
+   "fr" 'ranger
+   "fd" 'dictionary-search
+
+   ;; Comments
+   "c" '(:ignore t :which-key "comment")
+   "cl" 'comment-line
+   "cr" 'comment-region
+   "cb" '(comment-box "box")
+
+   ;; UI config
+   "u" '(:ignore t :which-key "UI")
+   "ut" '(counsel-load-theme :which-key "change theme")
+   "uf" '(focus-mode :which-key "focus")
+
+   ;; Testing commands
+   "t" '(:ignore t :which-key "danger zone")))
+#+END_SRC
+
+** Completation
+*** Emacs
+#+BEGIN_SRC emacs-lisp
+(use-package ivy
+  :delight ivy-mode
+  :init
+  (ivy-mode 1)
+  :custom
+  (ivy-use-virtual-buffers t)
+  (ivy-count-format "%d/%d")
+  (ivy-height 20)
+
+(use-package ivy-rich
+  :defer 0.1
+  :delight ivy-rich-mode
+  :after ivy
+  :config
+  (ivy-rich-mode 1))
+
+(use-package swiper :after ivy)
+
+(use-package counsel
+  :delight counsel-mode
+  :after ivy
+  :config
+  (counsel-mode 1))
+
+(use-package counsel-projectile
+  :delight
+  (counsel-projectile-mode)
+  (projectile-mode '(:eval (concat "P:" (projectile-project-name))))
+  :after counsel
+  :custom
+  (projectile-switch-project-ation 'projectile-dired)
+  :config
+  (counsel-projectile-mode))
+#+END_SRC
+
+*** Code
+#+BEGIN_SRC emacs-lisp
+(use-package company
+  :delight company-mode
+  :hook (prog-mode . company-mode)
+  :custom
+  (company-idle-delay 0)
+  (company-minimum-prefix-length 1)
+  (company-selection-wrap-around t)
+  (company-tooltip-align-annotations t)
+  (company-frontends '(company-pseudo-tooltip-frontend
+                       company-echo-metadata-frontend)))
+#+END_SRC
+
+*** Snippets
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet-snippets
+  :config
+  (yas-global-mode)
+  (advice-add 'company-complete-common
+              :before
+              (lambda ()
+                (setq my-company-point (point))))
+  (advice-add 'company-complete-common
+              :after
+              (lambda ()
+                (when (equal my-company-point (point))
+                  (yas-expand)))))
+#+END_SRC
+
+** Org
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :ensure org-plus-contrib
+  :commands (org-capture org-agenda)
+  :config
+  (add-hook 'org-mode-hook
+            '(lambda () (setq fill-column 100) (turn-on-auto-fill)))
+  :custom
+  (org-src-fontify-natively t)
+  (org-hide-emphasis-markers t)
+  (org-use-fast-todo-selection t)
+  (org-default-notes-file "~/Documents/org/gsd/inbox.org")
+  (org-directory "~/Documents/org/")
+  (org-agenda-files '("~/Documents/org/gsd/gsd.org"))
+  (org-refile-use-outline-path 'file org-outline-path-complete-in-steps nil)
+  (org-refile-allow-creating-parent-nodes 'confirm)
+  (org-refile-targets
+   '(("gsd.org" :maxlevel . 1)
+     ("someday.org" :maxlevel . 1)))
+
+  (org-todo-keywords
+   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+     (sequence "APPT(a)")
+     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "CANCELLED(c@/!)")))
+  (org-capture-templates
+   '(("t" "Todo" entry (file org-default-notes-file) "* TODO %? \nAdded: %U\n")
+     ("n" "Next" entry (file org-default-notes-file) "* NEXT %? \nDEADLINE: %t")
+     ("j" "Journal" entry
+      (file+olp+datetree "~/Documents/org/journal.org") "* %?\n" :clock-in t :clock-resume t)))
+  (org-tag-alist
+   (quote (("@errand" . ?e) ("@mari" . ?m) ("@reading" . ?r) ("@computer" . ?c)
+           ("@work" . ?w)
+           ("@home" . ?h))))
+  (org-fast-tag-selection-single-key nil)
+
+  (org-todo-keyword-faces
+   '(("TODO" :foreground "light coral" :weight bold)
+     ("NEXT" :foreground "red" :weight bold)
+     ("DONE" :foreground "sea green")
+     ("APPT" :foreground "maroon")
+     ("WAITING" :foreground "dark orange" :weight bold)
+     ("CANCELLED" :foreground "dim gray")
+     ("HOLD" :foreground "deep sky blue" :weight bold)))
+  (org-pretty-entities t))
+
+(use-package org-pomodoro
+  :after org
+  :custom
+  (org-pomodoro-format "%s"))
+
+(use-package org-bullets
+  :after org
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  :custom
+  (org-ellipsis "⤵")
+  (org-bullets-bullet-list '("■" "◆" "▲" "▶")))
+#+END_SRC
+
+** Version control
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :defer 3
+  :custom
+  (magit-completing-read-function 'ivy-completing-read)
+  (git-commit-summary-max-length 50)
+  :config
+  (add-hook 'git-commit-mode-hook
+            '(lambda () (setq fill-column 72) (turn-on-auto-fill))))
+
+(use-package evil-magit :after evil magit)
+
+(use-package git-timemachine
+  :after evil magit
+  :config
+  (evil-make-overriding-map git-timemachine-mode-map 'normal)
+  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
+#+END_SRC
+
+** Ranger
+#+BEGIN_SRC emacs-lisp
+(use-package ranger
+  :config
+  (ranger-override-dired-mode t))
+#+END_SRC
+
+** Flycheck
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  ;; TODO(kevin): don't set flycheck globally
+  :init (global-flycheck-mode)
+  :commands (flycheck-mode)
+  :preface
+  (defun venikx/use-eslint-from-node-modules ()
+    (let* ((root (locate-dominating-file
+                  (or (buffer-file-name) default-directory)
+                  "node_modules"))
+           (global-eslint (executable-find "eslint"))
+           (local-eslint (expand-file-name "node_modules/.bin/eslint"
+                                           root))
+           (eslint (if (file-executable-p local-eslint)
+                       local-eslint
+                     global-eslint)))
+      (setq-local flycheck-javascript-eslint-executable eslint)))
+  :config
+  (add-hook 'prog-mode-hook 'flycheck-mode)
+  (setq-default flycheck-disabled-checker 'javascript-jshint)
+  (setq-default flycheck-disabled-checker 'json-jsonlist)
+  (setq-default flycheck-disabled-checker 'javascript-eslint)
+  (setq-default flycheck-javascript-eslint-executable "eslint-project-relative")
+  (add-hook 'rjsx-mode-hook #'venikx/use-eslint-from-node-modules)
+  (add-hook 'js2-mode-hook #'venikx/use-eslint-from-node-modules)
+  (add-hook 'web-mode-hook #'venikx/use-eslint-from-node-modules))
+#+END_SRC
+
+** Code
+*** HEX colors
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-mode
+  :delight
+  :hook (prog-mode-hook . rainbow-mode))
+#+END_SRC
+
+*** Javascript
+#+BEGIN_SRC emacs-lisp
+(use-package add-node-modules-path
+  :config
+  ;; TODO(kevin) Refactor the hooks to async load
+  (add-hook 'rjsx-mode-hook #'add-node-modules-path)
+  (add-hook 'typescript-mode-hook #'add-node-modules-path)
+  (add-hook 'js2-mode-hook #'add-node-modules-path)
+  (add-hook 'web-mode-hook #'add-node-modules-path))
+
+(use-package prettier-js
+  :after add-node-modules-path
+  :config
+  ;; TODO(kevin) Refactor the hooks to async load
+  (add-hook 'rjsx-mode-hook #'prettier-js-mode)
+  (add-hook 'typescript-mode-hook #'prettier-js-mode)
+  (add-hook 'js2-mode-hook #'prettier-js-mode)
+  (add-hook 'web-mode-hook #'prettier-js-mode))
+
+(use-package rjsx-mode
+  :general
+  (:keymaps 'rjsx-mode-map
+   :states 'motion
+   :prefix "SPC m"
+   "r" 'tide-refactor
+   "e" 'tide-rename-symbol
+   "c" 'tide-rename-file)
+  :custom
+  (js2-basic-offset 2)
+  (js2-mode-toggle-warnings-and-errors nil)
+  (js2-mode-show-strict-warnings nil)
+  :init
+  ;; TODO(kevin) Try tsx with typescript-mode and not rjsx-mode
+  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . rjsx-mode))
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode)))
+
+(use-package typescript-mode
+  :general
+  (:keymaps 'typescript-mode-map
+   :states 'motion
+   :prefix "SPC m"
+   "r" 'tide-refactor
+   "e" 'tide-rename-symbol
+   "c" 'tide-rename-file)
+  :custom
+  (typescript-indent-level 2))
+
+(use-package tide
+  :defer 0.5
+  :preface
+  (defun setup-tide-mode ()
+    (tide-setup)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled)))
+  :config
+  ;; TODO(kevin) Refactor the hooks to async load
+  (add-hook 'typescript-mode-hook #'setup-tide-mode)
+  (add-hook 'js2-mode-hook #'setup-tide-mode))
+
+(use-package web-mode
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.css\\'" . web-mode))
+  :custom
+  (web-mode-markup-indent-offset 2)
+  (web-mode-attr-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-code-indent-offset 2)
+  (css-indent-offset 2))
+
+(use-package emmet-mode
+  :delight
+  :hook ((web-mode js2-mode js-mode) . emmet-mode))
+#+END_SRC
+
+*** Rust
+#+BEGIN_SRC emacs-lisp
+(use-package rust-mode
+  :general
+  (:keymaps 'rust-mode-map
+   :states 'motion
+   :prefix "SPC m"
+   "f" 'rust-format-buffer
+   "b" 'cargo-process-build
+   "r" 'cargo-process-run
+   "t" 'cargo-process-test)
+  :mode ("\\.rs\\'" . rust-mode))
+
+(use-package flycheck-rust
+  :after flycheck rust-mode
+  :hook (flycheck-mode . flycheck-rust-setup))
+
+(use-package racer
+  :after rust-mode
+  :hook ((rust-mode . racer-mode)
+         (racer-mode . eldoc-mode)))
+
+(use-package cargo
+  :after rust-mode
+  :hook (rust-mode . cargo-minor-mode))
+
+#+END_SRC
+
+*** C/C++
+#+BEGIN_SRC emacs-lisp
+(use-package ggtags
+    :disabled
+    :commands ggtags-mode
+    :config
+    (unbind-key "M-<" ggtags-mode-map)
+    (unbind-key "M->" ggtags-mode-map))
+
+(use-package cc-mode
+    :disabled
+    :config
+    (add-hook 'c-mode-common-hook
+              (lambda ()
+                (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+                  (ggtags-mode 1)))))
+
+;; (use-package lsp-mode)
+
+;;  (use-package emacs-cquery
+;;    :commands lsp-cquery-enable
+;;    :init (setq cquery-executable "~/Programs/cquery/bin/cquery")
+;;    (add-hook 'c-mode-hook #'cquery//enable)
+;;    (add-hook 'c++-mode-hook #'cquery//enable))
+#+END_SRC
+
+*** JSON, Markdown and YAML
+#+BEGIN_SRC emacs-lisp
+(use-package json-mode
+  :general
+  (:keymaps 'json-mode-map
+   :states 'motion
+   :prefix "SPC m"
+   "f" 'json-mode-beautify))
+
+(use-package markdown-mode
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :custom (markdown-command "multimarkdown"))
+
+(use-package yaml-mode :mode "\\.yml\\'")
+#+END_SRC
+
+** Ledger
+#+BEGIN_SRC emacs-lisp
+(use-package ledger-mode
+  :custom
+  (ledger-clear-whole-transactions 1)
+  :config
+  (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
+  :mode "\\.dat\\'")
+#+END_SRC
+
+** UI/UX
+#+BEGIN_SRC emacs-lisp
+(use-package fill-column-indicator
+  :hook (text-mode . fci-mode))
+
+(use-package powerline
+  :defer 2
+  :config (powerline-center-evil-theme))
+
+(use-package dimmer
+  :init (dimmer-mode)
+  :custom
+  (dimmer-fraction 0.5))
+
+(use-package focus
+  :init (focus-mode))
+#+END_SRC
+
+** Other
+#+BEGIN_SRC emacs-lisp
+(setq-default fill-column 90)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'gfm-mode-hook 'turn-on-auto-fill)
+
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))
+  :init (exec-path-from-shell-initialize))
+
+#+END_SRC
