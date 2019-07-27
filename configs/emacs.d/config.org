@@ -388,6 +388,8 @@ Automatically insert matching delimiters.
 (use-package org
   :ensure org-plus-contrib
   :commands (org-capture org-agenda)
+  :hook ((org-mode . visual-line-mode)
+         (org-mode . org-indent-mode))
   :config
   (add-hook 'org-mode-hook
             '(lambda () (setq fill-column 100) (turn-on-auto-fill)))
@@ -467,16 +469,17 @@ Automatically insert matching delimiters.
 #+BEGIN_SRC emacs-lisp
 (use-package ranger
   :config
-  (ranger-override-dired-mode t))
+  (ranger-override-dired-mode t)
+  (setq ranger-width-preview 0.5))
 #+END_SRC
 
 ** Flycheck
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
-  ;; TODO(kevin): don't set flycheck globally
-  :init (global-flycheck-mode)
+  :hook (after-init . global-flycheck-mode)
   :commands (flycheck-mode)
   :preface
+  ;; remove the eslint stuff from this
   (defun venikx/use-eslint-from-node-modules ()
     (let* ((root (locate-dominating-file
                   (or (buffer-file-name) default-directory)
@@ -490,10 +493,10 @@ Automatically insert matching delimiters.
       (setq-local flycheck-javascript-eslint-executable eslint)))
   :config
   (add-hook 'prog-mode-hook 'flycheck-mode)
-  (setq-default flycheck-disabled-checker 'javascript-jshint)
-  (setq-default flycheck-disabled-checker 'json-jsonlist)
-  (setq-default flycheck-disabled-checker 'javascript-eslint)
-  (setq-default flycheck-javascript-eslint-executable "eslint-project-relative")
+  (setq-default flycheck-disabled-checker 'javascript-jshint
+                flycheck-disabled-checker 'json-jsonlist
+                flycheck-disabled-checker 'javascript-eslint
+                flycheck-javascript-eslint-executable "eslint-project-relative")
   (add-hook 'rjsx-mode-hook #'venikx/use-eslint-from-node-modules)
   (add-hook 'js2-mode-hook #'venikx/use-eslint-from-node-modules)
   (add-hook 'web-mode-hook #'venikx/use-eslint-from-node-modules))
@@ -577,7 +580,8 @@ Automatically insert matching delimiters.
 
 (use-package emmet-mode
   :delight
-  :hook ((web-mode js2-mode js-mode) . emmet-mode))
+  :hook ((web-mode js2-mode js-mode html-mode css-mode) . emmet-mode)
+  :config (setq emmet-expand-jsx-className? t))
 #+END_SRC
 
 *** Rust
@@ -605,7 +609,6 @@ Automatically insert matching delimiters.
 (use-package cargo
   :after rust-mode
   :hook (rust-mode . cargo-minor-mode))
-
 #+END_SRC
 
 *** C/C++
@@ -644,6 +647,7 @@ Automatically insert matching delimiters.
    "f" 'json-mode-beautify))
 
 (use-package markdown-mode
+  :hook (markdown-mode . visual-line-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
