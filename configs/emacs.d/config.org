@@ -12,7 +12,6 @@ Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
 (menu-bar-mode -1)
 (when (boundp 'scroll-bar-mode)
   (scroll-bar-mode -1))
-(blink-cursor-mode)
 (global-prettify-symbols-mode t)
 (setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
 (setq-default line-spacing 2
@@ -51,9 +50,32 @@ Enable UTF-8 support; useful for rendering glyphs.
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 #+END_SRC
 
+* Reload ~init.el~
+#+BEGIN_SRC emacs-lisp
+(defun venikx/load-init()
+  "Reload `.emacs.d/init.el'."
+  (interactive)
+  (load-file "~/.emacs.d/init.el"))
+#+END_SRC
+
 * Built-in packages
 The external package configurations are handled by ~use-package~, but the library is also able to
 handle internal package configurations.
+
+** Surpess the startup screen
+#+BEGIN_SRC emacs-lisp
+(use-package "startup"
+  :ensure nil
+  :config (setq inhibit-startup-screen t))
+#+END_SRC
+
+** Screen and fonts
+#+BEGIN_SRC emacs-lisp
+(use-package frame
+  :ensure nil
+  :config
+  (blink-cursor-mode -1))
+#+END_SRC
 
 ** Refresh buffers automagically
 #+BEGIN_SRC emacs-lisp
