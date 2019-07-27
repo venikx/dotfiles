@@ -507,7 +507,7 @@ Automatically insert matching delimiters.
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-mode
   :delight
-  :hook (prog-mode-hook . rainbow-mode))
+  :hook (prog-mode . rainbow-mode))
 #+END_SRC
 
 *** Javascript
@@ -651,6 +651,9 @@ Automatically insert matching delimiters.
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
+  :config
+  (add-hook markdown-mode-hook
+            '(lambda () (setq fill-column 100) (turn-on-auto-fill)))
   :custom (markdown-command "multimarkdown"))
 
 (use-package yaml-mode :mode "\\.yml\\'")
@@ -686,12 +689,8 @@ Automatically insert matching delimiters.
   :init (focus-mode))
 #+END_SRC
 
-** Other
+** Path
 #+BEGIN_SRC emacs-lisp
-(setq-default fill-column 90)
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-(add-hook 'gfm-mode-hook 'turn-on-auto-fill)
-
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns x))
   :init (exec-path-from-shell-initialize))
