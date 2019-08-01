@@ -484,29 +484,7 @@ Automatically insert matching delimiters.
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :hook (after-init . global-flycheck-mode)
-  :commands (flycheck-mode)
-  :preface
-  ;; remove the eslint stuff from this
-  (defun venikx/use-eslint-from-node-modules ()
-    (let* ((root (locate-dominating-file
-                  (or (buffer-file-name) default-directory)
-                  "node_modules"))
-           (global-eslint (executable-find "eslint"))
-           (local-eslint (expand-file-name "node_modules/.bin/eslint"
-                                           root))
-           (eslint (if (file-executable-p local-eslint)
-                       local-eslint
-                     global-eslint)))
-      (setq-local flycheck-javascript-eslint-executable eslint)))
-  :config
-  (add-hook 'prog-mode-hook 'flycheck-mode)
-  (setq-default flycheck-disabled-checker 'javascript-jshint
-                flycheck-disabled-checker 'json-jsonlist
-                flycheck-disabled-checker 'javascript-eslint
-                flycheck-javascript-eslint-executable "eslint-project-relative")
-  (add-hook 'rjsx-mode-hook #'venikx/use-eslint-from-node-modules)
-  (add-hook 'js2-mode-hook #'venikx/use-eslint-from-node-modules)
-  (add-hook 'web-mode-hook #'venikx/use-eslint-from-node-modules))
+  :commands (flycheck-mode))
 #+END_SRC
 
 ** Code
@@ -536,48 +514,32 @@ Automatically insert matching delimiters.
   (add-hook 'js2-mode-hook #'prettier-js-mode)
   (add-hook 'web-mode-hook #'prettier-js-mode))
 
-(use-package rjsx-mode
-  :general
-  (:keymaps 'rjsx-mode-map
-   :states 'motion
-   :prefix "SPC m"
-   "r" 'tide-refactor
-   "e" 'tide-rename-symbol
-   "c" 'tide-rename-file)
-  :custom
-  (js2-basic-offset 2)
-  (js2-mode-toggle-warnings-and-errors nil)
-  (js2-mode-show-strict-warnings nil)
-  :init
-  ;; TODO(kevin) Try tsx with typescript-mode and not rjsx-mode
-  (add-to-list 'auto-mode-alist '("\\.tsx\\'" . rjsx-mode))
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode)))
-
-(use-package typescript-mode
-  :general
-  (:keymaps 'typescript-mode-map
-   :states 'motion
-   :prefix "SPC m"
-   "r" 'tide-refactor
-   "e" 'tide-rename-symbol
-   "c" 'tide-rename-file)
-  :custom
-  (typescript-indent-level 2))
-
-(use-package tide
-  :defer 0.5
-  :preface
-  (defun setup-tide-mode ()
-    (tide-setup)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled)))
+(use-package lsp-mode
+  :hook ((python-mode
+          web-mode) . lsp)
+  :commands lsp
   :config
-  ;; TODO(kevin) Refactor the hooks to async load
-  (add-hook 'typescript-mode-hook #'setup-tide-mode)
-  (add-hook 'js2-mode-hook #'setup-tide-mode))
+  (setq lsp-enable-symbol-highlighting nil))
+
+(use-package company-lsp
+  :commands company-lsp
+  :config (setq company-lsp-cache-candidates 'auto))
 
 (use-package web-mode
+  :general
+  (:keymaps 'web-mode-map
+   :states 'motion
+   :prefix "SPC m"
+   "e" 'lsp-rename
+   "r" 'lsp-find-references
+   "i" 'lsp-find-implementation)
   :mode (("\\.html?\\'" . web-mode)
-         ("\\.css\\'" . web-mode))
+         ("\\.css\\'" . web-mode)
+         ("\\.[jt]sx?\\'" . web-mode))
+  :config
+  (with-eval-after-load 'flycheck
+    (flycheck-add-mode 'javascript-eslint 'web-mode)
+    (flycheck-add-mode 'typescript-tslint 'web-mode))
   :custom
   (web-mode-markup-indent-offset 2)
   (web-mode-attr-indent-offset 2)
