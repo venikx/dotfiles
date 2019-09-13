@@ -1,0 +1,3 @@
+[submodule "manjaro/library/ext/ansible-aur"]
+	path = manjaro/library/ext/ansible-aur
+	url = https://github.com/kewlfft/ansible-aur.git

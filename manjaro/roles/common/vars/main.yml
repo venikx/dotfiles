@@ -1,0 +1,40 @@
+packages:
+  - acpi
+  - bat
+  - ccid
+  - chromium
+  - compton
+  - curl
+  - docker
+  - docker-compose
+  - emacs
+  - feh
+  - gcc
+  - git
+  - i3-wm
+  - i3lock
+  - i3status
+  - imagemagick
+  - neovim
+  - openvpn
+  - otf-fira-code
+  - otf-font-awesome
+  - pcsc-tools
+  - ranger
+  - ripgrep
+  - rofi
+  - rxvt-unicode
+  - scrot
+  - ttf-fira-code
+  - ttf-font-awesome
+  - unzip
+  - xorg
+  - xorg-xclipboard
+  - yubikey-personalization
+  - zsh
+
+extra:
+  - firefox-nightly
+  # - py3status
+  # - python3-pytz
+  # - python3-tzlocal

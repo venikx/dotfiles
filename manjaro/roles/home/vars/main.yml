@@ -1,0 +1,14 @@
+packages:
+  - qbittorrent
+  # - xf86-video-nouveau
+  # - alsa-utils
+  # - pulseaudio
+  # - ConsoleKit2
+  # - playerctl
+  # - pamixer
+  - obs-studio
+  - vlc
+
+extra:
+  - discord
+  # - slack-desktop

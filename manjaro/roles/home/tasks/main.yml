@@ -1,0 +1,25 @@
+- name: Install personal packages
+  pacman:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"
+
+- name: Install personal AUR packages
+  become: yes
+  become_user: "{{ user }}"
+  aur:
+    name: "{{ item }}"
+    skip_installed: yes
+  loop: "{{ extra }}"
+
+# - name: Enable pulseaudio's services on startup
+#   runit:
+#     name: "{{ item }}"
+#     state: started
+#     enabled: yes
+#   loop:
+#     - alsa
+#     - dbus
+#     - cgmanager
+#     - consolekit
+#   ignore_errors: yes

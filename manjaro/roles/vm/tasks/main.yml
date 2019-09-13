@@ -1,0 +1,5 @@
+- name: Install virtual machine packages
+  xbps:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"

@@ -1,0 +1,84 @@
+- name: Install common packages
+  pacman:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+
+- name: Install common AUR packages
+  become: yes
+  become_user: "{{ user }}"
+  aur:
+    name: "{{ item }}"
+    skip_installed: yes
+  loop: "{{ extra }}"
+
+- name: Enable zsh as shell for all defined users
+  user:
+    name: "{{ item }}"
+    shell: /bin/zsh
+  loop: "{{ users }}"
+
+- name: Clone dotfiles for {{ user }}
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    repo: https://gitlab.com/venikx/dotfiles.git
+    dest: ~{{ user }}/dotfiles
+    accept_hostkey: yes
+    update: no
+
+- name: Set up dotfiles for {{ user }}
+  become: yes
+  become_user: "{{ user }}"
+  command: ./linkall chdir=~{{ user }}/dotfiles
+  changed_when: false
+
+- name: Add users to docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  loop: "{{ users }}"
+
+- name: Start the docker daemon
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Clone nvm
+  become: yes
+  become_user: "{{ user }}"
+  git:
+    repo: https://github.com/creationix/nvm.git
+    dest: ~{{ user }}/.nvm
+    version: v0.34.0
+
+- name: Source nvm and install node
+  become: yes
+  become_user: "{{ user }}"
+  shell: "source nvm.sh && nvm install 10.16.3 && nvm alias default 10.16.3 && nvm use default"
+  args:
+    chdir: ~{{ user }}/.nvm
+    executable: /bin/zsh
+
+- name: Install yarn
+  become: yes
+  become_user: "{{ user }}"
+  npm:
+    name: yarn
+    global: yes
+
+- name: Install rust
+  become: yes
+  become_user: "{{ user }}"
+  shell: "curl https://sh.rustup.rs -sSf | sh -s -- -y && source ~{{ user }}/.cargo/env"
+  args:
+    executable: /bin/zsh
+    warn: no
+
+- name: Start the smartcard daemon
+  service:
+    name: pcscd
+    state: started
+    enabled: yes
