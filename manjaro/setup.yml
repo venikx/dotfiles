@@ -12,5 +12,5 @@
     - role: home
       when: model == "home"
 
-#    - role: vm
-#      when: model == "vm"
+    - role: vm
+      when: model == "vm"

@@ -22,9 +22,9 @@ packages:
   - pcsc-tools
   - ranger
   - ripgrep
-  - rofi
   - rxvt-unicode
   - scrot
+  - stow
   - ttf-fira-code
   - ttf-font-awesome
   - unzip
@@ -35,6 +35,4 @@ packages:
 
 extra:
   - firefox-nightly
-  # - py3status
-  # - python3-pytz
-  # - python3-tzlocal
+  - nvm

@@ -1,3 +1,2 @@
 packages:
-  - open-vm-tools
-  - xf86-video-vmware
+  - virtualbox-guest-utils

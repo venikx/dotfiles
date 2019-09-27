@@ -4,11 +4,17 @@
 
 * Void linux
 ** Installation
-   1. Install via the ISO
-   2. Update voidlinux
-   3. Install git and ansible
-   4. Run the installation
-      ~sudo ansible-pull -U https://gitlab.com/venikx/personal-ops.git void-linux/setup.yml~
-   5. Well played, mate.
-** Upgrading
-   ~ansible-playbook void-linux/upgrade.yml~
+1. Install via the ISO
+2. Update voidlinux
+3. Install git and ansible
+4. Run the installation
+   ~sudo ansible-pull -U https://gitlab.com/venikx/personal-ops.git void-linux/setup.yml~
+5. Well played, mate.
+
+* Manjaro i3j
+** Installation
+1. Install via the ISO
+3. Install ansible
+4. Run the installation
+   ~sudo ansible-pull -U https://gitlab.com/venikx/personal-ops.git manjaro/setup.yml~
+5. Well played, mate.

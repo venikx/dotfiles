@@ -30,7 +30,7 @@
 - name: Set up dotfiles for {{ user }}
   become: yes
   become_user: "{{ user }}"
-  command: ./linkall chdir=~{{ user }}/dotfiles
+  command: "stow -vS --adopt compton dmenu emacs git gpg i3 ranger shell web x chdir=~{{ user }}/dotfiles"
   changed_when: false
 
 - name: Add users to docker group
@@ -46,21 +46,13 @@
     state: started
     enabled: yes
 
-- name: Clone nvm
+- name: Install node
   become: yes
   become_user: "{{ user }}"
-  git:
-    repo: https://github.com/creationix/nvm.git
-    dest: ~{{ user }}/.nvm
-    version: v0.34.0
-
-- name: Source nvm and install node
-  become: yes
-  become_user: "{{ user }}"
-  shell: "source nvm.sh && nvm install 10.16.3 && nvm alias default 10.16.3 && nvm use default"
+  shell: "source /usr/share/nvm/init-nvm.sh && nvm install 10.16.3 && nvm alias default 10.16.3 && nvm use default"
   args:
-    chdir: ~{{ user }}/.nvm
     executable: /bin/zsh
+    warn: no
 
 - name: Install yarn
   become: yes
