@@ -51,12 +51,6 @@
 ;; Dump custom-set-variables to a garbage file, do not load it! (Keeps init.el file clean for version control X_X)
 (setq custom-file "~/.emacs.d/to-be-dumped.el")
 
-;; Load theme
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(load-theme 'challenger-deep t)
-;; (load-theme 'gruvbox-dark-hard t)
-;; (load-theme 'tao-yin t)
-
 ;; Load the configuration from an org file and parse it via org-babel
 (require 'org)
 (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))

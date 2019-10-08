@@ -1,57 +1,56 @@
 #+TITLE: Emacs configuration
 #+AUTHOR: venikx
-#+DATE: 2019
 #+STARTUP: content, indent
 
-* Sane defaults
+* Appearance
 Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
 
-** UI
+** GUI
 #+BEGIN_SRC emacs-lisp
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(when (boundp 'scroll-bar-mode)
-  (scroll-bar-mode -1))
+(tool-bar-mode 0)
+(menu-bar-mode 0)
+(scroll-bar-mode 0)
+(column-number-mode 1)
 (global-prettify-symbols-mode t)
-(setq visual-line-fringe-indicators '(left-curly-arrow right-curly-arrow))
-(setq-default line-spacing 2
-              left-fringe-width nil)
+(global-hl-line-mode)
+#+END_SRC
+
+** Theming
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(load-theme 'challenger-deep t)
+;; (load-theme 'gruvbox-dark-hard t)
+;; (load-theme 'tao-yin t)
+#+END_SRC
+
+** Font
+#+BEGIN_SRC emacs-lisp
 (defun venikx/reset-text-size ()
   (interactive)
   (text-scale-set 0))
+
+(setq-default line-spacing 0)
 (venikx/reset-text-size)
-#+END_SRC
 
-** UX
-Disables/Enables some annoying/crucial settings to improves the modern Emacs experience.
-#+BEGIN_SRC emacs-lisp
-(display-time-mode)
-(setq-default indicate-empty-lines t
-              indent-tabs-mode nil
-              tab-width 4
-              tab-always-indent 'complete)
-(when window-system
-  (global-hl-line-mode))
- (column-number-mode +1)
-(setq default-directory "~/"
-      vc-follow-symlinks t
-      frame-title-format '("Pogchamp")
-      ring-bell-function 'ignore
-      scroll-margin 0
-      scroll-conservatively 10000
-      scroll-preserve-screen-position t
-      auto-window-vscroll nil
-      mouse-highlight nil)
+(define-key global-map (kbd "C-=") 'venikx/reset-text-size)
+(define-key global-map (kbd "C-+") 'text-scale-increase)
+(define-key global-map (kbd "C--") 'text-scale-decrease)
 
-;; (setq undo-limit 20000000)
-;; (setq undo-strong-limit 40000000)
-#+END_SRC
-
-Enable UTF-8 support; useful for rendering glyphs.
-#+BEGIN_SRC emacs-lisp
+;; UTF support
 (prefer-coding-system 'utf-8)
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+#+END_SRC
+
+** Reset annoying default behavior
+#+BEGIN_SRC emacs-lisp
+(setq-default indent-tabs-mode nil
+              tab-width 4
+              tab-always-indent 'complete)
+
+(setq-default ring-bell-function 'ignore
+              scroll-conservatively 10
+              scroll-preserve-screen-position t)
 #+END_SRC
 
 * Reload ~init.el~
@@ -170,17 +169,6 @@ Automatically insert matching delimiters.
 #+END_SRC
 
 * External packages
-** Welcome page
-#+BEGIN_SRC emacs-lisp
-(use-package dashboard
-  :config
-  (dashboard-setup-startup-hook)
-  (setq dashboard-startup-banner 'logo
-        dashboard-banner-logo-title "The Chosen One"
-        dashboard-items nil
-        dashboard-set-footer nil))
-#+END_SRC
-
 ** EVIL
 #+BEGIN_SRC emacs-lisp
 (use-package evil
@@ -269,10 +257,7 @@ Automatically insert matching delimiters.
    "M-x" 'counsel-M-x
    "C-s" 'counsel-grep-or-swiper
    "<f2> l" 'counsel-find-library
-   "<f2> u" 'counsel-unicode-char
-   "C-=" 'venikx/reset-text-size
-   "C-+" 'text-scale-increase
-   "C--" 'text-scale-decrease)
+   "<f2> u" 'counsel-unicode-char)
 
   ;; C-x overrides
   (general-define-key
