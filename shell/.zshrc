@@ -161,3 +161,5 @@ export run_ops() {
   docker start ops &&
   docker exec -it ops bash
 }
+
+eval $(thefuck --alias)
