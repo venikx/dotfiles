@@ -35,6 +35,29 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
+;; BEGIN NEW CONFIG
+(defvar venikx/package-contents-refreshed nil)
+(defvar venikx/required-packages nil)
+
+(defun venikx/package-refresh-contents-once ()
+  "Check for outdated packages and download them."
+  (when (not venikx/package-contents-refreshed)
+    (setq venikx/package-contents-refreshed t)
+    (package-refresh-contents)))
+
+(defun venikx/require-one-package (package)
+  "Push the needed PACKAGE's onto a list, so they can be checked by venikx/package-refresh-contents-once."
+  (push package venikx/required-packages)
+  (when (not (package-installed-p package))
+    (venikx/package-refresh-contents-once)
+    (package-install package)))
+
+(defun venikx/require (&rest packages)
+  "Gather a list of PACKAGES to be required."
+  (dolist (package packages)
+    (venikx/require-one-package package)))
+;; END NEW CONFIG
+
 ;; workaround bug in Emacs 26
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
@@ -55,5 +78,6 @@
 (require 'org)
 (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
 
+(load custom-file)
 (provide 'init)
 ;;; init.el ends here

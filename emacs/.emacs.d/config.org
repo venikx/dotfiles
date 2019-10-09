@@ -2,12 +2,19 @@
 #+AUTHOR: venikx
 #+STARTUP: content, indent
 
-* Reload ~init.el~
+* Keybindings
+** Reload ~init.el~
 #+BEGIN_SRC emacs-lisp
   (defun venikx/load-init()
     "Reload '.emacs.d/init.el'."
     (interactive)
     (load-file "~/.emacs.d/init.el"))
+#+END_SRC
+
+** ~general.el~
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'general)
+  (general-define-key :states '(normal motion emacs) "SPC" nil)
 #+END_SRC
 
 * Appearance
@@ -44,9 +51,9 @@ Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
   (setq-default line-spacing 0)
   (venikx/reset-text-size)
 
-  (define-key global-map (kbd "C-=") 'venikx/reset-text-size)
-  (define-key global-map (kbd "C-+") 'text-scale-increase)
-  (define-key global-map (kbd "C--") 'text-scale-decrease)
+  (general-define-key "C-=" 'venikx/reset-text-size
+                      "C-+" 'text-scale-increase
+                      "C--" 'text-scale-decrease)
 
   ;; UTF support
   (prefer-coding-system 'utf-8)
@@ -64,7 +71,10 @@ Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
                 scroll-conservatively 10
                 scroll-preserve-screen-position t
                 inhibit-startup-screen t
-                confirm-kill-processes nil)
+                confirm-kill-processes nil
+                backup-by-copying t
+                backup-directory-alist `(("." . "~/.emacs-saves"))
+                vc-follow-symlinks t)
 #+END_SRC
 
 ** Cleanup whitespace
@@ -72,14 +82,112 @@ Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
   (add-hook 'before-save-hook 'whitespace-cleanup)
 #+END_SRC
 
-* Documentation
+* Web Development
+** prettier-js & node-modules-path
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'add-node-modules-path 'prettier-js)
+
+  (add-hook 'js2-mode-hook #'add-node-modules-path)
+  (add-hook 'js2-mode-hook #'prettier-js-mode)
+#+END_SRC
+
+** tide (language server)
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'tide)
+
+  (defun venikx/turn-on-tide ()
+    "Set up the typescript server."
+    (interactive)
+    (tide-setup))
+
+  (setq-default tide-completion-detailed t
+                tide-completion-enable-autoimport-suggestions t)
+
+  (general-define-key
+   :keymaps 'tide-mode-map
+   :states 'motion
+   :prefix "SPC m"
+
+   "r" 'tide-refactor
+   "e" 'tide-rename-symbol
+   "c" 'tide-rename-file)
+
+  (add-hook 'typescript-mode-hook #'venikx/turn-on-tide)
+  (add-hook 'js2-mode-hook #'venikx/turn-on-tide)
+#+END_SRC
+
+** typescript-mode
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'typescript-mode)
+  (setq-default typescript-indent-level 2)
+#+END_SRC
+
+** js- & js2-mode
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'js 'js2-mode)
+
+  (setq-default js-indent-label 2
+                js2-mode-show-parse-errors nil
+                js2-mode-show-strict-warnings nil
+                js2-highlight-level 3)
+
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js2-jsx-mode))
+  (add-to-list 'interpreter-mode-alist '("node". js2-jsx-mode))
+#+END_SRC
+
+** css-mode
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'css-mode)
+  (setq-default css-indent-offset 2)
+#+END_SRC
+
+** web-mode
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'web-mode)
+
+  ;; (with-eval-after-load 'flycheck
+  ;;   (flycheck-add-mode 'javascript-eslint 'web-mode)
+  ;;   (flycheck-add-mode 'typescript-tslint 'web-mode))
+
+  (setq-default web-mode-markup-indent-offset 2
+                web-mode-attr-indent-offset 2
+                web-mode-attr-value-indent-offset 2
+                web-mode-code-indent-offset 2
+                web-mode-css-indent-offset 2
+                web-mode-enable-current-column-highlight 1
+                web-mode-enable-current-element-highlight 1
+                web-mode-block-padding 0
+                web-mode-script-padding 2
+                web-mode-style-padding 2)
+
+  (add-to-list 'auto-mode-alist '("\\.htm.*$" . web-mode))
+#+END_SRC
+
+** emmet-mode
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'emmet-mode)
+
+  (add-hook 'web-mode-hook 'emmet-mode)
+  (add-hook 'html-mode-hook 'emmet-mode)
+  (add-hook 'css-mode-hook 'emmet-mode)
+#+END_SRC
+
+* TODO Find a place for these packages in the config
 ** Eldoc
 #+BEGIN_SRC emacs-lisp
   (global-eldoc-mode -1)
   (add-hook 'prog-mode-hook #'eldoc-mode)
 #+END_SRC
 
-* CC-mode
+** rainbow-mode
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'rainbow-mode)
+  (add-hook 'prog-mode-hook #'rainbow-mode)
+#+END_SRC
+
+** CC-mode
 #+BEGIN_SRC emacs-lisp
   (setq-default c-basic-offset 4
                 c-default-style '((java-mode . "java")
@@ -87,11 +195,6 @@ Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
                                   (other . "k&r")))
 
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-#+END_SRC
-
-** Javascript
-#+BEGIN_SRC emacs-lisp
-  (setq-default js-indent-level 2)
 #+END_SRC
 
 * External packages
@@ -173,10 +276,6 @@ Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
 
 *** General
 #+BEGIN_SRC emacs-lisp
-(use-package general
-  :config
-  (general-define-key :states '(normal motion emacs) "SPC" nil)
-
   ;; Global overrides
   (general-define-key
    "<left>" nil "<right>" nil "<up>" nil "<down>" nil
@@ -234,7 +333,7 @@ Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
    "uf" '(focus-mode :which-key "focus")
 
    ;; Testing commands
-   "t" '(:ignore t :which-key "danger zone")))
+   "t" '(:ignore t :which-key "danger zone"))
 #+END_SRC
 
 ** Completation
@@ -399,71 +498,6 @@ Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
 #+END_SRC
 
 ** Code
-*** HEX colors
-#+BEGIN_SRC emacs-lisp
-(use-package rainbow-mode
-  :delight
-  :hook (prog-mode . rainbow-mode))
-#+END_SRC
-
-*** Javascript
-#+BEGIN_SRC emacs-lisp
-(use-package add-node-modules-path
-  :config
-  ;; TODO(kevin) Refactor the hooks to async load
-  (add-hook 'rjsx-mode-hook #'add-node-modules-path)
-  (add-hook 'typescript-mode-hook #'add-node-modules-path)
-  (add-hook 'js2-mode-hook #'add-node-modules-path)
-  (add-hook 'web-mode-hook #'add-node-modules-path))
-
-(use-package prettier-js
-  :after add-node-modules-path
-  :config
-  ;; TODO(kevin) Refactor the hooks to async load
-  (add-hook 'rjsx-mode-hook #'prettier-js-mode)
-  (add-hook 'typescript-mode-hook #'prettier-js-mode)
-  (add-hook 'js2-mode-hook #'prettier-js-mode)
-  (add-hook 'web-mode-hook #'prettier-js-mode))
-
-(use-package lsp-mode
-  :hook ((python-mode
-          web-mode) . lsp)
-  :commands lsp
-  :config
-  (setq lsp-enable-symbol-highlighting nil))
-
-(use-package company-lsp
-  :commands company-lsp
-  :config (setq company-lsp-cache-candidates 'auto))
-
-(use-package web-mode
-  :general
-  (:keymaps 'web-mode-map
-   :states 'motion
-   :prefix "SPC m"
-   "e" 'lsp-rename
-   "r" 'lsp-find-references
-   "i" 'lsp-find-implementation)
-  :mode (("\\.html?\\'" . web-mode)
-         ("\\.css\\'" . web-mode)
-         ("\\.[jt]sx?\\'" . web-mode))
-  :config
-  (with-eval-after-load 'flycheck
-    (flycheck-add-mode 'javascript-eslint 'web-mode)
-    (flycheck-add-mode 'typescript-tslint 'web-mode))
-  :custom
-  (web-mode-markup-indent-offset 2)
-  (web-mode-attr-indent-offset 2)
-  (web-mode-css-indent-offset 2)
-  (web-mode-code-indent-offset 2)
-  (css-indent-offset 2))
-
-(use-package emmet-mode
-  :delight
-  :hook ((web-mode js2-mode js-mode html-mode css-mode) . emmet-mode)
-  :config (setq emmet-expand-jsx-className? t))
-#+END_SRC
-
 *** Rust
 #+BEGIN_SRC emacs-lisp
 (use-package rust-mode
