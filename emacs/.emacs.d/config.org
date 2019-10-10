@@ -4,6 +4,8 @@
 
 * Keybindings
 ** Reload ~init.el~
+Custom command for reloading the init file. Currently is not bound to any keybindings just yet.
+
 #+BEGIN_SRC emacs-lisp
   (defun venikx/load-init()
     "Reload '.emacs.d/init.el'."
@@ -12,36 +14,63 @@
 #+END_SRC
 
 ** ~general.el~
+Creating keybindings is done using general in stead of the regular Emacs keybindings, since it plays
+nicely with ~evil-mode~.
+
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'general)
   (general-define-key :states '(normal motion emacs) "SPC" nil)
 #+END_SRC
 
-* Appearance
-Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
-
-** GUI
+* Modifying Emacs to modern defaults
+** Remove unneeded bars
 #+BEGIN_SRC emacs-lisp
   (tool-bar-mode 0)
   (menu-bar-mode 0)
   (scroll-bar-mode 0)
   (column-number-mode 1)
+#+END_SRC
+
+** Prettify the UI, scrolling and remove annoying default configs
+Use prettier symbols, stop the cursor from blinking, follow semantic links automatically, backup
+files in a separate backup folder, ...
+
+#+BEGIN_SRC emacs-lisp
   (global-prettify-symbols-mode t)
   (global-hl-line-mode)
+  (blink-cursor-mode 0)
+
+  (setq-default ring-bell-function 'ignore
+                scroll-conservatively 10
+                scroll-preserve-screen-position t
+                inhibit-startup-screen t
+                confirm-kill-processes nil
+                backup-by-copying t
+                backup-directory-alist `(("." . "~/.emacs-saves"))
+                vc-follow-symlinks t)
+#+END_SRC
+
+** Display parentheses after a tiny delay
+#+BEGIN_SRC emacs-lisp
   (setq-default show-paren-delay 0.1)
   (show-paren-mode)
   (add-hook 'prog-mode-hook #'electric-pair-mode)
 #+END_SRC
 
-** Theming
+** Indentation
+Use spaces, instead of hard tabs. The TAB behavior is to try and trigger autocompletion.
+
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-  (load-theme 'challenger-deep t)
-  ;; (load-theme 'gruvbox-dark-hard t)
-  ;; (load-theme 'tao-yin t)
+  (setq-default indent-tabs-mode nil
+                tab-width 4)
 #+END_SRC
 
-** Font
+** Remove trailing whitespace
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook 'whitespace-cleanup)
+#+END_SRC
+
+** Fonts
 #+BEGIN_SRC emacs-lisp
   (defun venikx/reset-text-size ()
     "Reset the text scale back to it's default."
@@ -54,36 +83,29 @@ Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
   (general-define-key "C-=" 'venikx/reset-text-size
                       "C-+" 'text-scale-increase
                       "C--" 'text-scale-decrease)
+#+END_SRC
 
-  ;; UTF support
+** UTF-8
+Adds UTF-8 support for Emacs (shame on you for support it by default).
+
+#+BEGIN_SRC emacs-lisp
   (prefer-coding-system 'utf-8)
   (when (display-graphic-p)
     (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 #+END_SRC
 
-** Reset annoying default behavior
+* Theming
 #+BEGIN_SRC emacs-lisp
-  (setq-default indent-tabs-mode nil
-                tab-width 4
-                tab-always-indent 'complete)
-
-  (setq-default ring-bell-function 'ignore
-                scroll-conservatively 10
-                scroll-preserve-screen-position t
-                inhibit-startup-screen t
-                confirm-kill-processes nil
-                backup-by-copying t
-                backup-directory-alist `(("." . "~/.emacs-saves"))
-                vc-follow-symlinks t)
-#+END_SRC
-
-** Cleanup whitespace
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'before-save-hook 'whitespace-cleanup)
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+  (load-theme 'challenger-deep t)
+  ;; (load-theme 'gruvbox-dark-hard t)
+  ;; (load-theme 'tao-yin t)
 #+END_SRC
 
 * Web Development
 ** prettier-js & node-modules-path
+Loads the node-modules into the path.
+
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'add-node-modules-path 'prettier-js)
 
@@ -91,12 +113,18 @@ Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
   (add-hook 'js2-mode-hook #'prettier-js-mode)
 #+END_SRC
 
-** tide (language server)
+** tide
+The client ~tide~ talks with a Language Server Protocal (LSP) called ~tsserver~, which is the same
+backend as in vscode. ~lsp-mode~ is an alternative client, but I experienced sluggish and slow
+behavior in non-trivial projects.
+
+Use tide together with ~js2-mode~ and/or ~typescript-mode~ to get all the autocomplete goodies.
+
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'tide)
 
   (defun venikx/turn-on-tide ()
-    "Set up the typescript server."
+    "Set up the tide."
     (interactive)
     (tide-setup))
 
@@ -123,6 +151,9 @@ Cleaning up the out-of-box UX/UI of Emacs, modernizing it slightly.
 #+END_SRC
 
 ** js- & js2-mode
+Disable the annoying warnings, because ~eslint~ should catch those mistakes. Nowadays JSX is also
+supported, so no need to have ~rjsx-mode~ anymore.
+
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'js 'js2-mode)
 
