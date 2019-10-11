@@ -32,11 +32,6 @@ nicely with ~evil-mode~.
    :states '(motion emacs)
    :prefix "SPC"
 
-   ;; Org-mode
-   "o" '(:ignore t :which-key "org")
-   "oc" 'org-capture
-   "oa" 'org-agenda
-
    "c" '(:ignore t :which-key "comment")
    "cl" 'comment-line
    "cr" 'comment-region
@@ -237,6 +232,60 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
   (venikx/require 'yasnippet-snippets)
 
   (add-hook 'prog-mode-hook #'yas-global-mode)
+#+END_SRC
+
+* TODO EVIL
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'evil)
+
+  (defun venikx/save-and-kill-this-buffer ()
+    "Save and kill the current buffer, similar to regular ol' vim."
+    (interactive)
+    (save-buffer)
+    (kill-this-buffer))
+
+  (setq-default evil-want-C-u-scroll t
+                evil-want-keybinding nil)
+
+                ;; TODO make this work
+  ;; (evil-ex-define-cmd "q" 'kill-this-buffer)
+  ;; (evil-ex-define-cmd "wq" 'venikx/save-and-kill-this-buffer)
+
+  (with-eval-after-load 'evil-maps ; disable keybinding for company mode
+    (define-key evil-insert-state-map (kbd "C-n") nil)
+    (define-key evil-insert-state-map (kbd "C-p") nil))
+
+  (add-hook 'after-init-hook 'evil-mode)
+#+END_SRC
+
+*** Enable relative line numbers
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'nlinum-relative)
+
+  (nlinum-relative-setup-evil)
+
+  (add-hook 'prog-mode-hook #'nlinum-relative-mode)
+#+END_SRC
+
+*** Improve folding
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'origami)
+
+  (add-hook 'prog-mode-hook #'origami-mode)
+#+END_SRC
+
+*** Enable surround
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'evil-surround)
+
+  (setq-default global-evil-surround-mode 1)
+#+END_SRC
+
+*** Enable EVIL for certain modes
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'evil-collection)
+
+  (evil-collection-init '(calender company ivy))
 #+END_SRC
 
 * Magit
@@ -447,35 +496,7 @@ Enable k&r dialect for C, popularized by [[https://www.amazon.com/Programming-La
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+END_SRC
 
-** Other
-*** rainbow-mode
-#+BEGIN_SRC emacs-lisp
-  (venikx/require 'rainbow-mode)
-  (add-hook 'prog-mode-hook #'rainbow-mode)
-#+END_SRC
-
-* Life
-** Ledger
-Managing finances in Emacs using ledger-mode (basic wrapper around the ledger-cli).
-
-#+BEGIN_SRC emacs-lisp
-  (venikx/require 'ledger-mode)
-
-  (setq-default ledger-clear-whole-transactions 1)
-
-  (add-to-list 'auto-mode-alist '("\\.dat\\'" . ledger-mode))
-#+END_SRC
-
-* Load packages without configuration
-#+BEGIN_SRC emacs-lisp
-  (venikx/require 'yaml-mode
-                  'toml-mode
-                  'dockerfile-mode
-                  'nginx-mode
-                  'markdown-mode)
-#+END_SRC
-
-* Rust
+** Rust
 Installs and configures rust-mode to play nicely with racer and flycheck.
 Also adds cargo support.
 
@@ -501,123 +522,99 @@ Also adds cargo support.
     (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 #+END_SRC
 
-
-
-
-
-
-* TODO External packages
-** EVIL
+** Other
+*** rainbow-mode
 #+BEGIN_SRC emacs-lisp
-(use-package evil
-  :init
-  (setq evil-want-C-u-scroll t
-        evil-want-keybinding nil)
-  :hook (after-init . evil-mode)
-  :config
-  (with-eval-after-load 'evil-maps ; disable keybinding for company mode
-    (define-key evil-insert-state-map (kbd "C-n") nil)
-    (define-key evil-insert-state-map (kbd "C-p") nil))
-  (defun venikx/save-and-kill-this-buffer ()
-    (interactive)
-    (save-buffer)
-    (kill-this-buffer))
-  (evil-ex-define-cmd "q" 'kill-this-buffer)
-  (evil-ex-define-cmd "wq" 'venikx/save-and-kill-this-buffer))
+  (venikx/require 'rainbow-mode)
+  (add-hook 'prog-mode-hook #'rainbow-mode)
 #+END_SRC
 
-*** Enable relative line numbers
+* Org
 #+BEGIN_SRC emacs-lisp
-(use-package nlinum-relative
-  :after evil
-  :hook (prog-mode . nlinum-relative-mode)
-  :config (nlinum-relative-setup-evil))
-#+END_SRC
+  (venikx/require 'org)
 
-*** Improve folding
-#+BEGIN_SRC emacs-lisp
-(use-package origami
-  :after evil
-  :commands origami-mode
-  :config
-  (add-hook 'prog-mode-hook 'origami-mode))
-#+END_SRC
+  ;; Configure files and paths
+  (setq-default org-src-fontify-natively t
+                org-hide-emphasis-markers t
+                org-use-fast-todo-selection t
+                org-default-notes-file "~/Documents/org/gsd/inbox.org"
+                org-directory "~/Documents/org/"
+                org-agenda-files '("~/Documents/org/gsd/gsd.org")
+                org-refile-use-outline-path 'file org-outline-path-complete-in-steps nil
+                org-refile-allow-creating-parent-nodes 'confirm
+                org-refile-targets
+                '(("gsd.org" :maxlevel . 1)
+                  ("someday.org" :maxlevel . 1)))
 
-*** Enable surround
-#+BEGIN_SRC emacs-lisp
-(use-package evil-surround
-  :after evil
-  :delight evil-surround-mode
-  :config (global-evil-surround-mode 1))
-#+END_SRC
+  ;; Configure the tags, keywords and capture templates
+  (setq-default org-fast-tag-selection-single-key nil
+                org-pretty-entities t
+                org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+                                    (sequence "APPT(a)")
+                                    (sequence "WAITING(w@/!)" "HOLD(h@/!)" "CANCELLED(c@/!)"))
 
-*** Enable EVIL for certain modes
-#+BEGIN_SRC emacs-lisp
-(use-package evil-org :disabled :after evil)
+                org-capture-templates
+                '(("t" "Todo" entry (file org-default-notes-file) "* TODO %? \nAdded: %U\n")
+                  ("n" "Next" entry (file org-default-notes-file) "* NEXT %? \nDEADLINE: %t")
+                  ("j" "Journal" entry
+                   (file+olp+datetree "~/Documents/org/journal.org") "* %?\n" :clock-in t :clock-resume t))
 
-(use-package evil-collection
-  :after evil
-  :config (evil-collection-init '(calender company ivy)))
-#+END_SRC
+                org-tag-alist
+                (quote (("@errand" . ?e) ("@mari" . ?m) ("@reading" . ?r) ("@computer" . ?c)
+                        ("@work" . ?w)
+                        ("@home" . ?h)))
 
-** Org
-#+BEGIN_SRC emacs-lisp
-(use-package org
-  :ensure org-plus-contrib
-  :commands (org-capture org-agenda)
-  :hook ((org-mode . visual-line-mode)
-         (org-mode . org-indent-mode))
-  :config
+                org-todo-keyword-faces '(("TODO" :foreground "salmon" :weight bold)
+                                         ("NEXT" :foreground "firebrick" :weight bold)
+                                         ("DONE" :foreground "sea green")
+                                         ("APPT" :foreground "maroon")
+                                         ("WAITING" :foreground "dark orange" :weight bold)
+                                         ("CANCELLED" :foreground "dim gray")
+                                         ("HOLD" :foreground "deep sky blue" :weight bold)))
+
+  ;; Keybindings
+  (general-define-key
+   :states '(motion emacs)
+   :prefix "SPC"
+
+   ;; Org-mode
+   "o" '(:ignore t :which-key "org")
+   "oc" 'org-capture
+   "oa" 'org-agenda)
+
+  (add-hook 'org-mode-hook 'org-indent-mode)
   (add-hook 'org-mode-hook
             '(lambda () (setq fill-column 100) (turn-on-auto-fill)))
-  :custom
-  (org-src-fontify-natively t)
-  (org-hide-emphasis-markers t)
-  (org-use-fast-todo-selection t)
-  (org-default-notes-file "~/Documents/org/gsd/inbox.org")
-  (org-directory "~/Documents/org/")
-  (org-agenda-files '("~/Documents/org/gsd/gsd.org"))
-  (org-refile-use-outline-path 'file org-outline-path-complete-in-steps nil)
-  (org-refile-allow-creating-parent-nodes 'confirm)
-  (org-refile-targets
-   '(("gsd.org" :maxlevel . 1)
-     ("someday.org" :maxlevel . 1)))
+#+END_SRC
 
-  (org-todo-keywords
-   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
-     (sequence "APPT(a)")
-     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "CANCELLED(c@/!)")))
-  (org-capture-templates
-   '(("t" "Todo" entry (file org-default-notes-file) "* TODO %? \nAdded: %U\n")
-     ("n" "Next" entry (file org-default-notes-file) "* NEXT %? \nDEADLINE: %t")
-     ("j" "Journal" entry
-      (file+olp+datetree "~/Documents/org/journal.org") "* %?\n" :clock-in t :clock-resume t)))
-  (org-tag-alist
-   (quote (("@errand" . ?e) ("@mari" . ?m) ("@reading" . ?r) ("@computer" . ?c)
-           ("@work" . ?w)
-           ("@home" . ?h))))
-  (org-fast-tag-selection-single-key nil)
+** Other
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'org-pomodoro 'org-bullets)
 
-  (org-todo-keyword-faces
-   '(("TODO" :foreground "light coral" :weight bold)
-     ("NEXT" :foreground "red" :weight bold)
-     ("DONE" :foreground "sea green")
-     ("APPT" :foreground "maroon")
-     ("WAITING" :foreground "dark orange" :weight bold)
-     ("CANCELLED" :foreground "dim gray")
-     ("HOLD" :foreground "deep sky blue" :weight bold)))
-  (org-pretty-entities t))
+  (setq-default org-pomodoro-format "%s"
+                org-ellipsis "⤵"
+                org-bullets-bullet-list '("■" "◆" "▲" "▶"))
 
-(use-package org-pomodoro
-  :after org
-  :custom
-  (org-pomodoro-format "%s"))
-
-(use-package org-bullets
-  :after org
-  :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  :custom
-  (org-ellipsis "⤵")
-  (org-bullets-bullet-list '("■" "◆" "▲" "▶")))
+#+END_SRC
+* Life
+** Ledger
+Managing finances in Emacs using ledger-mode (basic wrapper around the ledger-cli).
+
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'ledger-mode)
+
+  (setq-default ledger-clear-whole-transactions 1)
+
+  (add-to-list 'auto-mode-alist '("\\.dat\\'" . ledger-mode))
+#+END_SRC
+
+* Load packages without configuration
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'cl-lib
+                  'yaml-mode
+                  'toml-mode
+                  'dockerfile-mode
+                  'nginx-mode
+                  'markdown-mode)
 #+END_SRC
