@@ -94,6 +94,49 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
     (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 #+END_SRC
 
+** Setup $PATH correctly
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'exec-path-from-shell)
+
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
+#+END_SRC
+
+** Powerline
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'smart-mode-line)
+
+  (setq-default sml/no-confirm-load-theme t
+                sml/theme 'respectful)
+
+  (sml/setup)
+#+END_SRC
+
+** Tools for focus working
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'dimmer 'focus)
+
+  (setq-default dimmer-fraction 0.5)
+
+  (dimmer-mode)
+  (focus-mode)
+
+  (general-define-key
+   :states '(motion emacs)
+   :prefix "SPC"
+
+   "uf" '(focus-mode :which-key "focus"))
+#+END_SRC
+
+** Syntax highlighting for numbers, operators and escape sequences
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'highlight-numbers 'highlight-operators 'highlight-escape-sequences)
+
+  (add-hook 'prog-mode-hook #'highlight-numbers-mode)
+  (add-hook 'prog-mode-hook #'highlight-operators-mode)
+  (add-hook 'prog-mode-hook #'hes-mode)
+#+END_SRC
+
 * Theming
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
@@ -102,8 +145,63 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
   ;; (load-theme 'tao-yin t)
 #+END_SRC
 
-* Web Development
-** prettier-js & node-modules-path
+* Magit
+Uses ~evil-magit~ to use the evil specific keybindings to work magit.
+
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'evil-magit)
+
+  (setq-default magit-completing-read-function 'ivy-completing-read
+                magit-auto-revert-mode nil
+                git-commit-summary-max-length 50)
+
+  (add-hook 'git-commit-mode-hook
+            '(lambda () (setq fill-column 72) (turn-on-auto-fill)))
+
+  (evil-magit-init)
+
+  (general-define-key
+   :states '(motion emacs)
+   :prefix "SPC"
+
+   "g" '(:ignore t :which-key "git")
+   "gs" 'magit-status
+   "gb" 'magit-blame
+   "gi" 'magit-init)
+#+END_SRC
+
+* File management
+** Ranger
+A complete replacement for dired-mode.
+
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'ranger)
+
+  (ranger-override-dired-mode t)
+  (setq-default ranger-show-hidden t
+                ranger-width-preview 0.5)
+
+  (general-define-key
+   :states '(motion emacs)
+   :prefix "SPC"
+
+   "fr" 'ranger)
+#+END_SRC
+
+* Programming
+** Documentation
+*** Eldoc
+Disabling the global eldoc mode, since it's known to have perf issues.
+It's probably better to have a more finegrained control over which modes should enable ~eldoc-mode~,
+but the ~prog-mode-hook~ is fine for now.
+
+#+BEGIN_SRC emacs-lisp
+  (global-eldoc-mode -1)
+  (add-hook 'prog-mode-hook #'eldoc-mode)
+#+END_SRC
+
+** Web Development
+*** prettier-js & node-modules-path
 Loads the node-modules into the path.
 
 #+BEGIN_SRC emacs-lisp
@@ -113,7 +211,7 @@ Loads the node-modules into the path.
   (add-hook 'js2-mode-hook #'prettier-js-mode)
 #+END_SRC
 
-** tide
+*** tide
 The client ~tide~ talks with a Language Server Protocal (LSP) called ~tsserver~, which is the same
 backend as in vscode. ~lsp-mode~ is an alternative client, but I experienced sluggish and slow
 behavior in non-trivial projects.
@@ -144,13 +242,13 @@ Use tide together with ~js2-mode~ and/or ~typescript-mode~ to get all the autoco
   (add-hook 'js2-mode-hook #'venikx/turn-on-tide)
 #+END_SRC
 
-** typescript-mode
+*** typescript-mode
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'typescript-mode)
   (setq-default typescript-indent-level 2)
 #+END_SRC
 
-** js- & js2-mode
+*** js- & js2-mode
 Disable the annoying warnings, because ~eslint~ should catch those mistakes. Nowadays JSX is also
 supported, so no need to have ~rjsx-mode~ anymore.
 
@@ -168,13 +266,13 @@ supported, so no need to have ~rjsx-mode~ anymore.
   (add-to-list 'interpreter-mode-alist '("node". js2-jsx-mode))
 #+END_SRC
 
-** css-mode
+*** css-mode
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'css-mode)
   (setq-default css-indent-offset 2)
 #+END_SRC
 
-** web-mode
+*** web-mode
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'web-mode)
 
@@ -196,7 +294,7 @@ supported, so no need to have ~rjsx-mode~ anymore.
   (add-to-list 'auto-mode-alist '("\\.htm.*$" . web-mode))
 #+END_SRC
 
-** emmet-mode
+*** emmet-mode
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'emmet-mode)
 
@@ -205,20 +303,10 @@ supported, so no need to have ~rjsx-mode~ anymore.
   (add-hook 'css-mode-hook 'emmet-mode)
 #+END_SRC
 
-* TODO Find a place for these packages in the config
-** Eldoc
-#+BEGIN_SRC emacs-lisp
-  (global-eldoc-mode -1)
-  (add-hook 'prog-mode-hook #'eldoc-mode)
-#+END_SRC
+** C/C++
+*** CC-mode
+Enable k&r dialect for C, popularized by [[https://www.amazon.com/Programming-Language-2nd-Brian-Kernighan/dp/0131103628][Programming in C]].
 
-** rainbow-mode
-#+BEGIN_SRC emacs-lisp
-  (venikx/require 'rainbow-mode)
-  (add-hook 'prog-mode-hook #'rainbow-mode)
-#+END_SRC
-
-** CC-mode
 #+BEGIN_SRC emacs-lisp
   (setq-default c-basic-offset 4
                 c-default-style '((java-mode . "java")
@@ -228,7 +316,26 @@ supported, so no need to have ~rjsx-mode~ anymore.
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+END_SRC
 
-* External packages
+** Other
+*** rainbow-mode
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'rainbow-mode)
+  (add-hook 'prog-mode-hook #'rainbow-mode)
+#+END_SRC
+
+* Life
+** Ledger
+Managing finances in Emacs using ledger-mode (basic wrapper around the ledger-cli).
+
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'ledger-mode)
+
+  (setq-default ledger-clear-whole-transactions 1)
+
+  (add-to-list 'auto-mode-alist '("\\.dat\\'" . ledger-mode))
+#+END_SRC
+
+* TODO External packages
 ** EVIL
 #+BEGIN_SRC emacs-lisp
 (use-package evil
@@ -246,11 +353,6 @@ supported, so no need to have ~rjsx-mode~ anymore.
     (kill-this-buffer))
   (evil-ex-define-cmd "q" 'kill-this-buffer)
   (evil-ex-define-cmd "wq" 'venikx/save-and-kill-this-buffer))
-#+END_SRC
-
-*** Disable easy-keys to learn evil bindings
-#+BEGIN_SRC emacs-lisp
-(use-package no-easy-keys :config (no-easy-keys 1))
 #+END_SRC
 
 *** Enable relative line numbers
@@ -285,15 +387,6 @@ supported, so no need to have ~rjsx-mode~ anymore.
 (use-package evil-collection
   :after evil
   :config (evil-collection-init '(calender company ivy)))
-
-(use-package evil-escape
-  :after evil
-  :delight evil-escape-mode
-  :config
-  (evil-escape-mode 1)
-  (setq-default evil-escape-delay 0.2
-                evil-escape-key-sequence "jk"
-                evil-escape-excluded-states '(normal visual multiedit emacs motion)))
 #+END_SRC
 
 ** Keybindings
@@ -330,11 +423,6 @@ supported, so no need to have ~rjsx-mode~ anymore.
    ;; M-x
    "SPC" '(counsel-M-x :which-key "M-x")
 
-   ;; Git
-   "g" '(:ignore t :which-key "git")
-   "gs" 'magit-status
-   "gt" 'git-timemachine
-
    ;; Projectile
    "p" '(:ignore t :which-key "project")
    "pr" '(counsel-projectile-rg :which-key "ripgrep")
@@ -349,7 +437,6 @@ supported, so no need to have ~rjsx-mode~ anymore.
    ;; Finder
    "f" '(:ignore t :which-key "find")
    "ff" 'counsel-find-file
-   "fr" 'ranger
    "fd" 'dictionary-search
 
    ;; Comments
@@ -361,7 +448,6 @@ supported, so no need to have ~rjsx-mode~ anymore.
    ;; UI config
    "u" '(:ignore t :which-key "UI")
    "ut" '(counsel-load-theme :which-key "change theme")
-   "uf" '(focus-mode :which-key "focus")
 
    ;; Testing commands
    "t" '(:ignore t :which-key "danger zone"))
@@ -493,34 +579,6 @@ supported, so no need to have ~rjsx-mode~ anymore.
   (org-bullets-bullet-list '("■" "◆" "▲" "▶")))
 #+END_SRC
 
-** Version control
-#+BEGIN_SRC emacs-lisp
-(use-package magit
-  :defer 3
-  :custom
-  (magit-completing-read-function 'ivy-completing-read)
-  (git-commit-summary-max-length 50)
-  :config
-  (add-hook 'git-commit-mode-hook
-            '(lambda () (setq fill-column 72) (turn-on-auto-fill))))
-
-(use-package evil-magit :after evil magit)
-
-(use-package git-timemachine
-  :after evil magit
-  :config
-  (evil-make-overriding-map git-timemachine-mode-map 'normal)
-  (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps))
-#+END_SRC
-
-** Ranger
-#+BEGIN_SRC emacs-lisp
-(use-package ranger
-  :config
-  (ranger-override-dired-mode t)
-  (setq ranger-width-preview 0.5))
-#+END_SRC
-
 ** Flycheck
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
@@ -602,48 +660,4 @@ supported, so no need to have ~rjsx-mode~ anymore.
   :custom (markdown-command "multimarkdown"))
 
 (use-package yaml-mode :mode "\\.yml\\'")
-#+END_SRC
-
-** Ledger
-#+BEGIN_SRC emacs-lisp
-(use-package ledger-mode
-  :custom
-  (ledger-clear-whole-transactions 1)
-  :config
-  (add-to-list 'evil-emacs-state-modes 'ledger-report-mode)
-  :mode "\\.dat\\'")
-#+END_SRC
-
-** UI/UX
-#+BEGIN_SRC emacs-lisp
-(use-package fill-column-indicator
-  :hook (text-mode . fci-mode))
-
-(use-package smart-mode-line
-  :config
-  (setq sml/no-confirm-load-theme t
-        sml/theme 'respectful)
-  (sml/setup))
-
-(use-package dimmer
-  :init (dimmer-mode)
-  :custom
-  (dimmer-fraction 0.5))
-
-(use-package focus
-  :init (focus-mode))
-#+END_SRC
-
-** Path
-#+BEGIN_SRC emacs-lisp
-(use-package exec-path-from-shell
-  :if (memq window-system '(mac ns x))
-  :init (exec-path-from-shell-initialize))
-#+END_SRC
-
-** Syntax highlighting for numbers, operators and escape sequences
-#+BEGIN_SRC emacs-lisp
-(use-package highlight-numbers :hook (prog-mode . highlight-numbers-mode))
-(use-package highlight-operators :hook (prog-mode . highlight-operators-mode))
-(use-package highlight-escape-sequences :hook (prog-mode . hes-mode))
 #+END_SRC
