@@ -71,12 +71,13 @@
 (eval-and-compile
   (setq-default use-package-always-ensure t))
 
-;; Dump custom-set-variables to a garbage file, do not load it! (Keeps init.el file clean for version control X_X)
-(setq custom-file "~/.emacs.d/to-be-dumped.el")
-
 ;; Load the configuration from an org file and parse it via org-babel
 (require 'org)
 (org-babel-load-file (expand-file-name "~/.emacs.d/config.org"))
+
+;; Dump custom-set-variables to a garbage file, do not load it! (Keeps init.el file clean for version control X_X)
+(setq custom-file "~/.emacs.d/to-be-dumped.el")
+(load custom-file)
 
 (provide 'init)
 ;;; init.el ends here

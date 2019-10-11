@@ -13,6 +13,13 @@ Custom command for reloading the init file. Currently is not bound to any keybin
     (load-file "~/.emacs.d/init.el"))
 #+END_SRC
 
+*** Explain possible key configurations
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'which-key)
+
+  (add-hook 'after-init-hook #'which-key-mode)
+#+END_SRC
+
 ** ~general.el~
 Creating keybindings is done using general in stead of the regular Emacs keybindings, since it plays
 nicely with ~evil-mode~.
@@ -20,6 +27,24 @@ nicely with ~evil-mode~.
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'general)
   (general-define-key :states '(normal motion emacs) "SPC" nil)
+
+  (general-define-key
+   :states '(motion emacs)
+   :prefix "SPC"
+
+   ;; Org-mode
+   "o" '(:ignore t :which-key "org")
+   "oc" 'org-capture
+   "oa" 'org-agenda
+
+   "c" '(:ignore t :which-key "comment")
+   "cl" 'comment-line
+   "cr" 'comment-region
+   "cb" '(comment-box "box")
+
+   "u" '(:ignore t :which-key "UI")
+   "t" '(:ignore t :which-key "!DANGER!"))
+
 #+END_SRC
 
 * Modifying Emacs to modern defaults
@@ -143,6 +168,75 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
   (load-theme 'challenger-deep t)
   ;; (load-theme 'gruvbox-dark-hard t)
   ;; (load-theme 'tao-yin t)
+
+  (general-define-key
+   :states '(motion emacs)
+   :prefix "SPC"
+
+   "ut" '(counsel-load-theme :which-key "change theme"))
+#+END_SRC
+
+* Completion
+** Ivy
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'ivy-rich 'counsel)
+
+  (setq-default ivy-use-virtual-buffers t
+                ivy-count-format "%d/%d"
+                ivy-height 10)
+
+  (add-hook 'after-init-hook #'ivy-rich-mode)
+  (add-hook 'after-init-hook #'counsel-mode)
+
+  ;; Global overrides
+  (general-define-key
+   "<left>" nil "<right>" nil "<up>" nil "<down>" nil
+   "M-x" 'counsel-M-x
+   "C-s" 'counsel-grep-or-swiper
+   "<f2> l" 'counsel-find-library
+   "<f2> u" 'counsel-unicode-char)
+
+  ;; C-x overrides
+  (general-define-key
+   "C-x C-f" 'counsel-find-file
+   "C-x C-b" 'ivy-switch-buffer
+   "C-x b" 'ibuffer-list-buffers
+   "C-x k" 'ido-kill-buffer)
+
+  (general-define-key
+   :states '(motion emacs)
+   :prefix "SPC"
+   ;; M-x
+   "SPC" '(counsel-M-x :which-key "M-x")
+
+   ;; Finder
+   "f" '(:ignore t :which-key "find")
+   "ff" 'counsel-find-file)
+#+END_SRC
+
+** Company
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'company)
+
+  (setq-default company-idle-delay 0
+                company-minimum-prefix-length 2
+                company-selection-wrap-around t
+                company-tooltip-align-annotations t
+                company-frontends '(company-pseudo-tooltip-frontend
+                                    company-echo-metadata-frontend))
+
+  (add-hook 'prog-mode-hook #'company-mode)
+
+  (with-eval-after-load 'company
+    (define-key company-active-map (kbd "C-n") 'company-select-next)
+    (define-key company-active-map (kbd "C-p") 'company-select-previous))
+#+END_SRC
+
+** Snippets
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'yasnippet-snippets)
+
+  (add-hook 'prog-mode-hook #'yas-global-mode)
 #+END_SRC
 
 * Magit
@@ -188,6 +282,24 @@ A complete replacement for dired-mode.
    "fr" 'ranger)
 #+END_SRC
 
+** Projectile
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'counsel-projectile)
+
+  (setq-default projectile-sort-order 'recentf
+                projectile-indexing-method 'hybrid)
+
+  (add-hook 'after-init-hook #'counsel-projectile-mode)
+
+  (general-define-key
+   :states '(motion emacs)
+   :prefix "SPC"
+   "p" '(:ignore t :which-key "projectile")
+   "pr" '(counsel-projectile-rg :which-key "rg")
+   "pb" '(counsel-projectile-switch-to-buffer :which-key "switch buffer")
+   "pf" '(counsel-projectile-find-file :which-key "find file"))
+#+END_SRC
+
 * Programming
 ** Documentation
 *** Eldoc
@@ -200,7 +312,14 @@ but the ~prog-mode-hook~ is fine for now.
   (add-hook 'prog-mode-hook #'eldoc-mode)
 #+END_SRC
 
-** Web Development
+** Flycheck
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'flycheck)
+
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+#+END_SRC
+
+** Web
 *** prettier-js & node-modules-path
 Loads the node-modules into the path.
 
@@ -294,6 +413,18 @@ supported, so no need to have ~rjsx-mode~ anymore.
   (add-to-list 'auto-mode-alist '("\\.htm.*$" . web-mode))
 #+END_SRC
 
+*** JSON
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'json-mode)
+
+  (general-define-key
+   :keymaps 'json-mode-map
+   :states 'motion
+   :prefix "SPC m"
+
+   "f" 'json-mode-beautify)
+#+END_SRC
+
 *** emmet-mode
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'emmet-mode)
@@ -334,6 +465,46 @@ Managing finances in Emacs using ledger-mode (basic wrapper around the ledger-cl
 
   (add-to-list 'auto-mode-alist '("\\.dat\\'" . ledger-mode))
 #+END_SRC
+
+* Load packages without configuration
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'yaml-mode
+                  'toml-mode
+                  'dockerfile-mode
+                  'nginx-mode
+                  'markdown-mode)
+#+END_SRC
+
+* Rust
+Installs and configures rust-mode to play nicely with racer and flycheck.
+Also adds cargo support.
+
+#+BEGIN_SRC emacs-lisp
+  (venikx/require 'rust-mode 'racer 'cargo 'flycheck-rust)
+
+  (general-define-key
+   :keymaps 'rust-mode-map
+   :states 'motion
+   :prefix "SPC m"
+
+   "f" 'rust-format-buffer
+   "b" 'cargo-process-build
+   "r" 'cargo-process-run
+   "t" 'cargo-process-test)
+
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'rust-mode-hook #'cargo-minor-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode)
+  (add-hook 'racer-mode-hook #'company-mode)
+
+  (with-eval-after-load 'rust-mode
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+#+END_SRC
+
+
+
+
+
 
 * TODO External packages
 ** EVIL
@@ -387,134 +558,6 @@ Managing finances in Emacs using ledger-mode (basic wrapper around the ledger-cl
 (use-package evil-collection
   :after evil
   :config (evil-collection-init '(calender company ivy)))
-#+END_SRC
-
-** Keybindings
-*** Explain possible key configurations
-#+BEGIN_SRC emacs-lisp
-(use-package which-key
-  :defer 1
-  :diminish which-key-mode
-  :init (which-key-mode t))
-#+END_SRC
-
-*** General
-#+BEGIN_SRC emacs-lisp
-  ;; Global overrides
-  (general-define-key
-   "<left>" nil "<right>" nil "<up>" nil "<down>" nil
-   "M-x" 'counsel-M-x
-   "C-s" 'counsel-grep-or-swiper
-   "<f2> l" 'counsel-find-library
-   "<f2> u" 'counsel-unicode-char)
-
-  ;; C-x overrides
-  (general-define-key
-   "C-x C-f" 'counsel-find-file
-   "C-x C-b" 'ivy-switch-buffer
-   "C-x b" 'ibuffer-list-buffers
-   "C-x k" 'ido-kill-buffer)
-
-  ;; General
-  (general-define-key
-   :states '(motion emacs)
-   :prefix "SPC"
-   :global-prefix "C-SPC"
-   ;; M-x
-   "SPC" '(counsel-M-x :which-key "M-x")
-
-   ;; Projectile
-   "p" '(:ignore t :which-key "project")
-   "pr" '(counsel-projectile-rg :which-key "ripgrep")
-   "pb" '(counsel-projectile-switch-to-buffer :which-key "switch buffer")
-   "pf" '(counsel-projectile-find-file :which-key "find file")
-
-   ;; Org-mode
-   "o" '(:ignore t :which-key "org")
-   "oc" 'org-capture
-   "oa" 'org-agenda
-
-   ;; Finder
-   "f" '(:ignore t :which-key "find")
-   "ff" 'counsel-find-file
-   "fd" 'dictionary-search
-
-   ;; Comments
-   "c" '(:ignore t :which-key "comment")
-   "cl" 'comment-line
-   "cr" 'comment-region
-   "cb" '(comment-box "box")
-
-   ;; UI config
-   "u" '(:ignore t :which-key "UI")
-   "ut" '(counsel-load-theme :which-key "change theme")
-
-   ;; Testing commands
-   "t" '(:ignore t :which-key "danger zone"))
-#+END_SRC
-
-** Completation
-*** Emacs
-#+BEGIN_SRC emacs-lisp
-(use-package ivy
-  :delight ivy-mode
-  :hook (after-init . ivy-mode)
-  :custom
-  (ivy-use-virtual-buffers t)
-  (ivy-count-format "%d/%d")
-  (ivy-height 20))
-
-(use-package ivy-rich
-  :defer 0.1
-  :delight ivy-rich-mode
-  :after ivy
-  :config
-  (ivy-rich-mode 1))
-
-(use-package swiper :after ivy)
-
-(use-package counsel
-  :delight counsel-mode
-  :after ivy
-  :config
-  (counsel-mode 1))
-
-(use-package counsel-projectile
-  :delight projectile-mode
-  :after counsel
-  :custom
-  (projectile-switch-project-ation 'projectile-dired)
-  :config
-  (setq projectile-sort-order 'recentf
-        projectile-indexing-method 'hybrid)
-  (counsel-projectile-mode))
-#+END_SRC
-
-*** Code
-#+BEGIN_SRC emacs-lisp
-(use-package company
-  :delight company-mode
-  :hook (prog-mode . company-mode)
-  :config
-  (with-eval-after-load 'company
-    (define-key company-active-map (kbd "C-n") 'company-select-next)
-    (define-key company-active-map (kbd "C-p") 'company-select-previous))
-  :custom
-  (company-idle-delay 0)
-  (company-minimum-prefix-length 1)
-  (company-selection-wrap-around t)
-  (company-tooltip-align-annotations t)
-  (company-frontends '(company-pseudo-tooltip-frontend
-                       company-echo-metadata-frontend)))
-#+END_SRC
-
-*** Snippets
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet-snippets
-  :config
-  (yas-global-mode)
-  (advice-add 'company-complete-common :before (lambda () (setq my-company-point (point))))
-  (advice-add 'company-complete-common :after (lambda () (when (equal my-company-point (point)) (yas-expand)))))
 #+END_SRC
 
 ** Org
@@ -577,87 +620,4 @@ Managing finances in Emacs using ledger-mode (basic wrapper around the ledger-cl
   :custom
   (org-ellipsis "⤵")
   (org-bullets-bullet-list '("■" "◆" "▲" "▶")))
-#+END_SRC
-
-** Flycheck
-#+BEGIN_SRC emacs-lisp
-(use-package flycheck
-  :hook (after-init . global-flycheck-mode)
-  :commands (flycheck-mode))
-#+END_SRC
-
-** Code
-*** Rust
-#+BEGIN_SRC emacs-lisp
-(use-package rust-mode
-  :general
-  (:keymaps 'rust-mode-map
-   :states 'motion
-   :prefix "SPC m"
-   "f" 'rust-format-buffer
-   "b" 'cargo-process-build
-   "r" 'cargo-process-run
-   "t" 'cargo-process-test)
-  :mode ("\\.rs\\'" . rust-mode))
-
-(use-package flycheck-rust
-  :after flycheck rust-mode
-  :hook (flycheck-mode . flycheck-rust-setup))
-
-(use-package racer
-  :after rust-mode
-  :hook ((rust-mode . racer-mode)
-         (racer-mode . eldoc-mode)))
-
-(use-package cargo
-  :after rust-mode
-  :hook (rust-mode . cargo-minor-mode))
-#+END_SRC
-
-*** C/C++
-#+BEGIN_SRC emacs-lisp
-(use-package ggtags
-    :disabled
-    :commands ggtags-mode
-    :config
-    (unbind-key "M-<" ggtags-mode-map)
-    (unbind-key "M->" ggtags-mode-map))
-
-(use-package cc-mode
-    :disabled
-    :config
-    (add-hook 'c-mode-common-hook
-              (lambda ()
-                (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
-                  (ggtags-mode 1)))))
-
-;; (use-package lsp-mode)
-
-;;  (use-package emacs-cquery
-;;    :commands lsp-cquery-enable
-;;    :init (setq cquery-executable "~/Programs/cquery/bin/cquery")
-;;    (add-hook 'c-mode-hook #'cquery//enable)
-;;    (add-hook 'c++-mode-hook #'cquery//enable))
-#+END_SRC
-
-*** JSON, Markdown and YAML
-#+BEGIN_SRC emacs-lisp
-(use-package json-mode
-  :general
-  (:keymaps 'json-mode-map
-   :states 'motion
-   :prefix "SPC m"
-   "f" 'json-mode-beautify))
-
-(use-package markdown-mode
-  :hook (markdown-mode . visual-line-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :config
-  (add-hook markdown-mode-hook
-            '(lambda () (setq fill-column 100) (turn-on-auto-fill)))
-  :custom (markdown-command "multimarkdown"))
-
-(use-package yaml-mode :mode "\\.yml\\'")
 #+END_SRC

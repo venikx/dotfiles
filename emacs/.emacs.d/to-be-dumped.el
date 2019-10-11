@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (yaml-mode json-mode cargo racer flycheck-rust rust-mode org-bullets org-pomodoro org-plus-contrib yasnippet-snippets company counsel-projectile counsel swiper ivy-rich ivy which-key evil-collection evil-surround origami nlinum-relative ledger-mode rainbow-mode emmet-mode web-mode js2-mode tide prettier-js add-node-modules-path ranger evil-magit highlight-escape-sequences highlight-operators highlight-numbers focus dimmer smart-mode-line exec-path-from-shell general use-package))))
+    (nginx-mode dockerfile-mode toml-mode yasnippet-snippets yaml-mode which-key web-mode use-package tide smart-mode-line ranger rainbow-mode racer prettier-js origami org-pomodoro org-plus-contrib org-bullets nlinum-relative ledger-mode json-mode js2-mode ivy-rich highlight-operators highlight-numbers highlight-escape-sequences general focus flycheck-rust exec-path-from-shell evil-surround evil-magit evil-collection emmet-mode dimmer counsel-projectile company cargo add-node-modules-path))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
