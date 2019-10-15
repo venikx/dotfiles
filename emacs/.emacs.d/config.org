@@ -2,6 +2,18 @@
 #+AUTHOR: venikx
 #+STARTUP: content, indent
 
+* Starting a Emacs daemon
+No configuration here, but just information. More [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html][here]].
+
+1. Run Emacs as a daemon (starts the emacs server at the end of the initialization)
+~$ emacs --daemon~
+2. Connect to the Emacs daemon
+~$ emacsclient -c~
+
+** Why?
+First reason is performance. Emacs initialization happens during starting the daemon. The second
+reason is to be able to use ~org-capture~ more effectively (capturing stuff without an Emacs client running)
+
 * Keybindings
 ** Reload ~init.el~
 Custom command for reloading the init file. Currently is not bound to any keybindings just yet.
