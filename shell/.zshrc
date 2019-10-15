@@ -119,6 +119,8 @@ alias cp="cp -i"
 alias mv="mv -i"
 alias rm="rm -i"
 alias reload="source ~/.zshrc"
+eval $(thefuck --alias)
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
 
 ## NVM
 [ -d "$HOME/.nvm" ]      && export NVM_DIR="$HOME/.nvm"
@@ -162,4 +164,3 @@ export run_ops() {
   docker exec -it ops bash
 }
 
-eval $(thefuck --alias)
