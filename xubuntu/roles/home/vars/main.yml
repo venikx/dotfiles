@@ -1,0 +1,5 @@
+packages:
+  - qbittorrent
+  - obs-studio
+  - vlc
+  - slack

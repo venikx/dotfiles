@@ -1,0 +1,5 @@
+- name: Install packages for Virtual Machine
+  apt:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"

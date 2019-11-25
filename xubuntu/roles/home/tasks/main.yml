@@ -1,0 +1,14 @@
+- name: Install personal packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"
+
+- name: Download Discord package
+  get_url: 
+    url: https://discordapp.com/api/download?platform=linux&format=deb
+    dest: ~/discord.deb
+
+- name: Install Discord
+  shell: "gdebi -n ~/packages/discord.deb"
+
