@@ -76,13 +76,13 @@
     chdir: ~{{ user }}/.nvm
     executable: /bin/zsh
 
-    # - name: Install rust
-    #   become: yes
-    #   become_user: "{{ user }}"
-    #   shell: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | zsh -s -- -y && source ~{{ user }}/.cargo/env"
-    #   args:
-    #     executable: /bin/zsh
-    #     warn: no
+- name: Install rust
+  become: yes
+  become_user: "{{ user }}"
+  shell: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | zsh -s -- -y && source ~{{ user }}/.cargo/env"
+  args:
+    executable: /bin/zsh
+    warn: no
 
 - name: Start the smartcard daemon
   service:
