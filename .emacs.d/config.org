@@ -418,32 +418,31 @@ Use tide together with ~js2-mode~ and/or ~typescript-mode~ to get all the autoco
    "e" 'tide-rename-symbol
    "c" 'tide-rename-file)
 
-  (add-hook 'typescript-mode-hook #'venikx/turn-on-tide)
-  (add-hook 'js2-mode-hook #'venikx/turn-on-tide)
+  ;; (add-hook 'typescript-mode-hook #'venikx/turn-on-tide)
+  (add-hook 'js-mode-hook #'venikx/turn-on-tide)
 #+END_SRC
 
 *** typescript-mode
 #+BEGIN_SRC emacs-lisp
-  (venikx/require 'typescript-mode)
-  (setq-default typescript-indent-level 2)
+  ;; (venikx/require 'typescript-mode)
+  ;; (setq-default typescript-indent-level 2)
+  ;; (add-to-list 'auto-mode-alist '("\\.tsx*$" . js-mode))
 #+END_SRC
 
-*** js- & js2-mode
+*** js-mode
 Disable the annoying warnings, because ~eslint~ should catch those mistakes. Nowadays JSX is also
 supported, so no need to have ~rjsx-mode~ anymore.
 
 #+BEGIN_SRC emacs-lisp
-  (venikx/require 'js 'js2-mode)
+  ;; (venikx/require 'js 'js2-mode)
+  (venikx/require 'js)
 
-  (setq-default js-indent-label 2
-                js2-mode-show-parse-errors nil
-                js2-mode-show-strict-warnings nil
-                js2-highlight-level 3)
-
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js2-jsx-mode))
-  (add-to-list 'interpreter-mode-alist '("node". js2-jsx-mode))
+  (setq-default js-indent-label 2)
+                ;; js2-mode-show-parse-errors nil
+                ;; js2-mode-show-strict-warnings nil
+                ;; js2-highlight-level 3)
+  ;; (add-hook 'js-mode-hook 'js2-minor-mode)
+  (add-to-list 'auto-mode-alist '("\\.ts.*$" . js-mode))
 #+END_SRC
 
 *** css-mode
