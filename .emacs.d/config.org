@@ -399,27 +399,31 @@ behavior in non-trivial projects.
 Use tide together with ~js2-mode~ and/or ~typescript-mode~ to get all the autocomplete goodies.
 
 #+BEGIN_SRC emacs-lisp
-  (venikx/require 'tide)
+  ;; (venikx/require 'tide)
 
-  (defun venikx/turn-on-tide ()
-    "Set up the tide."
-    (interactive)
-    (tide-setup))
+  ;; (defun venikx/turn-on-tide ()
+  ;;   "Set up the tide."
+  ;;   (interactive)
+  ;;   (tide-setup))
 
-  (setq-default tide-completion-detailed t
-                tide-completion-enable-autoimport-suggestions t)
+  ;; (setq-default tide-completion-detailed t
+  ;;               tide-completion-enable-autoimport-suggestions t)
 
-  (general-define-key
-   :keymaps 'tide-mode-map
-   :states 'motion
-   :prefix "SPC m"
+  ;; (general-define-key
+  ;;  :keymaps 'tide-mode-map
+  ;;  :states 'motion
+  ;;  :prefix "SPC m"
 
-   "r" 'tide-refactor
-   "e" 'tide-rename-symbol
-   "c" 'tide-rename-file)
+  ;;  "r" 'tide-refactor
+  ;;  "e" 'tide-rename-symbol
+   ;; "c" 'tide-rename-file)
 
   ;; (add-hook 'typescript-mode-hook #'venikx/turn-on-tide)
-  (add-hook 'js-mode-hook #'venikx/turn-on-tide)
+  ;; (add-hook 'js-mode-hook #'venikx/turn-on-tide)
+
+  (venikx/require 'lsp-mode 'company-lsp)
+  (add-hook 'js-mode-hook #'lsp-deferred)
+
 #+END_SRC
 
 *** typescript-mode
