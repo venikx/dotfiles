@@ -336,6 +336,14 @@ A complete replacement for dired-mode.
 #+END_SRC
 
 * Programming
+** Language Service Protocal (aka lsp-mode)
+#+BEGIN_SRC emacs-lisp
+    (venikx/require 'lsp-mode 'company-lsp)
+    (add-hook 'lsp-mode-hook #'lsp-ui-mode)
+
+    (add-hook 'js-mode-hook #'lsp-deferred)
+#+END_SRC
+
 ** Documentation
 *** Eldoc
 Disabling the global eldoc mode, since it's known to have perf issues.
@@ -361,53 +369,8 @@ Loads the node-modules into the path.
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'add-node-modules-path 'prettier-js)
 
-  (add-hook 'js2-mode-hook #'add-node-modules-path)
-  (add-hook 'js2-mode-hook #'prettier-js-mode)
-#+END_SRC
-
-*** tide
-The client ~tide~ talks with a Language Server Protocal (LSP) called ~tsserver~, which is the same
-backend as in vscode. ~lsp-mode~ is an alternative client, but I experienced sluggish and slow
-behavior in non-trivial projects.
-
-Use tide together with ~js2-mode~ and/or ~typescript-mode~ to get all the autocomplete goodies.
-
-#+BEGIN_SRC emacs-lisp
-    ;; (venikx/require 'tide)
-
-    ;; (defun venikx/turn-on-tide ()
-    ;;   "Set up the tide."
-    ;;   (interactive)
-    ;;   (tide-setup))
-
-    ;; (setq-default tide-completion-detailed t
-                  ;; tide-completion-enable-autoimport-suggestions t)
-
-    (venikx/require 'lsp-mode 'company-lsp)
-
-    (general-define-key
-     :keymaps 'js-mode-map
-     :states 'motion
-     :prefix "SPC m"
-
-     "fr" 'lsp-find-references
-     "r" 'lsp-rename)
-    ;;  "e" 'tide-rename-symbol
-     ;; "c" 'tide-rename-file)
-
-    ;; (add-hook 'typescript-mode-hook #'venikx/turn-on-tide)
-    ;; (add-hook 'js-mode-hook #'venikx/turn-on-tide)
-
-    (add-hook 'js-mode-hook #'lsp-deferred)
-    (add-hook 'lsp-mode-hook #'lsp-ui-mode)
-
-#+END_SRC
-
-*** typescript-mode
-#+BEGIN_SRC emacs-lisp
-  ;; (venikx/require 'typescript-mode)
-  ;; (setq-default typescript-indent-level 2)
-  ;; (add-to-list 'auto-mode-alist '("\\.tsx*$" . js-mode))
+  (add-hook 'js-mode-hook #'add-node-modules-path)
+  (add-hook 'js-mode-hook #'prettier-js-mode)
 #+END_SRC
 
 *** js-mode
@@ -415,15 +378,19 @@ Disable the annoying warnings, because ~eslint~ should catch those mistakes. Now
 supported, so no need to have ~rjsx-mode~ anymore.
 
 #+BEGIN_SRC emacs-lisp
-  ;; (venikx/require 'js 'js2-mode)
   (venikx/require 'js)
 
+  (general-define-key
+   :keymaps 'js-mode-map
+   :states 'motion
+   :prefix "SPC m"
+
+   "fr" 'lsp-find-references
+   "r" 'lsp-rename)
+
   (setq-default js-indent-label 2)
-                ;; js2-mode-show-parse-errors nil
-                ;; js2-mode-show-strict-warnings nil
-                ;; js2-highlight-level 3)
-  ;; (add-hook 'js-mode-hook 'js2-minor-mode)
   (add-to-list 'auto-mode-alist '("\\.ts.*$" . js-mode))
+
 #+END_SRC
 
 *** css-mode
