@@ -133,32 +133,6 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
     (exec-path-from-shell-initialize))
 #+END_SRC
 
-** Powerline
-#+BEGIN_SRC emacs-lisp
-  (venikx/require 'smart-mode-line)
-
-  (setq-default sml/no-confirm-load-theme t
-                sml/theme 'respectful)
-
-  (sml/setup)
-#+END_SRC
-
-** Tools for focus working
-#+BEGIN_SRC emacs-lisp
-  (venikx/require 'dimmer 'focus)
-
-  (setq-default dimmer-fraction 0.5)
-
-  (dimmer-mode)
-  (focus-mode)
-
-  (general-define-key
-   :states '(motion emacs)
-   :prefix "SPC"
-
-   "uf" '(focus-mode :which-key "focus"))
-#+END_SRC
-
 ** Syntax highlighting for numbers, operators and escape sequences
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'highlight-numbers 'highlight-operators 'highlight-escape-sequences)
@@ -170,10 +144,10 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
 
 * Theming
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-  (load-theme 'challenger-deep t)
-  ;; (load-theme 'gruvbox-dark-hard t)
-  ;; (load-theme 'tao-yin t)
+  ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+  (venikx/require 'doom-themes 'doom-modeline 'all-the-icons)
+  (load-theme 'doom-outrun-electric t)
+  (doom-modeline-mode t)
 
   (general-define-key
    :states '(motion emacs)
