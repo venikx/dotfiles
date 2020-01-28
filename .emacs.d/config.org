@@ -47,7 +47,6 @@ nicely with ~evil-mode~.
    "c" '(:ignore t :which-key "comment")
    "cl" 'comment-line
    "cr" 'comment-region
-   "cb" '(comment-box "box")
 
    "u" '(:ignore t :which-key "UI")
    "t" '(:ignore t :which-key "!DANGER!"))
@@ -70,7 +69,7 @@ files in a separate backup folder, ...
 #+BEGIN_SRC emacs-lisp
   (global-prettify-symbols-mode t)
   (global-hl-line-mode)
-  (blink-cursor-mode 0)
+  (blink-cursor-mode 1)
 
   (setq-default ring-bell-function 'ignore
                 scroll-conservatively 10
@@ -308,6 +307,7 @@ Uses ~evil-magit~ to use the evil specific keybindings to work magit.
 
   (setq-default magit-completing-read-function 'ivy-completing-read
                 magit-auto-revert-mode nil
+                magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1
                 git-commit-summary-max-length 50)
 
   (add-hook 'git-commit-mode-hook
@@ -399,30 +399,33 @@ behavior in non-trivial projects.
 Use tide together with ~js2-mode~ and/or ~typescript-mode~ to get all the autocomplete goodies.
 
 #+BEGIN_SRC emacs-lisp
-  ;; (venikx/require 'tide)
+    ;; (venikx/require 'tide)
 
-  ;; (defun venikx/turn-on-tide ()
-  ;;   "Set up the tide."
-  ;;   (interactive)
-  ;;   (tide-setup))
+    ;; (defun venikx/turn-on-tide ()
+    ;;   "Set up the tide."
+    ;;   (interactive)
+    ;;   (tide-setup))
 
-  ;; (setq-default tide-completion-detailed t
-  ;;               tide-completion-enable-autoimport-suggestions t)
+    ;; (setq-default tide-completion-detailed t
+                  ;; tide-completion-enable-autoimport-suggestions t)
 
-  ;; (general-define-key
-  ;;  :keymaps 'tide-mode-map
-  ;;  :states 'motion
-  ;;  :prefix "SPC m"
+    (venikx/require 'lsp-mode 'company-lsp)
 
-  ;;  "r" 'tide-refactor
-  ;;  "e" 'tide-rename-symbol
-   ;; "c" 'tide-rename-file)
+    (general-define-key
+     :keymaps 'js-mode-map
+     :states 'motion
+     :prefix "SPC m"
 
-  ;; (add-hook 'typescript-mode-hook #'venikx/turn-on-tide)
-  ;; (add-hook 'js-mode-hook #'venikx/turn-on-tide)
+     "fr" 'lsp-find-references
+     "r" 'lsp-rename)
+    ;;  "e" 'tide-rename-symbol
+     ;; "c" 'tide-rename-file)
 
-  (venikx/require 'lsp-mode 'company-lsp)
-  (add-hook 'js-mode-hook #'lsp-deferred)
+    ;; (add-hook 'typescript-mode-hook #'venikx/turn-on-tide)
+    ;; (add-hook 'js-mode-hook #'venikx/turn-on-tide)
+
+    (add-hook 'js-mode-hook #'lsp-deferred)
+    (add-hook 'lsp-mode-hook #'lsp-ui-mode)
 
 #+END_SRC
 
