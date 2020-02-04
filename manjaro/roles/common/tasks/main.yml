@@ -23,15 +23,31 @@
   become_user: "{{ user }}"
   git:
     repo: https://gitlab.com/venikx/dotfiles.git
-    dest: ~{{ user }}/dotfiles
+    dest: $HOME/.cfg
     accept_hostkey: yes
     update: no
+    bare: yes
 
-- name: Set up dotfiles for {{ user }}
+- name: Create backup folders for dotfiles for {{ user }}
   become: yes
   become_user: "{{ user }}"
-  command: "stow -vS --adopt compton dmenu emacs git gpg i3 ranger shell web x chdir=~{{ user }}/dotfiles"
-  changed_when: false
+  file:
+    path: $HOME/.config-backup
+    state: directory
+
+- name: Copy conflicting files to backup folder for {{ user }}
+  become: yes
+  become_user: "{{ user }}"
+  shell:
+    cmd: /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+    chdir: $HOME
+
+- name: Setup dotfiles for {{ user }}
+  become: yes
+  become_user: "{{ user }}"
+  shell:
+    cmd: /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout
+    chdir: $HOME
 
 - name: Add users to docker group
   user:
@@ -54,17 +70,10 @@
     executable: /bin/zsh
     warn: no
 
-- name: Install yarn
-  become: yes
-  become_user: "{{ user }}"
-  npm:
-    name: yarn
-    global: yes
-
 - name: Install rust
   become: yes
   become_user: "{{ user }}"
-  shell: "curl https://sh.rustup.rs -sSf | sh -s -- -y && source ~{{ user }}/.cargo/env"
+  shell: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | zsh -s -- -y && source ~{{ user }}/.cargo/env"
   args:
     executable: /bin/zsh
     warn: no
