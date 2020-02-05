@@ -3,7 +3,7 @@ packages:
   - bat
   - ccid
   - chromium
-  - compton
+  - picom
   - curl
   - docker
   - docker-compose
@@ -11,9 +11,9 @@ packages:
   - feh
   - gcc
   - git
-  - i3-wm
+  # - i3-wm (conflicts with i3-gaps)
   - i3lock
-  - i3status
+  # - i3status (conflicts with i3-status-manjaro)
   - imagemagick
   - neovim
   - openvpn

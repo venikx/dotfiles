@@ -39,7 +39,7 @@
   become: yes
   become_user: "{{ user }}"
   shell:
-    cmd: /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+    cmd: /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv {} .config-backup/
     chdir: $HOME
 
 - name: Setup dotfiles for {{ user }}
