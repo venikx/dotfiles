@@ -11,7 +11,7 @@
    ~sudo ansible-pull -U https://gitlab.com/venikx/personal-ops.git void-linux/setup.yml~
 5. Well played, mate.
 
-* Manjaro i3j
+* Manjaro i3
 ** Installation
 1. Install via the ISO
 3. Install ansible
