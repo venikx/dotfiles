@@ -359,6 +359,7 @@ A complete replacement for dired-mode.
   (add-hook 'json-mode-hook #'lsp-deferred)
   (add-hook 'web-mode-hook #'lsp-deferred)
   (add-hook 'rust-mode-hook #'lsp-deferred)
+  (add-hook 'c++-mode-hook #'lsp-deferred)
 
   (setq-default lsp-ui-doc-enable nil
                 lsp-ui-sideline-enable nil
