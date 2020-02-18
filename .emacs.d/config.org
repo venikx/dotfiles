@@ -48,6 +48,9 @@ nicely with ~evil-mode~.
    "cl" 'comment-line
    "cr" 'comment-region
 
+   "l" '(:ignore t :which-key "load")
+   "ls" 'ansi-term
+
    "u" '(:ignore t :which-key "UI")
    "t" '(:ignore t :which-key "!DANGER!"))
 
@@ -142,6 +145,11 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
   (add-hook 'prog-mode-hook #'hes-mode)
 #+END_SRC
 
+** Garbage collection and increase data reads
+#+BEGIN_SRC emacs-lisp
+  (setq gc-cons-threshold 100000000)
+  (setq read-process-output-max (* 1024 1024))
+#+END_SRC
 * Theming
 #+BEGIN_SRC emacs-lisp
   ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
@@ -198,8 +206,8 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'company)
 
-  (setq-default company-idle-delay 0
-                company-minimum-prefix-length 2
+  (setq-default company-idle-delay 0.0
+                company-minimum-prefix-length 1
                 company-selection-wrap-around t
                 company-tooltip-align-annotations t
                 company-frontends '(company-pseudo-tooltip-frontend
@@ -273,6 +281,12 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
   (evil-collection-init '(calender company ivy))
 #+END_SRC
 
+* Shell
+#+BEGIN_SRC emacs-lisp
+  (setq explicit-shell-file-name "/bin/zsh")
+
+#+END_SRC
+
 * Magit
 Uses ~evil-magit~ to use the evil specific keybindings to work magit.
 
@@ -338,10 +352,21 @@ A complete replacement for dired-mode.
 * Programming
 ** Language Service Protocal (aka lsp-mode)
 #+BEGIN_SRC emacs-lisp
-    (venikx/require 'lsp-mode 'company-lsp)
-    (add-hook 'lsp-mode-hook #'lsp-ui-mode)
+  (venikx/require 'lsp-mode 'company-lsp 'lsp-ui 'lsp-ivy)
+  (add-hook 'lsp-mode-hook #'lsp-ui-mode)
 
-    (add-hook 'js-mode-hook #'lsp-deferred)
+  (add-hook 'js-mode-hook #'lsp-deferred)
+  (add-hook 'json-mode-hook #'lsp-deferred)
+  (add-hook 'web-mode-hook #'lsp-deferred)
+  (add-hook 'rust-mode-hook #'lsp-deferred)
+
+  (setq-default lsp-ui-doc-enable nil
+                lsp-ui-sideline-enable nil
+                lsp-ui-peek-enable t
+                lsp-ui-flycheck-live-reporting nil)
+
+  (with-eval-after-load 'company
+    (add-to-list 'company-backends 'company-lsp))
 #+END_SRC
 
 ** Documentation
@@ -390,6 +415,7 @@ supported, so no need to have ~rjsx-mode~ anymore.
 
   (setq-default js-indent-label 2)
   (add-to-list 'auto-mode-alist '("\\.ts.*$" . js-mode))
+  (add-hook 'js-mode-hook 'flycheck-mode)
 
 #+END_SRC
 
@@ -531,7 +557,6 @@ Also adds cargo support.
                                          ("CANCELLED" :foreground "dim gray")
                                          ("HOLD" :foreground "deep sky blue" :weight bold)))
 
-  ;; Keybindings
   (general-define-key
    :states '(motion emacs)
    :prefix "SPC"
