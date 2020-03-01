@@ -18,3 +18,17 @@
 4. Run the installation
    ~sudo ansible-pull -U https://gitlab.com/venikx/personal-ops.git manjaro/setup.yml~
 5. Well played, mate.
+
+* OSX
+** Installation
+1. Run ~./osx-setup.sh~
+2. Run ~./dotifles.sh~
+3. Run ~./web.sh~
+4. Run ~./developer.sh~
+
+** Updating
+Don't run the dotfiles, it's not needed. It will get you in a shite state when run again.
+
+1. Run ~./osx-setup~
+2. Run ~./web.sh~
+3. Run ~./developer.sh~
