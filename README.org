@@ -11,24 +11,19 @@
    ~sudo ansible-pull -U https://gitlab.com/venikx/personal-ops.git void-linux/setup.yml~
 5. Well played, mate.
 
-* Manjaro i3
+* Manjaro Linux
 ** Installation
-1. Install via the ISO
-3. Install ansible
-4. Run the installation
-   ~sudo ansible-pull -U https://gitlab.com/venikx/personal-ops.git manjaro/setup.yml~
-5. Well played, mate.
+1. Run ~./setup-manjaro.sh~
 
 * OSX
 ** Installation
-1. Run ~./osx-setup.sh~
-2. Run ~./dotifles.sh~
-3. Run ~./web.sh~
-4. Run ~./developer.sh~
+1. Run ~./setup-osx.sh~
 
-** Updating
-Don't run the dotfiles, it's not needed. It will get you in a shite state when run again.
-
-1. Run ~./osx-setup~
+* Common
+** Installation
+1. Run ~./dotifles.sh~
 2. Run ~./web.sh~
 3. Run ~./developer.sh~
+
+** Updates
+Don't ever re-run dotfile.sh, unless you want to spend time with conflicting files in the home directory.
