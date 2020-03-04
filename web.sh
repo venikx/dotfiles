@@ -5,8 +5,6 @@ echo
 echo "------------------------------"
 echo "Installing web development stuff..."
 
-brew install nvm
-source /usr/local/opt/nvm/nvm.sh
 nvm install --lts=erbium
 
 # Install yarn

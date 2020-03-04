@@ -1,8 +1,0 @@
-packages:
-  - qbittorrent
-  - obs-studio
-  - vlc
-
-extra:
-  - discord
-  - spotify

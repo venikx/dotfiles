@@ -1,5 +1,0 @@
-- name: Install packages for Virtual Machine
-  pacman:
-    name: "{{ item }}"
-    state: latest
-  loop: "{{ packages }}"

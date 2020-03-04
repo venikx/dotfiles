@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # ------------------------------
 # 1. PREPARE OSX
@@ -74,6 +73,17 @@ echo "Installing IDE's..."
 brew cask install --appdir="/Applications" visual-studio-code
 brew install emacs-head --HEAD --with-cocoa --with-imagemagick --with-jansson
 ln -s /usr/local/opt/emacs-head/Emacs.app /Applications
+
+echo
+echo "------------------------------"
+echo "Installing development packages"
+DevelopmentPackages=(
+    nvm
+)
+CaskDevelopmentPackages=(
+)
+brew install ${DevelopmentPackages[@]}
+source /usr/local/opt/nvm/nvm.sh
 
 echo
 echo "------------------------------"
