@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sudo -v
+start=`date +%s`
 # ------------------------------
 # 1. PREPARE MANJARO
 # ------------------------------
@@ -7,7 +9,7 @@
 echo
 echo "------------------------------"
 echo "Updating pacman..."
-sudo pacman -Syyu
+sudo pacman -Sy --noconfirmyyu
 
 echo
 echo "------------------------------"
@@ -39,7 +41,7 @@ CLIPackages=(
     scrot
     rxvt-unicode
 )
-sudo pacman -S ${CLIPackages[@]}
+sudo pacman -Sy --noconfirm ${CLIPackages[@]}
 
 echo
 echo "------------------------------"
@@ -49,13 +51,13 @@ ArtPackages=(
     imagemagick
     feh
 )
-sudo pacman -S ${ArtPackages[@]}
+sudo pacman -Sy --noconfirm ${ArtPackages[@]}
 
 echo
 echo "------------------------------"
 echo "Installing IDE's..."
-sudo pacman -S code
-yay -S emacs-git
+sudo pacman -Sy --noconfirm code
+yay -S --norebuild emacs-git
 
 echo
 echo "------------------------------"
@@ -66,8 +68,8 @@ DevelopmentPackages=(
 AURDevelopmentPackages=(
     nvm
 )
-sudo pacman -S ${DevelopmentPackages[@]}
-yay -S ${AURDevelopmentPackages[@]}
+sudo pacman -Sy --noconfirm ${DevelopmentPackages[@]}
+yay -S --norebuild ${AURDevelopmentPackages[@]}
 source /usr/share/nvm/init-nvm.sh
 
 echo
@@ -77,7 +79,7 @@ BrowserPackages=(
     chromium
     firefox-nightly
 )
-yay -S ${BrowserPackages[@]}
+yay -S --norebuild ${BrowserPackages[@]}
 
 echo
 echo "------------------------------"
@@ -93,8 +95,8 @@ MediaPackages=(
     obs-studio
     qbittorrent
 )
-yay -S ${AURMediaPackages[@]}
-sudo pacman -S ${MediaPackages[@]}
+yay -S --norebuild ${AURMediaPackages[@]}
+sudo pacman -Sy --noconfirm ${MediaPackages[@]}
 
 
 echo
@@ -104,7 +106,7 @@ DevOpsPackages=(
     docker
     docker-compose
 )
-sudo pacman -S ${DevOpsPackages[@]}
+sudo pacman -Sy --noconfirm ${DevOpsPackages[@]}
 sudo systemctl start docker
 sudo systemctl enable docker
 
@@ -117,7 +119,7 @@ SecurityPackages=(
     pcsc-tools
     yubikey-personalization
 )
-sudo pacman -S ${SecurityPackages[@]}
+sudo pacman -Sy --noconfirm ${SecurityPackages[@]}
 sudo systemctl start pcscd
 sudo systemctl enable pcscd
 
@@ -126,3 +128,9 @@ sudo systemctl enable pcscd
 # 3. MISC
 # ------------------------------
 git config user.email kevin.debaerdemaeker@epicgames.com
+
+runtime=$((($(date +%s)-$start)/60))
+echo
+echo "------------------------------"
+echo "------------------------------"
+echo "The setup took $runtime minutes to complete!"
