@@ -107,5 +107,5 @@ URxvt.font:	9x15,xft:TerminessTTFNerdFontMono
 
 !! Cursors
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-Xcursor.theme: 	xcursor-breeze
+Xcursor.theme: xcursor-breeze
 Xcursor.size:	0
