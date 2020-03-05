@@ -2,13 +2,14 @@
 \#*#
 
 # Ignore all of emacs.d, which is mostly compiled/downloaded scripts.
-configs/emacs.d/*
+.emacs.d/*
 *.elc
 # But don't ignore these specific locations.
-!configs/emacs.d/lisp
-!configs/emacs.d/themes
-!configs/emacs.d/init.el
-!configs/emacs.d/config.org
+!.emacs.d/lisp
+!.emacs.d/themes
+!.emacs.d/init.el
+!.emacs.d/config.org
 
 # Ignore bare reposiory being created in HOME folder
 .cfg
+
