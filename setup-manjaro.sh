@@ -39,9 +39,13 @@ CLIPackages=(
     xorg
     xorg-xclipboard
     scrot
-    rxvt-unicode
+    alacritty
+)
+AURCLIPackages=(
+    i3status-rust
 )
 sudo pacman -Sy --noconfirm ${CLIPackages[@]}
+yay -S --norebuild ${AURCLIPackages[@]}
 
 echo
 echo "------------------------------"
@@ -87,8 +91,10 @@ echo "Installing media packages..."
 AURMediaPackages=(
     slack
     discord
-    spotify
-    # dropbox
+    ncmpcpp
+    mopidy
+    mopidy-spotify
+    mopidy-mpd
 )
 MediaPackages=(
     vlc
@@ -97,7 +103,6 @@ MediaPackages=(
 )
 yay -S --norebuild ${AURMediaPackages[@]}
 sudo pacman -Sy --noconfirm ${MediaPackages[@]}
-
 
 echo
 echo "------------------------------"

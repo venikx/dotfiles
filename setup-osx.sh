@@ -53,6 +53,7 @@ CLIPackages=(
     unzip
     zsh
     thefuck
+    alacritty
 )
 brew install ${CLIPackages[@]}
 ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum
@@ -100,7 +101,10 @@ echo "Installing media packages..."
 MediaPackages=(
     slack
     discord
-    spotify
+    ncmpcpp
+    mopidy
+    mopidy-spotify
+    mopidy-mpd
     dropbox
 )
 brew cask install --appdir="/Applications" ${MediaPackages[@]}
