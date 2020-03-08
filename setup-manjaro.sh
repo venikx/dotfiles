@@ -40,12 +40,14 @@ CLIPackages=(
     xorg-xclipboard
     scrot
     alacritty
+    tmux
 )
 AURCLIPackages=(
     i3status-rust
 )
 sudo pacman -Sy --noconfirm ${CLIPackages[@]}
 yay -S --norebuild ${AURCLIPackages[@]}
+systemctl disable lightdm.service
 
 echo
 echo "------------------------------"
@@ -54,6 +56,7 @@ ArtPackages=(
     gimp
     imagemagick
     feh
+    python-pywal
 )
 sudo pacman -Sy --noconfirm ${ArtPackages[@]}
 
@@ -95,6 +98,7 @@ AURMediaPackages=(
     mopidy
     mopidy-spotify
     mopidy-mpd
+    mpc
 )
 MediaPackages=(
     vlc
@@ -103,6 +107,8 @@ MediaPackages=(
 )
 yay -S --norebuild ${AURMediaPackages[@]}
 sudo pacman -Sy --noconfirm ${MediaPackages[@]}
+systemctl start --user mopidy.service
+systemctl enable --user mopidy.service
 
 echo
 echo "------------------------------"

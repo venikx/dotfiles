@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/bin/zsh
 set -e
 
 echo
 echo "------------------------------"
 echo "Installing web development stuff..."
 
-nvm install --lts=erbium
+nvm install --lts
 
 # Install yarn
 npm i -g yarn

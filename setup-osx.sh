@@ -54,6 +54,7 @@ CLIPackages=(
     zsh
     thefuck
     alacritty
+    tmux
 )
 brew install ${CLIPackages[@]}
 ln -s /usr/local/bin/gsha256sum /usr/local/bin/sha256sum
@@ -105,6 +106,7 @@ MediaPackages=(
     mopidy
     mopidy-spotify
     mopidy-mpd
+    mpc
     dropbox
 )
 brew cask install --appdir="/Applications" ${MediaPackages[@]}
