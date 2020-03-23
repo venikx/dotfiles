@@ -123,3 +123,7 @@ alias dv='docker volume ls'
 alias dn='docker network ls'
 alias sprune='docker system prune'
 alias vprune='docker volume prune'
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

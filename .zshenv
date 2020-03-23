@@ -18,12 +18,12 @@ export PASSWORD_STORE_CLIP_TIME=15
 # ------------------------------
 # NVM
 [ -d "$HOME/.nvm" ] && export NVM_DIR="$HOME/.nvm"
-if test "$OS" = "Darwin"; then
-    NVM_HOMEBREW="/usr/local/opt/nvm/nvm.sh"
-    [ -s "$NVM_HOMEBREW" ] && \. "$NVM_HOMEBREW"
-elif test "$OS" = "Linux"; then
+# if test "$OS" = "Darwin"; then
+#     NVM_HOMEBREW="/usr/local/opt/nvm/nvm.sh"
+#     [ -s "$NVM_HOMEBREW" ] && \. "$NVM_HOMEBREW"
+# elif test "$OS" = "Linux"; then
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-fi
+#fi
 
 # Rust
 [ -d "$HOME/.cargo/bin:$PATH" ] && export PATH="$HOME/.cargo/bin:$PATH"
