@@ -26,6 +26,7 @@ if [ -f "$usermodmap" ]; then
     xmodmap "$usermodmap"
 fi
 
+
 # start some nice programs
 if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
@@ -34,6 +35,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     unset f
 fi
 
-# xrandr --output Virtual1 --mode 1920x1200
+xrandr --output DP-0 --primary --mode 2560x1440 --output HDMI-0 --mode 1920x1080 --rotate right --right-of DP-0
+wal -R
 
 exec $DEFAULT_SESSION

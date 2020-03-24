@@ -81,13 +81,14 @@ unsetopt nomatch                # prevent "no matches found" error, when using w
 setopt extended_glob            # activate complex pattern globbing
 setopt glob_dots                # include dotfiles in globbing
 
+# Colors
+(cat ~/.cache/wal/sequences &)
+source ~/.cache/wal/colors-tty.sh
 
 ########################################
 # Start-up
 ########################################
 autoload -Uz colors && colors
-[[ $DISPLAY != "" &&  "$(tty)" == "/dev/tty1" ]] && exec startx
-
 
 # ------------------------------
 # 3. PROMPT
