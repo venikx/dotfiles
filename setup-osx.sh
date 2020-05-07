@@ -37,6 +37,27 @@ brew upgrade
 # ------------------------------
 # 2. PACKAGE INSTALLATION
 # ------------------------------
+echo
+echo "------------------------------"
+echo "Installing Tiling Window Manager..."
+CaskTilingPackages=(
+    dmenu-mac
+)
+brew cask install --appdir="/Applications" ${CaskTilingPackages=[@]}
+
+
+brew services stop yabai
+brew install koekeishiya/formulae/yabai
+# reinstall the scripting addition
+sudo yabai --uninstall-sa
+sudo yabai --install-sa
+brew services start yabai
+killall Dock
+
+brew install koekeishiya/formulae/skhd
+brew install jq
+brew services start skhd
+
 
 echo
 echo "------------------------------"

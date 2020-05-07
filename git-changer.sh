@@ -1,8 +1,8 @@
 #!/bin/sh
 
-/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME filter-branch --env-filter '
+git filter-branch --env-filter '
 
-OLD_EMAIL="me@venikx.com"
+OLD_EMAIL="kevin.debaerdemaeker@epicgames.com"
 CORRECT_NAME="Kevin Rangel"
 CORRECT_EMAIL="me@venikx.com"
 
@@ -16,4 +16,4 @@ CORRECT_EMAIL="me@venikx.com"
 #     export GIT_AUTHOR_NAME="$CORRECT_NAME"
 #     export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
 # fi
-' --tag-name-filter cat -- --branches --tags
+' --tag-name-filter cat -- --branches --tags -f
