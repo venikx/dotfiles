@@ -222,9 +222,9 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
 
 ** Snippets
 #+BEGIN_SRC emacs-lisp
-  (venikx/require 'yasnippet-snippets)
+  ;; (venikx/require 'yasnippet-snippets)
 
-  (add-hook 'prog-mode-hook #'yas-global-mode)
+  ;; (add-hook 'prog-mode-hook #'yas-global-mode)
 #+END_SRC
 
 * TODO EVIL
@@ -523,9 +523,9 @@ Also adds cargo support.
   (setq-default org-src-fontify-natively t
                 org-hide-emphasis-markers t
                 org-use-fast-todo-selection t
-                org-default-notes-file "~/Documents/org/gsd/inbox.org"
-                org-directory "~/Documents/org/"
-                org-agenda-files '("~/Documents/org/gsd/gsd.org")
+                org-default-notes-file "~/org/gsd/inbox.org"
+                org-directory "~/org/"
+                org-agenda-files '("~/org/gsd/gsd.org")
                 org-refile-use-outline-path 'file org-outline-path-complete-in-steps nil
                 org-refile-allow-creating-parent-nodes 'confirm
                 org-refile-targets
@@ -557,6 +557,11 @@ Also adds cargo support.
                                          ("WAITING" :foreground "dark orange" :weight bold)
                                          ("CANCELLED" :foreground "dim gray")
                                          ("HOLD" :foreground "deep sky blue" :weight bold)))
+  ;; Define some org functions
+  (defun venikx/open-gsd ()
+    "Finds the gsd.org file"
+    (interactive)
+    (find-file "~/org/gsd/gsd.org"))
 
   (general-define-key
    :states '(motion emacs)
@@ -565,7 +570,8 @@ Also adds cargo support.
    ;; Org-mode
    "o" '(:ignore t :which-key "org")
    "oc" 'org-capture
-   "oa" 'org-agenda)
+   "oa" 'org-agenda
+   "ot" 'venikx/open-gsd)
 
   (add-hook 'org-mode-hook 'org-indent-mode)
   (add-hook 'org-mode-hook
@@ -574,13 +580,26 @@ Also adds cargo support.
 
 ** Other
 #+BEGIN_SRC emacs-lisp
-  (venikx/require 'org-pomodoro 'org-bullets)
+  (venikx/require 'org-roam 'org-pomodoro 'org-bullets)
 
-  (setq-default org-pomodoro-format "%s"
+  (setq-default org-roam-directory "~/org/braindump/"
+                org-pomodoro-format "%s"
                 org-ellipsis "⤵"
                 org-bullets-bullet-list '("■" "◆" "▲" "▶"))
 
+  (general-define-key
+   :states '(motion emacs)
+   :prefix "SPC"
+
+   ;; Org-mode
+   "or" 'org-roam
+   "of" 'org-roam-find-file
+   "og" 'org-roam-show-graph
+   "oi" 'org-roam-insert)
+
+  (add-hook 'after-init-hook 'org-roam-mode)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
 #+END_SRC
 * Life
 ** Ledger
