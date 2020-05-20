@@ -28,7 +28,6 @@ Custom command for reloading the init file. Currently is not bound to any keybin
 *** Explain possible key configurations
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'which-key)
-
   (add-hook 'after-init-hook #'which-key-mode)
 #+END_SRC
 
@@ -44,14 +43,16 @@ nicely with ~evil-mode~.
    :states '(motion emacs)
    :prefix "SPC"
 
+   "b" '(:ignore t :which-key "buffers")
    "c" '(:ignore t :which-key "comment")
    "cl" 'comment-line
    "cr" 'comment-region
 
    "l" '(:ignore t :which-key "load")
-   "ls" 'ansi-term
+   "le" '(venikx/load-init :which-key "Emacs")
 
-   "u" '(:ignore t :which-key "UI")
+   "f" '(:ignore t :which-key "find")
+   "u" '(:ignore t :which-key "ui")
    "t" '(:ignore t :which-key "!DANGER!"))
 
 #+END_SRC
@@ -84,11 +85,15 @@ files in a separate backup folder, ...
                 vc-follow-symlinks t)
 #+END_SRC
 
-** Display parentheses after a tiny delay
+** Parenthesis
 #+BEGIN_SRC emacs-lisp
+  (venikx/require 'paredit)
+
   (setq-default show-paren-delay 0.1)
   (show-paren-mode)
+
   (add-hook 'prog-mode-hook #'electric-pair-mode)
+  (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 #+END_SRC
 
 ** Indentation
@@ -167,44 +172,43 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
 * Completion
 ** Ivy
 #+BEGIN_SRC emacs-lisp
-  (venikx/require 'ivy-rich 'counsel)
+  (venikx/require 'ivy 'ivy-rich 'counsel)
 
   (setq-default ivy-use-virtual-buffers t
                 ivy-count-format "%d/%d"
                 ivy-height 10)
 
-  (add-hook 'after-init-hook #'ivy-rich-mode)
+  (add-hook 'after-init-hook #'ivy-mode)
+  (add-hook 'ivy-mode-hook #'ivy-rich-mode)
   (add-hook 'after-init-hook #'counsel-mode)
 
   ;; Global overrides
   (general-define-key
    "<left>" nil "<right>" nil "<up>" nil "<down>" nil
-   "M-x" 'counsel-M-x
-   "C-s" 'counsel-grep-or-swiper
-   "<f2> l" 'counsel-find-library
-   "<f2> u" 'counsel-unicode-char)
+   "C-s" 'counsel-grep-or-swiper)
 
   ;; C-x overrides
   (general-define-key
    "C-x C-f" 'counsel-find-file
    "C-x C-b" 'ivy-switch-buffer
-   "C-x b" 'ibuffer-list-buffers
    "C-x k" 'ido-kill-buffer)
 
+  ;; Others
   (general-define-key
    :states '(motion emacs)
    :prefix "SPC"
    ;; M-x
    "SPC" '(counsel-M-x :which-key "M-x")
 
-   ;; Finder
-   "f" '(:ignore t :which-key "find")
+   "bs" 'ivy-switch-buffer
+   "bk" 'ido-kill-buffer
    "ff" 'counsel-find-file)
 #+END_SRC
 
 ** Company
 #+BEGIN_SRC emacs-lisp
   (venikx/require 'company)
+  (require 'company)
 
   (setq-default company-idle-delay 0.0
                 company-minimum-prefix-length 1
@@ -213,7 +217,7 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
                 company-frontends '(company-pseudo-tooltip-frontend
                                     company-echo-metadata-frontend))
 
-  (add-hook 'prog-mode-hook #'company-mode)
+  (add-hook 'after-init-hook 'global-company-mode)
 
   (with-eval-after-load 'company
     (define-key company-active-map (kbd "C-n") 'company-select-next)
@@ -222,9 +226,10 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
 
 ** Snippets
 #+BEGIN_SRC emacs-lisp
-  ;; (venikx/require 'yasnippet-snippets)
-
-  ;; (add-hook 'prog-mode-hook #'yas-global-mode)
+  (venikx/require  'yasnippet 'yasnippet-snippets)
+  (require 'yasnippet)
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
 #+END_SRC
 
 * TODO EVIL
@@ -253,11 +258,9 @@ Adds UTF-8 support for Emacs (shame on you for support it by default).
 
 *** Enable relative line numbers
 #+BEGIN_SRC emacs-lisp
-  (venikx/require 'nlinum-relative)
-
-  (nlinum-relative-setup-evil)
-
-  (add-hook 'prog-mode-hook #'nlinum-relative-mode)
+  (venikx/require 'linum-relative)
+  (setq linum-relative-backend 'display-line-numbers-mode)
+  (add-hook 'prog-mode-hook #'linum-relative-mode)
 #+END_SRC
 
 *** Improve folding
@@ -294,7 +297,6 @@ Uses ~evil-magit~ to use the evil specific keybindings to work magit.
   (venikx/require 'evil-magit)
 
   (setq-default magit-completing-read-function 'ivy-completing-read
-                magit-auto-revert-mode nil
                 magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1
                 git-commit-summary-max-length 50)
 
@@ -308,6 +310,7 @@ Uses ~evil-magit~ to use the evil specific keybindings to work magit.
    :prefix "SPC"
 
    "g" '(:ignore t :which-key "git")
+   "gl" 'magit-log
    "gs" 'magit-status
    "gb" 'magit-blame
    "gi" 'magit-init)
@@ -363,8 +366,7 @@ A complete replacement for dired-mode.
 
   (setq-default lsp-ui-doc-enable nil
                 lsp-ui-sideline-enable nil
-                lsp-ui-peek-enable t
-                lsp-ui-flycheck-live-reporting nil)
+                lsp-ui-peek-enable t)
 
   (with-eval-after-load 'company
     (add-to-list 'company-backends 'company-lsp))
