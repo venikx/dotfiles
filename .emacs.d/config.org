@@ -582,7 +582,7 @@ Also adds cargo support.
 
 ** Other
 #+BEGIN_SRC emacs-lisp
-  (venikx/require 'org-roam 'org-pomodoro 'org-bullets)
+  (venikx/require 'org-roam 'org-roam-bibtex 'org-ref 'helm-bibtex 'org-pomodoro 'org-bullets)
 
   (setq-default org-roam-directory "~/org/braindump/"
                 org-pomodoro-format "%s"
@@ -599,7 +599,8 @@ Also adds cargo support.
    "og" 'org-roam-show-graph
    "oi" 'org-roam-insert)
 
-  (add-hook 'after-init-hook 'org-roam-mode)
+  (add-hook 'after-init-hook #'org-roam-mode)
+  (add-hook 'after-init-hook #'org-roam-bibtex-mode)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 #+END_SRC
