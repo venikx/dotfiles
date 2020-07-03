@@ -8,6 +8,8 @@
 !.emacs.d/lisp
 !.emacs.d/themes
 !.emacs.d/init.el
+!.emacs.d/early-init.el
+!.emacs.d/custom.el
 !.emacs.d/config.org
 
 # Ignore bare reposiory being created in HOME folder
