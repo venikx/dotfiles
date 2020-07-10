@@ -1,17 +1,3 @@
-# Emacs things
-\#*#
-
-# Ignore all of emacs.d, which is mostly compiled/downloaded scripts.
-.emacs.d/*
-*.elc
-# But don't ignore these specific locations.
-!.emacs.d/lisp
-!.emacs.d/themes
-!.emacs.d/init.el
-!.emacs.d/early-init.el
-!.emacs.d/custom.el
-!.emacs.d/config.org
-
 # Ignore bare reposiory being created in HOME folder
 .cfg
 

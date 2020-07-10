@@ -1,0 +1,127 @@
+#!/usr/bin/env sh
+:; ( echo "$EMACS" | grep -q "term" ) && EMACS=emacs || EMACS=${EMACS:-emacs} # -*-emacs-lisp-*-
+:; command -v $EMACS >/dev/null || { >&2 echo "Can't find emacs in your PATH"; exit 1; }
+:; _VERSION=$($EMACS --version | head -n1)
+:; case "$_VERSION" in *\ 2[0-5].[0-9]) echo "Detected Emacs $_VERSION"; echo "Doom only supports Emacs 26.1 and newer"; echo; exit 2 ;; esac
+:; _DOOMBASE="${EMACSDIR:-$(dirname "$0")/..}"
+:; _DOOMPOST="$_DOOMBASE/.local/.doom.sh"
+:; rm -f "$_DOOMPOST"
+:; $EMACS --no-site-file --script "$0" -- "$@"
+:; CODE=$?
+:; [ -x "$_DOOMPOST" ] && PATH="$_DOOMBASE/bin:$PATH" "$_DOOMPOST" "$0" "$@"
+:; exit $CODE
+
+;; CLI ops tend to eat a lot of memory. To speed it up, stave off the GC, but
+;; not to `most-positive-fixnum' like we do in init.el; that's too high -- we
+;; don't want to intentionally leak memory.
+(setq gc-cons-threshold 134217728)   ; 128mb
+
+(let* ((loaddir (file-name-directory (file-truename load-file-name)))
+       (emacsdir (getenv "EMACSDIR"))
+       (user-emacs-directory
+        (abbreviate-file-name
+         (if emacsdir
+             (file-name-as-directory emacsdir)
+           (expand-file-name "../" loaddir)))))
+
+  ;;
+  (load (expand-file-name "core/core.el" user-emacs-directory) nil t)
+
+  ;; HACK Load `cl' and site files manually so we can stop them from polluting
+  ;;      CLI logs with deprecation and file load messages.
+  (quiet! (when (> emacs-major-version 26)
+            (require 'cl))
+          (load "site-start" t t))
+
+  (doom-log "Initializing Doom CLI")
+  (require 'core-cli)
+
+  (defcli! :main
+      ((help-p   ["-h" "--help"]    "Same as help command")
+       (debug-p  ["-d" "--debug"]   "Turns on doom-debug-p (and debug-on-error)")
+       (yes-p    ["-y" "--yes"]     "Auto-accept all confirmation prompts")
+       &optional command &rest args)
+    "A command line interface for managing Doom Emacs.
+
+Includes package management, diagnostics, unit tests, and byte-compilation.
+
+This tool also makes it trivial to launch Emacs out of a different folder or
+with a different private module."
+    :bare t
+    (when debug-p
+      (setenv "DEBUG" "1")
+      (setq doom-debug-p t)
+      (print! (info "Debug mode on")))
+    (when yes-p
+      (setenv "YES" "1")
+      (setq doom-auto-accept t)
+      (print! (info "Auto-yes on")))
+    (when help-p
+      (when command
+        (push command args))
+      (setq command "help"))
+
+    (when (equal (user-real-uid) 0)
+      (print!
+       (concat "WARNING: This script is running as root. This likely wasn't intentional, and\n"
+               "is unnecessary to use this script. This will cause file permissions errors\n"
+               "later if you use this Doom installation on a non-root account.\n"))
+      (unless (or doom-auto-accept (y-or-n-p "Continue anyway?"))
+        (user-error "Aborted")))
+
+    ;; Load any the user's private init.el or any cli.el files in modules. This
+    ;; gives the user (and modules) an opportunity to define their own CLI
+    ;; commands, or to customize the CLI to better suit them.
+    (load! doom-module-init-file doom-private-dir t)
+    (maphash (doom-module-loader doom-cli-file) doom-modules)
+    (load! doom-cli-file doom-private-dir t)
+    (run-hooks 'doom-cli-pre-hook)
+
+    (let (print-level print-gensym print-length)
+      (condition-case e
+          (if (null command)
+              (doom-cli-execute "help")
+            (let ((start-time (current-time)))
+              (and (doom-cli-execute command args)
+                   (progn (run-hooks 'doom-cli-post-hook) t)
+                   (print! (success "Finished! (%.4fs)")
+                           (float-time
+                            (time-subtract (current-time)
+                                           start-time))))))
+        (user-error
+         (print! (error "%s\n") (error-message-string e))
+         (print! (yellow "See 'doom help %s' for documentation on this command.") (car args))
+         (error "")) ; Ensure non-zero exit code
+        ((debug error)
+         (print! (error "There was an unexpected error:"))
+         (print-group!
+          (print! "%s %s" (bold "Type:") (car e))
+          (print! (bold "Message:"))
+          (print-group!
+           (print! "%s" (get (car e) 'error-message)))
+          (print! (bold "Data:"))
+          (print-group!
+           (if (cdr e)
+               (dolist (item (cdr e))
+                 (print! "%S" item))
+             (print! "n/a")))
+          (when (and (bound-and-true-p straight-process-buffer)
+                     (string-match-p (regexp-quote straight-process-buffer)
+                                     (error-message-string e)))
+            (print! (bold "Straight output:"))
+            (print-group! (print! "%s" (straight--process-get-output)))))
+         (unless debug-on-error
+           (terpri)
+           (print!
+            (concat "Run the command again with the -d (or --debug) switch to enable debug\n"
+                    "mode and (hopefully) generate a backtrace from this error:\n"
+                    "\n  %s\n\n"
+                    "If you file a bug report, please include it!")
+            (string-join (append (list (file-name-nondirectory load-file-name) "-d" command)
+                                 args)
+                         " "))
+           ;; Ensure non-zero exit code
+           (error ""))))))
+
+  (doom-cli-execute :main (cdr (member "--" argv)))
+  (setq argv nil))
