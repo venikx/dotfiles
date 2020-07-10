@@ -18,7 +18,12 @@
 ;; (setq doom-theme 'doom-spacegray)
 
 ;; Everything org-mode
-(setq org-directory "~/org/")
+(setq org-directory "~/org/gsd")
+(setq org-tag-alist
+      (quote (("@errand" . ?e) ("@mari" . ?m) ("@reading" . ?r) ("@computer" . ?c)
+              ("@work" . ?w)
+              ("@home" . ?h))))
+
 (after! org
   (setq time-stamp-active t
         time-stamp-line-limit 4
