@@ -1,4 +1,4 @@
-#+TITLE: Automating the boring parts of life
+#+TITLE: Provisioning machines using the powa of scripting
 #+AUTHOR: venikx
 #+STARTUP: hideblocks
 
@@ -25,5 +25,5 @@
 2. Run ~./web.sh~
 3. Run ~./developer.sh~
 
-** Updates
+** WARNING!!!
 Don't ever re-run dotfile.sh, unless you want to spend time with conflicting files in the home directory.

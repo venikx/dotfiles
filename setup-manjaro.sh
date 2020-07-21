@@ -39,7 +39,7 @@ CLIPackages=(
     xorg
     xorg-xclipboard
     scrot
-    alacritty
+    rxvt-unicode
     tmux
 )
 AURCLIPackages=(
@@ -104,6 +104,8 @@ MediaPackages=(
     vlc
     obs-studio
     qbittorrent
+    pavucontrol
+    v4l-utils # utilities to edit video and camera settings
 )
 yay -S --norebuild ${AURMediaPackages[@]}
 sudo pacman -Sy --noconfirm ${MediaPackages[@]}
