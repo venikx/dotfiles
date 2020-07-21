@@ -8,19 +8,18 @@ Credit: https://www.atlassian.com/git/tutorials/dotfiles
 
 ** Steps
 1. Clone: ~git clone --bare git@gitlab.com:venikx/dotfiles.git $HOME/.cfg~
-2. Checkout content from the bare repo ~config checkout~
+2. Checkout content from the bare repo ~dots checkout~
 3. Resolve errors by backing up existing dotiles on the the system safely
    #+BEGIN_SRC sh
      $ mkdir -p .config-backup && \
-     config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | \
+     dots checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | \
      xargs -I{} mv {} .config-backup/{}
    #+END_SRC
-4. Hide untracked files ~config config --local status.showUntrackedFiles no~
-5. Add, commit, whatever related to dotfiles using /config/ in stead of /git/
+4. Hide untracked files ~dots config --local status.showUntrackedFiles no~
+5. Add, commit, whatever related to dotfiles using /dots/ in stead of /git/
 6. [[https://media.giphy.com/media/yJFeycRK2DB4c/giphy.gif]]
 
 * Improvements
-** TODO Use branches to manage specific OS configurations
 ** TODO Generate/organize .password-store
 - Setting up the yubikey and generating the keys: https://github.com/drduh/YubiKey-Guide
 - Using gpg to generate a public ssh key: https://suva.sh/posts/gpg-ssh-smartcard-yubikey-keybase/#using-the-gpg-and-ssh-keys
