@@ -10,7 +10,7 @@ font xft:URWGothic-Book 11
 
 # Starting applications
 bindsym $mod+d            exec --no-startup-id "~/scripts/dmen.sh"
-bindsym $mod+Return       exec --no-startup-id "tmux has-session -t default && alacritty -e tmux attach -t default || alacritty -e tmux new -s default"
+bindsym $mod+Return       exec urxvt
 bindsym $mod+Shift+q      kill
 
 bindsym Print             exec --no-startup-id i3-scrot
