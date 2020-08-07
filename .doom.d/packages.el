@@ -50,9 +50,3 @@
 ;(unpin! t)
 
 (package! emojify)
-
-(package! bibtex-completion)
-(package! ivy-bibtex)
-(package! org-ref)
-(package! org-roam-bibtex)
-(package! nov)
