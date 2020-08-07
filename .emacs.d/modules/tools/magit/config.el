@@ -1,5 +1,13 @@
 ;;; tools/magit/config.el -*- lexical-binding: t; -*-
 
+(defvar +magit-open-windows-in-direction 'right
+  "What direction to open new windows from the status buffer.
+For example, diffs and log buffers. Accepts `left', `right', `up', and `down'.")
+
+
+;;
+;;; Packages
+
 (use-package! magit
   :commands magit-file-delete
   :defer-incrementally (dash f s with-editor git-commit package eieio lv transient)
@@ -149,10 +157,7 @@ ensure it is built when we actually use Forge."
   :after magit
   :config
   (setq magit-todos-keyword-suffix "\\(?:([^)]+)\\)?:?") ; make colon optional
-  (define-key magit-todos-section-map "j" nil)
-  ;; Warns that jT isn't bound. Well, yeah, you don't need to tell me, that was
-  ;; on purpose ya goose.
-  (advice-add #'magit-todos-mode :around #'doom-shut-up-a))
+  (define-key magit-todos-section-map "j" nil))
 
 
 (use-package! magit-gitflow
@@ -174,8 +179,12 @@ ensure it is built when we actually use Forge."
   (evil-define-key* 'normal magit-status-mode-map [escape] nil) ; q is enough
   (evil-define-key* '(normal visual) magit-mode-map
     "%"  #'magit-gitflow-popup
+    "zt" #'evil-scroll-line-to-top
     "zz" #'evil-scroll-line-to-center
-    "g=" #'magit-diff-default-context)
+    "zb" #'evil-scroll-line-to-bottom
+    "g=" #'magit-diff-default-context
+    "gi" #'forge-jump-to-issues
+    "gm" #'forge-jump-to-pullreqs)
   (define-key! 'normal
     (magit-status-mode-map
      magit-stash-mode-map
