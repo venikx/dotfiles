@@ -51,7 +51,7 @@ This is ignored by ccls.")
   (set-rotate-patterns! 'c++-mode
     :symbols '(("public" "protected" "private")
                ("class" "struct")))
-  (set-pretty-symbols! '(c-mode c++-mode)
+  (set-ligatures! '(c-mode c++-mode)
     ;; Functional
     ;; :def "void "
     ;; Types
@@ -247,13 +247,13 @@ If rtags or rdm aren't available, fail silently instead of throwing a breaking e
                      `((:ccls . ((:clang . ,(list :extraArgs ["-isystem/Library/Developer/CommandLineTools/usr/include/c++/v1"
                                                               "-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
                                                               "-isystem/usr/local/include"]
-                                                  :resourceDir (string-trim (shell-command-to-string "clang -print-resource-dir"))))))))))))
-
+                                                  :resourceDir (cdr (doom-call-process "clang" "-print-resource-dir"))))))))))))
 
 
 (use-package! ccls
-  :when (and (featurep! +lsp) (not (featurep! :tools lsp +eglot)))
-  :after lsp
+  :when (featurep! +lsp)
+  :unless (featurep! :tools lsp +eglot)
+  :after lsp-mode
   :init
   (after! projectile
     (add-to-list 'projectile-globally-ignored-directories ".ccls-cache")
@@ -265,4 +265,4 @@ If rtags or rdm aren't available, fail silently instead of throwing a breaking e
           `(:clang ,(list :extraArgs ["-isystem/Library/Developer/CommandLineTools/usr/include/c++/v1"
                                       "-isystem/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include"
                                       "-isystem/usr/local/include"]
-                          :resourceDir (string-trim (shell-command-to-string "clang -print-resource-dir")))))))
+                          :resourceDir (cdr (doom-call-process "clang" "-print-resource-dir")))))))

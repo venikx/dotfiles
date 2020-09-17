@@ -39,7 +39,8 @@ run before `doom-init-modules-hook'. Relevant to `doom-module-init-file'.")
               (vterm            (:term vterm))
               (password-store   (:tools pass))
               (flycheck         (:checkers syntax))
-              (flyspell         (:checkers spell)))
+              (flyspell         (:checkers spell))
+              (macos            (:os macos)))
     (:emacs   (electric-indent  (:emacs electric))
               (hideshow         (:editor fold))
               (eshell           (:term eshell))
@@ -47,7 +48,8 @@ run before `doom-init-modules-hook'. Relevant to `doom-module-init-file'.")
     (:ui      (doom-modeline    (:ui modeline))
               (fci              (:ui fill-column))
               (evil-goggles     (:ui ophints))
-              (tabbar           (:ui tabs)))
+              (tabbar           (:ui tabs))
+              (pretty-code      (:ui ligatures)))
     (:app     (email            (:email mu4e))
               (notmuch          (:email notmuch)))
     (:lang    (perl             (:lang raku))))
@@ -201,7 +203,7 @@ This doesn't require modules to be enabled. For enabled modules us
            for default-directory in doom-modules-dirs
            for path = (concat category "/" module "/" file)
            if (file-exists-p path)
-           return (expand-file-name path)))
+           return (file-truename path)))
 
 (defun doom-module-from-path (&optional path enabled-only)
   "Returns a cons cell (CATEGORY . MODULE) derived from PATH (a file path).
@@ -441,7 +443,7 @@ otherwise, MODULES is a multiple-property list (a plist where each key can have
 multiple, linear values).
 
 The bootstrap process involves making sure the essential directories exist, core
-packages are installed, `doom-autoload-file' is loaded, `doom-packages-file'
+packages are installed, `doom-autoloads-file' is loaded, `doom-packages-file'
 cache exists (and is loaded) and, finally, loads your private init.el (which
 should contain your `doom!' block).
 
@@ -466,7 +468,7 @@ to least)."
   `(unless doom-interactive-p
      (doom-module-mplist-map
       (lambda (category module &rest plist)
-        (if (plist-get plist :path)
+        (if (plist-member plist :path)
             (apply #'doom-module-set category module plist)
           (message "WARNING Couldn't find the %s %s module" category module)))
       ,@(if (keywordp (car modules))

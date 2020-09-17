@@ -109,6 +109,8 @@ Is relative to `org-directory', unless it is absolute. Is used in Doom's default
         org-hide-leading-stars t
         org-image-actual-width nil
         org-imenu-depth 8
+        ;; Sub-lists should have different bullets
+        org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a."))
         org-priority-faces
         '((?A . error)
           (?B . warning)
@@ -181,7 +183,7 @@ This forces it to read the background before rendering."
   ;; Automatic indent detection in org files is meaningless
   (add-to-list 'doom-detect-indentation-excluded-modes 'org-mode)
 
-  (set-pretty-symbols! 'org-mode
+  (set-ligatures! 'org-mode
     :name "#+NAME:"
     :name "#+name:"
     :src_block "#+BEGIN_SRC"
@@ -224,11 +226,13 @@ This forces it to read the background before rendering."
            (if (and (eq org-src-window-setup 'switch-invisibly)
                     (functionp initialize))
                ;; org-babel-do-in-edit-buffer is used to execute quick, one-off
-               ;; logic in the context of another major mode. Initializing this
-               ;; major mode can be terribly expensive (particular its mode
-               ;; hooks), so we inhibit them.
+               ;; logic in the context of another major mode, but initializing a
+               ;; major mode with expensive hooks can be terribly expensive.
+               ;; Since Doom adds its most expensive hooks to
+               ;; MAJOR-MODE-local-vars-hook, we can savely inhibit those.
                (lambda ()
-                 (quiet! (delay-mode-hooks (funcall initialize))))
+                 (let ((doom-inhibit-local-var-hooks t))
+                   (funcall initialize)))
              initialize)
            args))
 
@@ -560,6 +564,7 @@ eldoc string."
     ;;      'python' src blocks.
     ;; TODO Should be reported upstream!
     (puthash "org" #'ignore org-eldoc-local-functions-cache)
+    (puthash "plantuml" #'ignore org-eldoc-local-functions-cache)
     (puthash "python" #'python-eldoc-function org-eldoc-local-functions-cache))
 
   (defun +org--restart-mode-h ()
@@ -594,7 +599,10 @@ buffers."
   (defadvice! +org--exclude-agenda-buffers-from-recentf-a (orig-fn file)
     "Prevent temporarily opened agenda buffers from polluting recentf."
     :around #'org-get-agenda-file-buffer
-    (let ((recentf-exclude (list (lambda (_file) t))))
+    (let ((recentf-exclude (list (lambda (_file) t)))
+          (doom-large-file-p t)
+          find-file-hook
+          org-mode-hook)
       (funcall orig-fn file)))
 
   ;; HACK With https://code.orgmode.org/bzg/org-mode/commit/48da60f4, inline
@@ -680,6 +688,7 @@ between the two."
         "q" #'org-set-tags-command
         "t" #'org-todo
         "T" #'org-todo-list
+        "x" #'org-toggle-checkbox
         (:prefix ("a" . "attachments")
          "a" #'org-attach
          "d" #'org-attach-delete-one
@@ -696,7 +705,8 @@ between the two."
          "S" #'org-attach-sync
          (:when (featurep! +dragndrop)
           "c" #'org-download-screenshot
-          "y" #'org-download-yank))
+          "p" #'org-download-clipboard
+          "P" #'org-download-yank))
         (:prefix ("b" . "tables")
          "-" #'org-table-insert-hline
          "a" #'org-table-align
@@ -953,6 +963,7 @@ compelling reason, so..."
   (defvar evil-org-special-o/O '(table-row))
   (defvar evil-org-use-additional-insert t)
   :config
+  (add-hook 'evil-org-mode-hook #'evil-normalize-keymaps)
   (evil-org-set-key-theme)
   (add-hook! 'org-tab-first-hook :append
              ;; Only fold the current tree, rather than recursively

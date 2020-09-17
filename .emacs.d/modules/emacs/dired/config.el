@@ -168,11 +168,18 @@ we have to clean it up ourselves."
   (global-set-key [remap find-dired] #'fd-dired)
   (set-popup-rule! "^\\*F\\(?:d\\|ind\\)\\*$" :ignore t))
 
+(use-package! dired-aux
+  :defer t
+  :config
+  (setq dired-create-destination-dirs 'ask
+        dired-vc-rename-file t))
 
 ;;;###package dired-git-info
 (map! :after dired
       :map (dired-mode-map ranger-mode-map)
       :ng ")" #'dired-git-info-mode)
+(setq dgi-commit-message-format "%h %cs %s"
+      dgi-auto-hide-details-p nil)
 (after! wdired
   ;; Temporarily disable `dired-git-info-mode' when entering wdired, due to
   ;; reported incompatibilities.

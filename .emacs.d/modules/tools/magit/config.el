@@ -18,12 +18,17 @@ For example, diffs and log buffers. Accepts `left', `right', `up', and `down'.")
         transient-values-file  (concat doom-etc-dir "transient/values")
         transient-history-file (concat doom-etc-dir "transient/history"))
   :config
+  (add-to-list 'doom-debug-variables 'magit-refresh-verbose)
+
   (setq transient-default-level 5
         magit-diff-refine-hunk t ; show granular diffs in selected hunk
         ;; Don't autosave repo buffers. This is too magical, and saving can
         ;; trigger a bunch of unwanted side-effects, like save hooks and
-        ;; formatters. Trust us to know what we're doing.
-        magit-save-repository-buffers nil)
+        ;; formatters. Trust the user to know what they're doing.
+        magit-save-repository-buffers nil
+        ;; Don't display parent/related refs in commit buffers; they are rarely
+        ;; helpful and only add to runtime costs.
+        magit-revision-insert-related-refs nil)
   (add-hook 'magit-process-mode-hook #'goto-address-mode)
 
   (defadvice! +magit-revert-repo-buffers-deferred-a (&rest _)
@@ -75,7 +80,8 @@ For example, diffs and log buffers. Accepts `left', `right', `up', and `down'.")
   ;; 2. The status screen isn't buried when viewing diffs or logs from the
   ;;    status screen.
   (setq transient-display-buffer-action '(display-buffer-below-selected)
-        magit-display-buffer-function #'+magit-display-buffer-fn)
+        magit-display-buffer-function #'+magit-display-buffer-fn
+        magit-bury-buffer-function #'magit-mode-quit-window)
   (set-popup-rule! "^\\(?:\\*magit\\|magit:\\| \\*transient\\*\\)" :ignore t)
   (add-hook 'magit-popup-mode-hook #'hide-mode-line-mode)
 
@@ -97,7 +103,17 @@ For example, diffs and log buffers. Accepts `left', `right', `up', and `down'.")
   (define-key magit-status-mode-map [remap magit-mode-bury-buffer] #'+magit/quit)
 
   ;; Close transient with ESC
-  (define-key transient-map [escape] #'transient-quit-one))
+  (define-key transient-map [escape] #'transient-quit-one)
+
+  ;; An optimization that particularly affects macOS and Windows users: by
+  ;; resolving `magit-git-executable' Emacs does less work to find the
+  ;; executable in your PATH, which is great because it is called so frequently.
+  ;; However, absolute paths will break magit in TRAMP/remote projects if the
+  ;; git executable isn't in the exact same location.
+  (add-hook! 'magit-status-mode-hook
+    (defun +magit-optimize-process-calls-h ()
+      (when-let (path (executable-find magit-git-executable))
+        (setq-local magit-git-executable path)))))
 
 
 (use-package! forge

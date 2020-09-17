@@ -106,8 +106,8 @@
 
 ;;; :completion
 (map! (:when (featurep! :completion company)
-       :i "C-@"      #'+company/complete
-       :i "C-SPC"    #'+company/complete
+       :i "C-@"      (cmds! (not (minibufferp)) #'+company/complete)
+       :i "C-SPC"    (cmds! (not (minibufferp)) #'+company/complete)
        (:after company
         (:map company-active-map
          "C-w"     nil  ; don't interfere with `evil-delete-backward-word'
@@ -132,11 +132,7 @@
          "C-j"     #'company-select-next-or-abort
          "C-k"     #'company-select-previous-or-abort
          "C-s"     (cmd! (company-search-abort) (company-filter-candidates))
-         [escape]  #'company-search-abort))
-       ;; TAB auto-completion in term buffers
-       (:after comint :map comint-mode-map
-        "TAB" #'company-complete
-        [tab] #'company-complete))
+         [escape]  #'company-search-abort)))
 
       (:when (featurep! :completion ivy)
        (:after ivy
@@ -341,37 +337,36 @@
       ;;; <leader> c --- code
       (:prefix-map ("c" . "code")
        (:when (and (featurep! :tools lsp) (not (featurep! :tools lsp +eglot)))
-          :desc "LSP Execute code action" "a" #'lsp-execute-code-action
-          :desc "LSP Organize imports" "o" #'lsp-organize-imports
-          (:when (featurep! :completion ivy)
-            :desc "Jump to symbol in current workspace" "j"   #'lsp-ivy-workspace-symbol
-            :desc "Jump to symbol in any workspace"     "J"   #'lsp-ivy-global-workspace-symbol)
-          (:when (featurep! :completion helm)
-            :desc "Jump to symbol in current workspace" "j"   #'helm-lsp-workspace-symbol
-            :desc "Jump to symbol in any workspace"     "J"   #'helm-lsp-global-workspace-symbol)
-          :desc "LSP Rename" "r" #'lsp-rename
-         (:after lsp-mode
-           :desc "LSP"                                   "l"   lsp-command-map))
-        (:when (featurep! :tools lsp +eglot)
-          :desc "LSP Execute code action" "a" #'eglot-code-actions
-          :desc "LSP Rename" "r" #'eglot-rename
-          :desc "LSP Find declaration" "j" #'eglot-find-declaration)
-        :desc "Compile"                               "c"   #'compile
-        :desc "Recompile"                             "C"   #'recompile
-        :desc "Jump to definition"                    "d"   #'+lookup/definition
-        :desc "Jump to references"                    "D"   #'+lookup/references
-        :desc "Evaluate buffer/region"                "e"   #'+eval/buffer-or-region
-        :desc "Evaluate & replace region"             "E"   #'+eval:replace-region
-        :desc "Format buffer/region"                  "f"   #'+format/region-or-buffer
-        :desc "Find implementations"                  "i"   #'+lookup/implementations
-        :desc "Jump to documentation"                 "k"   #'+lookup/documentation
-        :desc "Send to repl"                          "s"   #'+eval/send-region-to-repl
-        :desc "Find type definition"                  "t"   #'+lookup/type-definition
-        :desc "Delete trailing whitespace"            "w"   #'delete-trailing-whitespace
-        :desc "Delete trailing newlines"              "W"   #'doom/delete-trailing-newlines
-        :desc "List errors"                           "x"   #'flymake-show-diagnostics-buffer
-        (:when (featurep! :checkers syntax)
-          :desc "List errors"                         "x"   #'flycheck-list-errors))
+        :desc "LSP Execute code action" "a" #'lsp-execute-code-action
+        :desc "LSP Organize imports" "o" #'lsp-organize-imports
+        (:when (featurep! :completion ivy)
+         :desc "Jump to symbol in current workspace" "j"   #'lsp-ivy-workspace-symbol
+         :desc "Jump to symbol in any workspace"     "J"   #'lsp-ivy-global-workspace-symbol)
+        (:when (featurep! :completion helm)
+         :desc "Jump to symbol in current workspace" "j"   #'helm-lsp-workspace-symbol
+         :desc "Jump to symbol in any workspace"     "J"   #'helm-lsp-global-workspace-symbol)
+        :desc "LSP"                                  "l"   #'+default/lsp-command-map
+        :desc "LSP Rename"                           "r"   #'lsp-rename)
+       (:when (featurep! :tools lsp +eglot)
+        :desc "LSP Execute code action" "a" #'eglot-code-actions
+        :desc "LSP Rename" "r" #'eglot-rename
+        :desc "LSP Find declaration" "j" #'eglot-find-declaration)
+       :desc "Compile"                               "c"   #'compile
+       :desc "Recompile"                             "C"   #'recompile
+       :desc "Jump to definition"                    "d"   #'+lookup/definition
+       :desc "Jump to references"                    "D"   #'+lookup/references
+       :desc "Evaluate buffer/region"                "e"   #'+eval/buffer-or-region
+       :desc "Evaluate & replace region"             "E"   #'+eval:replace-region
+       :desc "Format buffer/region"                  "f"   #'+format/region-or-buffer
+       :desc "Find implementations"                  "i"   #'+lookup/implementations
+       :desc "Jump to documentation"                 "k"   #'+lookup/documentation
+       :desc "Send to repl"                          "s"   #'+eval/send-region-to-repl
+       :desc "Find type definition"                  "t"   #'+lookup/type-definition
+       :desc "Delete trailing whitespace"            "w"   #'delete-trailing-whitespace
+       :desc "Delete trailing newlines"              "W"   #'doom/delete-trailing-newlines
+       :desc "List errors"                           "x"   #'flymake-show-diagnostics-buffer
+       (:when (featurep! :checkers syntax)
+        :desc "List errors"                         "x"   #'flycheck-list-errors))
 
       ;;; <leader> f --- file
       (:prefix-map ("f" . "file")
@@ -545,7 +540,7 @@
        (:when (featurep! :term eshell)
         :desc "Toggle eshell popup"   "e" #'+eshell/toggle
         :desc "Open eshell here"      "E" #'+eshell/here)
-       (:when (featurep! :tools macos)
+       (:when (featurep! :os macos)
         :desc "Reveal in Finder"           "o" #'+macos/reveal-in-finder
         :desc "Reveal project in Finder"   "O" #'+macos/reveal-project-in-finder
         :desc "Send to Transmit"           "u" #'+macos/send-to-transmit
@@ -645,6 +640,7 @@
        :desc "Search other project"         "P" #'+default/search-other-project
        :desc "Jump to mark"                 "r" #'evil-show-marks
        :desc "Search buffer"                "s" #'+default/search-buffer
+       :desc "Search buffer for thing at point" "S" #'swiper-isearch-thing-at-point
        :desc "Dictionary"                   "t" #'+lookup/dictionary-definition
        :desc "Thesaurus"                    "T" #'+lookup/synonyms)
 
@@ -665,8 +661,10 @@
        (:when (featurep! :lang org +present)
         :desc "org-tree-slide mode"        "p" #'org-tree-slide-mode)
        :desc "Read-only mode"               "r" #'read-only-mode
-       (:when (featurep! :checkers spell)
-        :desc "Flyspell"                   "s" #'flyspell-mode)
+       (:when (and (featurep! :checkers spell) (not (featurep! :checkers spell +flyspell)))
+        :desc "Spell checker"              "s" #'spell-fu-mode)
+       (:when (featurep! :checkers spell +flyspell)
+        :desc "Spell checker"              "s" #'flyspell-mode)
        (:when (featurep! :lang org +pomodoro)
         :desc "Pomodoro timer"             "t" #'org-pomodoro)
        :desc "Soft line wrapping"           "w" #'visual-line-mode

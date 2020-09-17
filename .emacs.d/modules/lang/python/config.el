@@ -1,12 +1,10 @@
 ;;; lang/python/config.el -*- lexical-binding: t; -*-
 
-(defvar +python-ipython-repl-args '("-i" "--simple-prompt" "--no-color-info")
-  "CLI arguments to initialize ipython with when `+python/open-ipython-repl' is
-called.")
+(defvar +python-ipython-command '("ipython" "-i" "--simple-prompt" "--no-color-info")
+  "Command to initialize the ipython REPL for `+python/open-ipython-repl'.")
 
-(defvar +python-jupyter-repl-args '("--simple-prompt")
-  "CLI arguments to initialize 'jupiter console %s' with when
-`+python/open-ipython-repl' is called.")
+(defvar +python-jupyter-command '("jupyter" "console" "--simple-prompt")
+  "Command to initialize the jupyter REPL for `+python/open-jupyter-repl'.")
 
 (after! projectile
   (pushnew! projectile-project-root-files "setup.py" "requirements.txt"))
@@ -31,7 +29,7 @@ called.")
   (set-repl-handler! 'python-mode #'+python/open-repl :persist t)
   (set-docsets! 'python-mode "Python 3" "NumPy" "SciPy")
 
-  (set-pretty-symbols! 'python-mode
+  (set-ligatures! 'python-mode
     ;; Functional
     :def "def"
     :lambda "lambda"
@@ -247,7 +245,7 @@ called.")
   (pyenv-mode +1)
   (when (executable-find "pyenv")
     (add-to-list 'exec-path (expand-file-name "shims" (or (getenv "PYENV_ROOT") "~/.pyenv"))))
-  (add-hook 'python-mode-hook #'+python-pyenv-mode-set-auto-h)
+  (add-hook 'python-mode-local-vars-hook #'+python-pyenv-mode-set-auto-h)
   (add-hook 'doom-switch-buffer-hook #'+python-pyenv-mode-set-auto-h))
 
 
@@ -311,25 +309,16 @@ called.")
 ;;
 ;;; LSP
 
-(when! (and (featurep! +lsp)
-            (not (featurep! :tools lsp +eglot)))
+(eval-when! (and (featurep! +lsp)
+                 (not (featurep! :tools lsp +eglot)))
 
   (use-package! lsp-python-ms
     :unless (featurep! +pyright)
-    :after lsp-clients
+    :after lsp-mode
     :preface
     (after! python
-      (setq lsp-python-ms-python-executable-cmd python-shell-interpreter))
-    :init
-    ;; HACK If you don't have python installed, then opening python buffers with
-    ;;      this on causes a "wrong number of arguments: nil 0" error, because of
-    ;;      careless usage of `cl-destructuring-bind'. This silences that error,
-    ;;      since we may still want to write some python on a system without
-    ;;      python installed!
-    (defadvice! +python--silence-errors-a (orig-fn &rest args)
-      :around #'lsp-python-ms--extra-init-params
-      (ignore-errors (apply orig-fn args))))
+      (setq lsp-python-ms-python-executable-cmd python-shell-interpreter)))
 
   (use-package! lsp-pyright
     :when (featurep! +pyright)
-    :after lsp-clients))
+    :after lsp-mode))

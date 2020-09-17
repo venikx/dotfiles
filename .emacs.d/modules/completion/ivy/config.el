@@ -46,6 +46,11 @@ results buffer.")
     [remap persp-switch-to-buffer]        #'+ivy/switch-workspace-buffer
     [remap evil-show-jumps]               #'+ivy/jump-list)
   :config
+  ;; The default sorter is much to slow and the default for `ivy-sort-max-size'
+  ;; is way too big (30,000). Turn it down so big repos affect project
+  ;; navigation less.
+  (setq ivy-sort-max-size 7500)
+
   ;; Counsel changes a lot of ivy's state at startup; to control for that, we
   ;; need to load it as early as possible. Some packages (like `ivy-prescient')
   ;; require this.
@@ -69,7 +74,7 @@ results buffer.")
   ;; Highlight each ivy candidate including the following newline, so that it
   ;; extends to the right edge of the window
   (setf (alist-get 't ivy-format-functions-alist)
-        #'ivy-format-function-line)
+        #'+ivy-format-function-line-or-arrow)
 
   ;; Integrate `ivy' with `better-jumper'; ensure a jump point is registered
   ;; before jumping to new locations with ivy
@@ -220,7 +225,7 @@ evil-ex-specific constructs, so we disable it solely in evil-ex."
              (listp counsel-rg-base-command)
              (member "--path-separator" counsel-rg-base-command))
     (setf (cadr (member "--path-separator" counsel-rg-base-command))
-          "//"))
+          "/"))
 
   ;; Integrate with `helpful'
   (setq counsel-describe-function-function #'helpful-callable
@@ -376,9 +381,11 @@ evil-ex-specific constructs, so we disable it solely in evil-ex."
           '(literal regexp initialism)))
   :config
   (setq ivy-prescient-sort-commands
-        '(:not swiper swiper-isearch ivy-switch-buffer counsel-grep
-               counsel-git-grep counsel-ag counsel-rg counsel-imenu
-               counsel-yank-pop counsel-recentf counsel-buffer-or-recentf)
+        '(:not swiper swiper-isearch ivy-switch-buffer
+          lsp-ivy-workspace-symbol ivy-resume ivy--restore-session
+          counsel-grep counsel-git-grep counsel-rg counsel-ag
+          counsel-ack counsel-fzf counsel-pt counsel-imenu
+          counsel-yank-pop counsel-recentf counsel-buffer-or-recentf)
         ivy-prescient-retain-classic-highlighting t)
   (defun +ivy-prescient-non-fuzzy (str)
     (let ((prescient-filter-method '(literal regexp)))

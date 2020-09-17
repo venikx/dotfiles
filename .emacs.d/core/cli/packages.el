@@ -1,20 +1,13 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; core/cli/packages.el
 
-(defcli! (update u)
-    ((discard-p ["--discard"] "All local changes to packages are discarded"))
-  "Updates packages.
-
-This works by fetching all installed package repos and checking the distance
-between HEAD and FETCH_HEAD. This can take a while.
-
-This excludes packages whose `package!' declaration contains a non-nil :freeze
-or :ignore property."
-  (straight-check-all)
-  (let ((doom-auto-discard discard-p))
-    (when (doom-cli-packages-update)
-      (doom-autoloads-reload))
-    t))
+(defcli! (update u) (&rest _)
+  "This command was removed."
+  :hidden t
+  (print! (error "This command has been removed.\n"))
+  (print-group!
+   (print! "To update Doom run 'doom upgrade'. To only update packages run 'doom sync -u'."))
+  nil)
 
 (defcli! (build b)
     ((rebuild-p ["-r"] "Only rebuild packages that need rebuilding"))
@@ -133,8 +126,14 @@ list remains lean."
       (doom-log "%s is newer than %s" file elc-file)
       t)))
 
+;; DEPRECATED Remove later
+(defun doom--comp-output-filename (file)
+  (if (fboundp 'comp-output-filename)
+      (comp-output-filename file)
+    (comp-el-to-eln-filename file)))
+
 (defun doom--eln-file-outdated-p (file)
-  (when-let* ((eln-file (comp-output-filename file))
+  (when-let* ((eln-file (doom--comp-output-filename file))
               (error-file (concat eln-file ".error")))
     (push eln-file doom--expected-eln-files)
     (cond ((file-exists-p eln-file)
@@ -151,7 +150,7 @@ list remains lean."
 
 (defun doom--native-compile-done-h (file)
   (when-let* ((file)
-              (eln-file (comp-output-filename file))
+              (eln-file (doom--comp-output-filename file))
               (error-file (concat eln-file ".error")))
     (if (file-exists-p eln-file)
         (doom-log "Compiled %s" eln-file)
@@ -491,8 +490,9 @@ If ELPA-P, include packages installed with package.el (M-x package-install)."
              (and (or repos-p regraft-repos-p)
                   (straight--directory-files (straight--repos-dir) nil nil 'sort))))
         (list (when builds-p
-                (seq-remove (doom-rpartial #'gethash straight--profile-cache)
-                            (straight--directory-files (straight--build-dir) nil nil 'sort)))
+                (seq-filter #'file-directory-p
+                            (seq-remove (doom-rpartial #'gethash straight--profile-cache)
+                                        (straight--directory-files (straight--build-dir) nil nil 'sort))))
               (when repos-p
                 (seq-remove (doom-rpartial #'straight--checkhash straight--repo-cache)
                             rdirs))

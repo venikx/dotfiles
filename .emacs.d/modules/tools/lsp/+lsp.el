@@ -4,6 +4,13 @@
   "The backends to prepend to `company-backends' in `lsp-mode' buffers.
 Can be a list of backends; accepts any value `company-backends' accepts.")
 
+(defvar +lsp-auto-install-servers nil
+  "If non-nil, automatically install LSP servers.
+
+`lsp-mode' will prompt you to install an LSP server when you enter a major mode
+with LSP support but no available server. I believe changes to your system
+should be a deliberate act (as is flipping this variable).")
+
 
 ;;
 ;;; Packages
@@ -30,11 +37,6 @@ Can be a list of backends; accepts any value `company-backends' accepts.")
   ;; Disable features that have great potential to be slow.
   (setq lsp-enable-file-watchers nil
         lsp-enable-folding nil
-        ;; HACK Fix #2911, until it is resolved upstream. Links come in
-        ;;      asynchronously from the server, but lsp makes no effort to
-        ;;      "select" the original buffer before laying them down, so they
-        ;;      could be rendered in the wrong buffer (like the minibuffer).
-        lsp-enable-links t
         lsp-enable-text-document-color nil)
 
   ;; Disable features that modify our code without our permission.
@@ -42,6 +44,8 @@ Can be a list of backends; accepts any value `company-backends' accepts.")
         lsp-enable-on-type-formatting nil)
 
   :config
+  (pushnew! doom-debug-variables 'lsp-log-io 'lsp-print-performance)
+
   (setq lsp-intelephense-storage-path (concat doom-cache-dir "lsp-intelephense/")
         lsp-vetur-global-snippets-dir (expand-file-name "vetur"
                                                         (or (bound-and-true-p +snippets-dir)
@@ -58,41 +62,52 @@ Can be a list of backends; accepts any value `company-backends' accepts.")
     :type-definition #'lsp-find-type-definition
     :references #'lsp-find-references)
 
-  ;; REVIEW The '<leader> c l' prefix is hardcoded here, unfortunately.
-  (when (featurep! :config default +bindings)
-    (dolist (leader-key (list doom-leader-key doom-leader-alt-key))
-      (let ((lsp-keymap-prefix (concat leader-key " c l")))
-        (lsp-enable-which-key-integration))))
+  (when lsp-auto-configure
+    (mapc (lambda (package) (require package nil t))
+          (cl-remove-if #'featurep lsp-client-packages)))
 
   (defadvice! +lsp--dont-auto-install-servers-a (orig-fn &rest args)
-    "Don't auto-install LSP servers. Only complain if there aren't available."
+    "Replace auto-install behavior with warning and support indirect buffers."
     :around #'lsp
-    ;; `lsp' is normally eager to automatically install LSP servers, or
-    ;; prompting to do so, but (in my opinion) server installation should be a
-    ;; deliberate act by the end-user:
-    (letf! (defun lsp--client-download-server-fn (&rest _))
+    (if +lsp-auto-install-servers
+        (apply orig-fn args)
+      (letf! ((buffer-file-name
+               ;; Add support for indirect buffers (org src or capture buffers)
+               (or buffer-file-name
+                   (buffer-file-name (buffer-base-buffer))))
+              ;; Already loaded them. No need to do so again.
+              (lsp-client-packages nil)
+              ;; `lsp' is normally eager to automatically install LSP servers, or
+              ;; prompting to do so, but (in my opinion) server installation
+              ;; should be a deliberate act by the end-user:
+              (defun lsp--completing-read (msg clients &rest _)
+                (lsp--warn (concat msg "%s\n"
+                                   "  Use `M-x lsp-install-server' to install a supported server, or read "
+                                   "https://emacs-lsp.github.io/lsp-mode/page/languages for more.")
+                           (mapcar #'lsp--client-server-id clients))
+                (throw 'not-installed nil)))
+        (catch 'not-installed
+          (apply orig-fn args)))))
+
+  (defadvice! +lsp--respect-user-defined-checkers-a (orig-fn &rest args)
+    "Set up flycheck-mode or flymake-mode, depending on `lsp-diagnostic-package'."
+    :around #'lsp-diagnostics--flycheck-enable
+    (if flycheck-checker
+        ;; Respect file/dir/explicit user-defined `flycheck-checker'.
+        (let ((old-checker flycheck-checker))
+          (apply orig-fn args)
+          (setq-local flycheck-checker old-checker))
       (apply orig-fn args)))
 
   (add-hook! 'lsp-mode-hook
-    (defun +lsp-init-optimizations-h ()
-      "Increase `read-process-output-max' and `gcmh-high-cons-threshold'."
-      ;; `read-process-output-max' is only available on recent development
-      ;; builds of Emacs 27 and above.
-      (unless (boundp 'read-process-output-max)
-        (setq-local read-process-output-max (* 1024 1024)))
-      ;; REVIEW LSP causes a lot of allocations, with or without Emacs 27+'s
-      ;;        native JSON library, so we up the GC threshold to stave off
-      ;;        GC-induced slowdowns/freezes. Doom uses `gcmh' to enforce its GC
-      ;;        strategy, so we modify its variables rather than
-      ;;        `gc-cons-threshold' directly.
-      (setq-local gcmh-high-cons-threshold (* 2 (default-value 'gcmh-high-cons-threshold))))
     (defun +lsp-display-guessed-project-root-h ()
       "Log what LSP things is the root of the current project."
       ;; Makes it easier to detect root resolution issues.
       (when-let (path (buffer-file-name (buffer-base-buffer)))
         (if-let (root (lsp--calculate-root (lsp-session) path))
             (lsp--info "Guessed project root is %s" (abbreviate-file-name root))
-          (lsp--info "Could not guess project root.")))))
+          (lsp--info "Could not guess project root."))))
+    #'+lsp-init-optimizations-h)
 
   (add-hook! 'lsp-completion-mode-hook
     (defun +lsp-init-company-backends-h ()
@@ -127,7 +142,7 @@ server getting expensively restarted when reverting buffers."
 
 
 (use-package! lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
+  :defer t
   :config
   (setq lsp-ui-doc-max-height 8
         lsp-ui-doc-max-width 35

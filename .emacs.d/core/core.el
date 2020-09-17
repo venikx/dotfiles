@@ -127,7 +127,7 @@ Use this for files that change often, like cache files. Must end with a slash.")
 Defaults to ~/.config/doom, ~/.doom.d or the value of the DOOMDIR envvar;
 whichever is found first. Must end in a slash.")
 
-(defconst doom-autoload-file (concat doom-local-dir "autoloads.el")
+(defconst doom-autoloads-file (concat doom-local-dir "autoloads.el")
   "Where `doom-reload-core-autoloads' stores its core autoloads.
 
 This file is responsible for informing Emacs where to find all of Doom's
@@ -271,6 +271,26 @@ config.el instead."
 
 
 ;;
+;;; Native Compilation support (http://akrl.sdf.org/gccemacs.html)
+
+;; Don't store eln files in ~/.emacs.d/eln-cache (they are likely to be purged
+;; when upgrading Doom).
+(when (boundp 'comp-eln-load-path)
+  (add-to-list 'comp-eln-load-path (concat doom-cache-dir "eln/")))
+
+(after! comp
+  ;; HACK `comp-eln-load-path' isn't fully respected yet, because native
+  ;;      compilation occurs in another emacs process that isn't seeded with our
+  ;;      value for `comp-eln-load-path', so we inject it ourselves:
+  (setq comp-async-env-modifier-form
+        `(progn
+           ,comp-async-env-modifier-form
+           (setq comp-eln-load-path ',(bound-and-true-p comp-eln-load-path))))
+  ;; HACK Disable native-compilation for some troublesome packages
+  (add-to-list 'comp-deferred-compilation-black-list "/evil-collection-vterm\\.el\\'"))
+
+
+;;
 ;;; Optimizations
 
 ;; Disable bidirectional text rendering for a modest performance boost. I've set
@@ -303,8 +323,9 @@ config.el instead."
 (setq ffap-machine-p-known 'reject)
 
 ;; Font compacting can be terribly expensive, especially for rendering icon
-;; fonts on Windows. Whether it has a notable affect on Linux and Mac hasn't
-;; been determined, but we inhibit it there anyway.
+;; fonts on Windows. Whether disabling it has a notable affect on Linux and Mac
+;; hasn't been determined, but we inhibit it there anyway. This increases memory
+;; usage, however!
 (setq inhibit-compacting-font-caches t)
 
 ;; Performance on Windows is considerably worse than elsewhere. We'll need
@@ -319,10 +340,6 @@ config.el instead."
 (unless IS-MAC   (setq command-line-ns-option-alist nil))
 (unless IS-LINUX (setq command-line-x-option-alist nil))
 
-;; Delete files to trash on macOS, as an extra layer of precaution against
-;; accidentally deleting wanted files.
-(setq delete-by-moving-to-trash IS-MAC)
-
 ;; Adopt a sneaky garbage collection strategy of waiting until idle time to
 ;; collect; staving off the collector while the user is working.
 (setq gcmh-idle-delay 5
@@ -330,8 +347,10 @@ config.el instead."
       gcmh-verbose doom-debug-p)
 
 ;; HACK `tty-run-terminal-initialization' is *tremendously* slow for some
-;;      reason. Disabling it completely could have many side-effects, so we
-;;      defer it until later, at which time it (somehow) runs very quickly.
+;;      reason; inexplicably doubling startup time for terminal Emacs. Keeping
+;;      it disabled will have nasty side-effects, so we simply delay it until
+;;      later in the startup process and, for some reason, it runs much faster
+;;      when it does.
 (unless (daemonp)
   (advice-add #'tty-run-terminal-initialization :override #'ignore)
   (add-hook! 'window-setup-hook
@@ -346,12 +365,12 @@ config.el instead."
 ;; File+dir local variables are initialized after the major mode and its hooks
 ;; have run. If you want hook functions to be aware of these customizations, add
 ;; them to MODE-local-vars-hook instead.
-(defvar doom--inhibit-local-var-hooks nil)
+(defvar doom-inhibit-local-var-hooks nil)
 
 (defun doom-run-local-var-hooks-h ()
   "Run MODE-local-vars-hook after local variables are initialized."
-  (unless doom--inhibit-local-var-hooks
-    (set (make-local-variable 'doom--inhibit-local-var-hooks) t)
+  (unless doom-inhibit-local-var-hooks
+    (set (make-local-variable 'doom-inhibit-local-var-hooks) t)
     (run-hook-wrapped (intern-soft (format "%s-local-vars-hook" major-mode))
                       #'doom-try-run-hook)))
 
@@ -473,7 +492,7 @@ If RETURN-P, return the message as a string instead of displaying it."
   "Bootstrap Doom, if it hasn't already (or if FORCE-P is non-nil).
 
 The bootstrap process ensures that everything Doom needs to run is set up;
-essential directories exist, core packages are installed, `doom-autoload-file'
+essential directories exist, core packages are installed, `doom-autoloads-file'
 is loaded (failing if it isn't), that all the needed hooks are in place, and
 that `core-packages' will load when `package' or `straight' is used.
 
@@ -505,7 +524,7 @@ to least)."
                   load-path doom--initial-load-path
                   process-environment doom--initial-process-environment)
 
-    ;; Doom caches a lot of information in `doom-autoload-file'. Module and
+    ;; Doom caches a lot of information in `doom-autoloads-file'. Module and
     ;; package autoloads, autodefs like `set-company-backend!', and variables
     ;; like `doom-modules', `doom-disabled-packages', `load-path',
     ;; `auto-mode-alist', and `Info-directory-list'. etc. Compiling them into
@@ -514,18 +533,18 @@ to least)."
         ;; Avoid `file-name-sans-extension' for premature optimization reasons.
         ;; `string-remove-suffix' is cheaper because it performs no file sanity
         ;; checks; just plain ol' string manipulation.
-        (load (string-remove-suffix ".el" doom-autoload-file)
+        (load (string-remove-suffix ".el" doom-autoloads-file)
               nil 'nomessage)
       (file-missing
        ;; If the autoloads file fails to load then the user forgot to sync, or
        ;; aborted a doom command midway!
-       (if (equal (nth 3 e) doom-autoload-file)
+       (if (equal (nth 3 e) doom-autoloads-file)
            (signal 'doom-error
                    (list "Doom is in an incomplete state"
-                         "run 'bin/doom sync' on the command line to repair it"))
+                         "run 'doom sync' on the command line to repair it"))
          ;; Otherwise, something inside the autoloads file is triggering this
          ;; error; forward it!
-         (apply #'doom-autoload-error e))))
+         (signal 'doom-autoload-error e))))
 
     ;; Load shell environment, optionally generated from 'doom env'. No need
     ;; to do so if we're in terminal Emacs, where Emacs correctly inherits
