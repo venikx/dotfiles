@@ -9,7 +9,7 @@ start=`date +%s`
 echo
 echo "------------------------------"
 echo "Updating pacman..."
-sudo pacman -Sy --noconfirmyyu
+sudo pacman -Suy --noconfirm
 
 echo
 echo "------------------------------"
@@ -29,7 +29,7 @@ CLIPackages=(
     curl
     bat
     ccid
-    picom
+    picom #compton 
     neovim
     ranger
     ripgrep
@@ -40,14 +40,12 @@ CLIPackages=(
     xorg-xclipboard
     scrot
     rxvt-unicode
-    tmux
 )
 AURCLIPackages=(
     i3status-rust
 )
 sudo pacman -Sy --noconfirm ${CLIPackages[@]}
 yay -S --norebuild ${AURCLIPackages[@]}
-systemctl disable lightdm.service
 
 echo
 echo "------------------------------"
@@ -94,11 +92,7 @@ echo "Installing media packages..."
 AURMediaPackages=(
     slack
     discord
-    ncmpcpp
-    mopidy
-    mopidy-spotify
-    mopidy-mpd
-    mpc
+    spotify
 )
 MediaPackages=(
     vlc
@@ -109,8 +103,6 @@ MediaPackages=(
 )
 yay -S --norebuild ${AURMediaPackages[@]}
 sudo pacman -Sy --noconfirm ${MediaPackages[@]}
-systemctl start --user mopidy.service
-systemctl enable --user mopidy.service
 
 echo
 echo "------------------------------"
@@ -120,8 +112,6 @@ DevOpsPackages=(
     docker-compose
 )
 sudo pacman -Sy --noconfirm ${DevOpsPackages[@]}
-sudo systemctl start docker
-sudo systemctl enable docker
 
 echo
 echo "------------------------------"
@@ -133,17 +123,28 @@ SecurityPackages=(
     yubikey-personalization
 )
 sudo pacman -Sy --noconfirm ${SecurityPackages[@]}
+
+
+# ------------------------------
+# 3. Services
+# ------------------------------
+echo
+echo "------------------------------"
+echo "Managing services"
+systemctl disable lightdm.service
+sudo systemctl start docker
+sudo systemctl enable docker
 sudo systemctl start pcscd
 sudo systemctl enable pcscd
 
-
-# ------------------------------
-# 3. MISC
-# ------------------------------
-git config user.email kevin.debaerdemaeker@epicgames.com
+chsh -s $(which zsh)
+~/.emacs.d/bin/doom install
+~/.emacs.d/bin/doom sync
+wal -i ~/wallpapers/cyberpunk-street.jpg
 
 runtime=$((($(date +%s)-$start)/60))
 echo
 echo "------------------------------"
 echo "------------------------------"
 echo "The setup took $runtime minutes to complete!"
+echo "Please reboot since your shell has changed from bash to zsh"
