@@ -98,7 +98,11 @@ MediaPackages=(
     vlc
     obs-studio
     qbittorrent
+    pulseaudio
+    pulseaudio-alsa
+    manjaro-pulse
     pavucontrol
+    pa-applet
     v4l-utils # utilities to edit video and camera settings
 )
 yay -S --norebuild ${AURMediaPackages[@]}
