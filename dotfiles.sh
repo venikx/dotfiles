@@ -1,18 +1,17 @@
-#!/bin/bash
+#!/bin/sh
+
 set -e
 
 echo
 echo "------------------------------"
 echo "Setting up dotfiles..."
 
-chsh -s /bin/zsh
-
+mkdir -p .config-backup
 function config {
     /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME $@
 }
 git clone --bare https://gitlab.com/venikx/dotfiles.git $HOME/.cfg
-mkdir -p .config-backup
-
+config config user.email me@venikx.com
 config checkout
 
 if [ $? = 0 ]; then
