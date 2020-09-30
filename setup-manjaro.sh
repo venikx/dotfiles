@@ -9,10 +9,30 @@ titleMessage() {
     echo "$1"
     echo "=============================="
 }
+dots() {
+    /usr/bin/git --git-dir=$HOME/.dots/ --work-tree=$HOME $@
+}
 
 titleMessage "PREPARE PKG MANAGERS"
 sudo pacman -Syuu --noconfirm
 yay -Syu --noconfirm
+
+if [ -d "$/home/venikx/.cfg" ]; then
+    mkdir -p .config-backup
+    git clone --bare https://gitlab.com/venikx/dotfiles.git $HOME/.dots
+    dots checkout
+
+    if [ $? = 0 ]; then
+        echo "Config succesfully checked out.";
+    else
+        echo "The dotfiles are in conflict. Backing up pre-existing dotfiles.";
+        config checkout 2>&1 | \
+            egrep "\s+\." | \
+            awk {'print $1'} | xargs -I{} mv {} .config-backup/{}
+    fi;
+    dots checkout
+    dots config status.showUntrackedFiles no
+fi
 
 titleMessage "INSTALLING PACKAGES"
 Packages=(
@@ -68,17 +88,6 @@ AURPackages=(
     emacs-git
 )
 yay -S --noconfirm ${AURPackages[@]}
-
-titleMessage "RETRIEVING DOTFILES"
-putgitrepo() {
-    dir=$(mktemp -d)
-    [ ! -d "$2" ] && mkdir -p "$2"
-	git clone "$1" "$dir"
-	cp -rfT "$dir" "$2"
-}
-
-putgitrepo "https://gitlab.com/venikx/dotfiles.git" "/home/venikx"
-git config status.showUntrackedFiles no
 
 titleMessage "MANAGING SERVICES"
 systemctl disable lightdm.service
