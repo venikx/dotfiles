@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 sudo -v
 start=`date +%s`
 
@@ -17,7 +16,8 @@ titleMessage "PREPARE PKG MANAGERS"
 sudo pacman -Syuu --noconfirm
 yay -Syu --noconfirm
 
-if [ -d "$/home/venikx/.cfg" ]; then
+titleMessage "RETRIEVING DOTFILES"
+if [ ! -d "$/home/venikx/.cfg" ]; then
     mkdir -p .config-backup
     git clone --bare https://gitlab.com/venikx/dotfiles.git $HOME/.dots
     dots checkout
@@ -107,7 +107,6 @@ wal -i ~/wallpapers/cyberpunk-street.jpg
 titleMessage "CHANGING THE SHELL"
 chsh -s $(which zsh) 
 mkdir -p "~/.cache/zsh/"
-exec zsh
 
 titleMessage "CONFIGURING NVM AND NPM"
 source /usr/share/nvm/init-nvm.sh
