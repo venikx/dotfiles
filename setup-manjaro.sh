@@ -1,38 +1,29 @@
 #!/bin/sh
-
+set -e
 sudo -v
 start=`date +%s`
-# ------------------------------
-# 1. PREPARE MANJARO
-# ------------------------------
 
-echo
-echo "------------------------------"
-echo "Updating pacman..."
-sudo pacman -Suy --noconfirm
+titleMessage() {
+    echo
+    echo "=============================="
+    echo "$1"
+    echo "=============================="
+}
 
-echo
-echo "------------------------------"
-echo "Updating/cleaning yay (AUR)..."
-yay -Yc
+titleMessage "PREPARE PKG MANAGERS"
+sudo pacman -Syuu --noconfirm
+yay -Syu --noconfirm
 
-
-# ------------------------------
-# 2. PACKAGE INSTALLATION
-# ------------------------------
-
-echo
-echo "------------------------------"
-echo "Installing core CLI utilities..."
-CLIPackages=(
+titleMessage "INSTALLING PACKAGES"
+Packages=(
     git
     curl
     bat
-    ccid
-    picom #compton 
+    ccid            # Needed for smartcards
+    picom           # Replacement for comptom 
     neovim
     ranger
-    ripgrep
+    ripgrep         # Replacement for grep
     unzip
     zsh
     thefuck
@@ -40,61 +31,12 @@ CLIPackages=(
     xorg-xclipboard
     scrot
     rxvt-unicode
-)
-AURCLIPackages=(
-    i3status-rust
-)
-sudo pacman -Sy --noconfirm ${CLIPackages[@]}
-yay -S --norebuild ${AURCLIPackages[@]}
-
-echo
-echo "------------------------------"
-echo "Installing art packages..."
-ArtPackages=(
     gimp
     imagemagick
     feh
-    python-pywal
-)
-sudo pacman -Sy --noconfirm ${ArtPackages[@]}
-
-echo
-echo "------------------------------"
-echo "Installing IDE's..."
-sudo pacman -Sy --noconfirm code
-yay -S --norebuild emacs-git
-
-echo
-echo "------------------------------"
-echo "Installing development packages"
-DevelopmentPackages=(
+    python-pywal    # Used to set the colours
     gcc
-)
-AURDevelopmentPackages=(
-    nvm
-)
-sudo pacman -Sy --noconfirm ${DevelopmentPackages[@]}
-yay -S --norebuild ${AURDevelopmentPackages[@]}
-source /usr/share/nvm/init-nvm.sh
-
-echo
-echo "------------------------------"
-echo "Installing browsers..."
-BrowserPackages=(
-    chromium
-    firefox-nightly
-)
-yay -S --norebuild ${BrowserPackages[@]}
-
-echo
-echo "------------------------------"
-echo "Installing media packages..."
-AURMediaPackages=(
-    slack
-    discord
-    spotify
-)
-MediaPackages=(
+    clang
     vlc
     obs-studio
     qbittorrent
@@ -103,52 +45,74 @@ MediaPackages=(
     manjaro-pulse
     pavucontrol
     pa-applet
-    v4l-utils # utilities to edit video and camera settings
-)
-yay -S --norebuild ${AURMediaPackages[@]}
-sudo pacman -Sy --noconfirm ${MediaPackages[@]}
-
-echo
-echo "------------------------------"
-echo "Installing devops-ish packages..."
-DevOpsPackages=(
+    v4l-utils       # Edit video and camera settings
     docker
     docker-compose
-)
-sudo pacman -Sy --noconfirm ${DevOpsPackages[@]}
-
-echo
-echo "------------------------------"
-echo "Installing security packages..."
-SecurityPackages=(
     i3lock
     openvpn
     pcsc-tools
     yubikey-personalization
+    code
 )
-sudo pacman -Sy --noconfirm ${SecurityPackages[@]}
+sudo pacman -S --noconfirm --needed ${Packages[@]}
 
+titleMessage "INSTALLING AUR PACKAGES"
+AURPackages=(
+    i3status-rust
+    nvm
+    chromium
+    firefox-nightly
+    slack
+    discord
+    # spotify
+    emacs-git
+)
+yay -S --noconfirm ${AURPackages[@]}
 
-# ------------------------------
-# 3. Services
-# ------------------------------
-echo
-echo "------------------------------"
-echo "Managing services"
+titleMessage "RETRIEVING DOTFILES"
+putgitrepo() {
+    dir=$(mktemp -d)
+    [ ! -d "$2" ] && mkdir -p "$2"
+	git clone "$1" "$dir"
+	cp -rfT "$dir" "$2"
+}
+
+putgitrepo "https://gitlab.com/venikx/dotfiles.git" "/home/venikx"
+git config status.showUntrackedFiles no
+
+titleMessage "MANAGING SERVICES"
 systemctl disable lightdm.service
 sudo systemctl start docker
 sudo systemctl enable docker
 sudo systemctl start pcscd
 sudo systemctl enable pcscd
+killall pulseaudio; pulseaudio --start
 
-chsh -s $(which zsh)
+titleMessage "CONFIGURE DOOM EMACS"
 ~/.emacs.d/bin/doom install
 ~/.emacs.d/bin/doom sync
+
+titleMessage "RUN PYWAL TO SET COLOURS"
 wal -i ~/wallpapers/cyberpunk-street.jpg
 
+titleMessage "CHANGING THE SHELL"
+chsh -s $(which zsh) 
+mkdir -p "~/.cache/zsh/"
+exec zsh
+
+titleMessage "CONFIGURING NVM AND NPM"
+source /usr/share/nvm/init-nvm.sh
+nvm install --lts
+npm i -g yarn
+npm i -g vscode-css-languageserver-bin
+npm i -g vscode-html-languageserver-bin
+npm i -g typescript-language-server typescript eslint
+npm i -g vscode-json-languageserver
+npm i -g vue-language-server
+
+titleMessage "INSTALL RUST-LANG"
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | zsh -s -- -y && source ~/.cargo/env
+
+titleMessage "SETUP COMPLETED"
 runtime=$((($(date +%s)-$start)/60))
-echo
-echo "------------------------------"
-echo "------------------------------"
-echo "The setup took $runtime minutes to complete!"
-echo "Please reboot since your shell has changed from bash to zsh"
+titleMessage "The setup took $runtime minutes to complete!"
