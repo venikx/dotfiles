@@ -23,7 +23,7 @@
 # Aliases
 alias reload="source ~/.zshrc"
 eval $(thefuck --alias)
-alias dots='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias dots='/usr/bin/git --git-dir=$HOME/.dots/ --work-tree=$HOME'
 alias mkdir='mkdir -pv'
 alias ls="ls -F"
 alias ll="ls -FGlAhp"
