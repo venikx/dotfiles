@@ -98,15 +98,15 @@ sudo systemctl enable pcscd
 killall pulseaudio; pulseaudio --start
 
 titleMessage "CONFIGURE DOOM EMACS"
-~/.emacs.d/bin/doom install
-~/.emacs.d/bin/doom sync
+/home/venikx/.emacs.d/bin/doom install
+/home/venikx/.emacs.d/bin/doom sync
 
 titleMessage "RUN PYWAL TO SET COLOURS"
-wal -i ~/wallpapers/cyberpunk-street.jpg
+wal -i /home/venikx/wallpapers/cyberpunk-street.jpg
 
 titleMessage "CHANGING THE SHELL"
 chsh -s $(which zsh) 
-mkdir -p "~/.cache/zsh/"
+mkdir -p /home/venikx/.cache/zsh/
 
 titleMessage "CONFIGURING NVM AND NPM"
 source /usr/share/nvm/init-nvm.sh
@@ -119,7 +119,7 @@ npm i -g vscode-json-languageserver
 npm i -g vue-language-server
 
 titleMessage "INSTALL RUST-LANG"
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | zsh -s -- -y && source ~/.cargo/env
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | zsh -s -- -y && source /home/venikx/.cargo/env
 
 titleMessage "SETUP COMPLETED"
 runtime=$((($(date +%s)-$start)/60))
