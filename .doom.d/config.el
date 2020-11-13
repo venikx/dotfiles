@@ -26,11 +26,10 @@
 
 (after! org
   (setq time-stamp-active t
-        time-stamp-line-limit 4
-        time-stamp-start "#\\+MODIFIED:[ \t]*"
+        time-stamp-start "#\\+modified:[ \t]*"
         time-stamp-end "$"
         time-stamp-format "\[%04y-%02m-%02d %3a %02H:%02M\]")
-  (add-hook 'before-save-hooks 'time-stamp))
+  (add-hook 'before-save-hook 'time-stamp))
 
 ;; Standardizes the slug to use dashes instead of underscores
 (after! (org org-roam)
@@ -55,32 +54,32 @@
            (function org-roam--capture-get-point)
            "%?"
            :file-name "%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+TITLE: ${title}\n#+CREATED: %U\n#+MODIFIED: %U\n\n"
+           :head "#+title: ${title}\n#+created: %U\n#+modified: %U\n\n"
            :unnarrowed t t)
           ("b" "Book" plain
            (function org-roam--capture-get-point)
            "%?"
            :file-name "references/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+TITLE: ${title}\n#+ROAM_TAGS: book\n#+CREATED: %U\n#+MODIFIED: %U\n\n* Metadata\n** Author: \n** Source: \n**Reason: \n* Ideas\n* Highlights"
+           :head "#+title: ${title}\n#+roam_tags: book\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n-Reason: \n* Notes\n* Highlights"
            :unnarrowed t t)
           ("a" "Article" plain
            (function org-roam--capture-get-point)
            "%?"
            :file-name "references/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+TITLE: ${title}\n#+ROAM_TAGS: article\n#+CREATED: %U\n#+MODIFIED: %U\n\n"
+           :head "#+title: ${title}\n#+roam_tags: article\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n-Reason: \n* Notes\n* Highlights"
            :unnarrowed t t)
-          ("w" "Website" plain
+          ("w" "Video" plain
            (function org-roam--capture-get-point)
            "%?"
            :file-name "references/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+TITLE: ${title}\n#+ROAM_TAGS: website\n#+CREATED: %U\n#+MODIFIED: %U\n\n"
+           :head "#+title: ${title}\n#+roam_tags: video\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n-Reason: \n* Notes\n* Highlights"
            :unnarrowed t t)))
   (setq org-roam-dailies-capture-templates
         '(("d" "daily" plain (function org-roam-capture--get-point)
            ""
            :immediate-finish t
            :file-name "journal/%<%Y>/%<%y%m%d>"
-           :head "#+TITLE: %<%A %B %-d, %Y>\n#+CREATED: %U\n#+MODIFIED: %U\n\n"))))
+           :head "#+title: %<%A %B %-d, %Y>\n#+created: %U\n#+modified: %U\n\n"))))
 
 ;; (use-package! org
 ;;   :mode ("\\.org\\'" . org-mode)
