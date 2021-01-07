@@ -1,0 +1,32 @@
+[user]
+	name = Kevin Rangel
+	# useconfigonly = true
+	email = me@venikx.com
+
+[core]
+	editor = nvim
+	autocrlf = input
+	ignorecase = false
+	whitespace = trailing-space
+
+[github]
+	user = venikx
+
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+	ls = ls-files
+	undo-commit = reset --soft "HEAD^"
+
+[push]
+	default = simple
+
+[pull]
+	rebase = true
+
+[credential]
+	helper = cache --timeout=3600
+
+[url "https://github.com/"]
+    insteadOf = gh:
+[url "https://gitlab.com/"]
+    insteadOf = gl:
