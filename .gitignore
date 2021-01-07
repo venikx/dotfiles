@@ -1,3 +1,4 @@
 # Ignore bare reposiory being created in HOME folder
 .cfg
+.emacs.d
 

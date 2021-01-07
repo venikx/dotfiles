@@ -1,4 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+(global-auto-revert-mode t)
 
 (setq user-full-name "Kevin De Baerdemaeker"
       user-mail-address "me@venikx.com")
@@ -21,8 +22,7 @@
 (setq org-directory "~/org/gsd")
 (setq org-tag-alist
       (quote (("@errand" . ?e) ("@mari" . ?m) ("@reading" . ?r) ("@computer" . ?c)
-              ("@work" . ?w)
-              ("@home" . ?h))))
+              ("@office" . ?o))))
 
 (after! org
   (setq time-stamp-active t
@@ -30,6 +30,39 @@
         time-stamp-end "$"
         time-stamp-format "\[%04y-%02m-%02d %3a %02H:%02M\]")
   (add-hook 'before-save-hook 'time-stamp))
+
+(after! org
+  (setq +org-capture-todo-file "breathe.org"
+        org-capture-templates
+        '(("t" "todo" entry
+           (file+headline +org-capture-todo-file "Inbox") "* TODO %?\n%i\n%a" :prepend t :clock-in t :clock-resume t)
+
+          ("p" "Templates for projects")
+          ("pt" "Project-local todo" entry
+           (file+headline +org-capture-project-todo-file "Inbox") "* TODO %?\n%i\n%a" :prepend t :clock-in t :clock-resume t)
+          ("pn" "Project-local notes" entry
+           (file+headline +org-capture-project-notes-file "Inbox") "* %U %?\n%i\n%a" :prepend t :clock-in t :clock-resume t)
+          ("pc" "Project-local changelog" entry
+           (file+headline +org-capture-project-changelog-file "Unreleased") "* %U %?\n%i\n%a" :prepend t :clock-in t :clock-resume t)
+
+          ("c" "Centralized templates for projects")
+          ("ct" "Project todo" entry
+           #'+org-capture-central-project-todo-file "* TODO %?\n%i\n%a" :heading "Tasks" :prepend t :clock-in t :clock-resume t)
+          ("cn" "Project notes" entry
+           #'+org-capture-central-project-notes-file "* %U %?\n%i\n%a" :heading "Notes" :prepend t :clock-in t :clock-resume t)
+          ("cc" "Project changelog" entry
+           #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend t :clock-in t :clock-resume t)))
+
+  (setq org-icalendar-use-deadline '(event-if-not-todo event-if-not-todo todo-due)
+        org-icalendar-use-scheduled '(event-if-todo-not-done event-if-not-todo todo-start)
+        org-caldav-url "https://cloud.venikx.com/remote.php/dav/calendars/venikx"
+        org-caldav-calendar-id "org-1"
+        org-caldav-inbox "~/org/gsd/breathe.org"
+        org-caldav-debug-level 2
+        org-icalendar-timezone "Europe/Helsinki"
+        org-caldav-files (list "~/org/gsd/personal.org"
+                               "~/org/gsd/business.org"
+                               "~/org/gsd/projects.org")))
 
 ;; Standardizes the slug to use dashes instead of underscores
 (after! (org org-roam)
@@ -81,15 +114,30 @@
            :file-name "journal/%<%Y>/%<%y%m%d>"
            :head "#+title: %<%A %B %-d, %Y>\n#+created: %U\n#+modified: %U\n\n"))))
 
-;; (use-package! org
-;;   :mode ("\\.org\\'" . org-mode)
-;;   :init
-;;   (setq org-return-follows-link t
-;;         org-babel-load-languages '((emacs-lisp . t)))
-;;
-;;   (with-eval-after-load 'flycheck
-;;     (flycheck-add-mode 'proselint 'org-mode)))
-;;
-;; org-id-store-link
-;; org-roam-unlinked-references
-;;
+(defun venikx/org-skip-subtree-if-priority (priority)
+  "Skip an agenda subtree if it has a priority of PRIORITY.
+
+PRIORITY may be one of the characters ?A, ?B, or ?C."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+        (pri-value (* 1000 (- org-lowest-priority priority)))
+        (pri-current (org-get-priority (thing-at-point 'line t))))
+    (if (= pri-value pri-current)
+        subtree-end
+      nil)))
+
+(use-package! org-agenda
+  :init
+  (setq org-agenda-use-time-grid nil
+        org-agenda-custom-commands '((" " "Agenda"
+                                      ((agenda ""
+                                               ((org-agenda-span 'day)
+                                                (org-deadline-warning-days 31)))
+                                       (tags "PRIORITY=\"A\""
+                                             ((org-agenda-skip-function '(org-agenda-skip-entry-if 'done))
+                                              (org-agenda-overriding-header "Important")))
+                                       (alltodo ""
+                                                ((org-agenda-skip-function
+                                                  '(or (venikx/org-skip-subtree-if-priority ?A)
+                                                       (org-agenda-skip-if nil '(scheduled deadline))))
+                                                 (org-agenda-overriding-header "Backlog")))
+                                       )))))
