@@ -13,6 +13,8 @@
       ./modules/xdg.nix
       ./modules/desktop/terminal/default.nix
       ./modules/desktop/terminal/st.nix
+      ./modules/desktop/bspwm.nix
+      ./modules/desktop/dmenu.nix
       ./modules/editors/emacs.nix
       ./modules/shell/git.nix
       ./modules/shell/zsh.nix
@@ -35,7 +37,7 @@
 
 
   nixpkgs.config.allowUnfree = true;
-
+  networking.networkmanager.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   # boot.loader.systemd-boot.enable = true;
@@ -83,28 +85,6 @@
   # services.xserver.displayManager.gdm.enable = true;
   # services.xserver.desktopManager.gnome3.enable = true;
 
-  services = {
-    picom.enable = true;
-    redshift.enable = true;
-    xserver = {
-      enable = true;
-      # windowManager.bspwm.enable = true;
-      displayManager.gdm.enable = true;
-      displayManager.gdm.wayland = false;
-      desktopManager.gnome3.enable = true;
-      videoDrivers = [ "amdgpu" ];
-    };
-  };
-
-  systemd.user.services."dunst" = {
-    enable = true;
-    description = "";
-    wantedBy = [ "default.target" ];
-    serviceConfig.Restart = "always";
-    serviceConfig.RestartSec = 2;
-    serviceConfig.ExecStart = "${pkgs.dunst}/bin/dunst";
-  };
-  
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
@@ -130,17 +110,12 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    xclip
     git 
     neovim
-
     firefox
     pciutils
-    dunst
-    libnotify
-    (polybar.override {
-      pulseSupport = true;
-      nlSupport = true;
-    })
+    screenkey
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

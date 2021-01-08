@@ -23,8 +23,9 @@ in {
     loginWallpaper = mkOption {
       type = (either path null);
       default = (if cfg.wallpaper != null
-                 then toFilteredImage cfg.wallpaper "-gaussian-blur 0x2 -modulate 70 -level 5%"
-                 else null);
+    #              then toFilteredImage cfg.wallpaper "-gaussian-blur 0x2 -modulate 70 -level 5%"
+                   then cfg.wallpaper
+                  else null);
     };
 
     gtk = {

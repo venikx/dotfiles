@@ -6,7 +6,7 @@ in {
   options.modules.desktop.bspwm = with types; {
     enable = mkOption {
       type = bool;
-      default = false;
+      default = true;
     };
   };
 
@@ -31,11 +31,15 @@ in {
       redshift.enable = true;
       xserver = {
         enable = true;
+        # TODO(kevin): Part of the device specific configuration as desktops don't have touchpads
+        libinput.enable = true;
         displayManager = {
           defaultSession = "none+bspwm";
           lightdm.enable = true;
-          lightdm.greeters.mini.enable = true;
+          lightdm.greeters.gtk.enable = true;
         };
+
+        videoDrivers = [ "amdgpu" ];
         windowManager.bspwm.enable = true;
       };
     };
@@ -52,9 +56,9 @@ in {
     # link recursively so other modules can link files in their folders
     home-manager.users.venikx = {
       xdg.configFile = {
-        "sxhkd".source = "${configDir}/sxhkd";
+        "sxhkd".source = "/etc/nixos/config/sxhkd";
         "bspwm" = {
-          source = "${configDir}/bspwm";
+          source = "/etc/nixos/config/bspwm";
           recursive = true;
         };
       };
