@@ -54,7 +54,14 @@ in {
       ccls
       editorconfig-core-c 
       # javascript
-      nodePackages.javascript-typescript-langserver
+      nodePackages.eslint
+      nodePackages.prettier
+      nodePackages.typescript
+      nodePackages.typescript-language-server
+      nodePackages.vscode-css-languageserver-bin
+      nodePackages.vscode-html-languageserver-bin
+      nodePackages.vue-language-server
+      nodePackages.vscode-json-languageserver-bin
       # rust
       rustfmt
     ];
