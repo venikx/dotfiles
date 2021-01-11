@@ -9,17 +9,7 @@
     [ # Include the results of the hardware scan.
       <home-manager/nixos>
       ./hardware-configuration.nix
-      ./modules/options.nix
-      ./modules/xdg.nix
-      ./modules/desktop/terminal/default.nix
-      ./modules/desktop/terminal/st.nix
-      ./modules/desktop/bspwm.nix
-      ./modules/desktop/dmenu.nix
-      ./modules/editors/emacs.nix
-      ./modules/shell/git.nix
-      ./modules/shell/zsh.nix
-      ./modules/themes/default.nix
-      ./modules/themes/doom/default.nix
+      ./modules
     ];
 
   modules.shell.git.enable = true;
@@ -29,6 +19,10 @@
     default = "xst";
     st.enable = true;
   };
+  modules.desktop.bspwm.enable = true;
+  modules.desktop.dmenu.enable = true;
+  modules.desktop.browsers.firefox.enable = true;
+  modules.desktop.browsers.default = "firefox";
   modules.theme.active = "doom";
 
 
@@ -113,7 +107,6 @@
     xclip
     git 
     neovim
-    firefox
     pciutils
     screenkey
   ];

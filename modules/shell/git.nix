@@ -11,7 +11,7 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     home-manager.users.venikx = {
       home.packages = with pkgs; [
         gitAndTools.gh

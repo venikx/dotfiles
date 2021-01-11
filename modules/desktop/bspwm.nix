@@ -6,7 +6,7 @@ in {
   options.modules.desktop.bspwm = with types; {
     enable = mkOption {
       type = bool;
-      default = true;
+      default = false;
     };
   };
 

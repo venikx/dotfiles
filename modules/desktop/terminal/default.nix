@@ -3,6 +3,8 @@
 with lib;
 let cfg = config.modules.desktop.terminal;
 in {
+  imports = [./st.nix];
+
   options.modules.desktop.terminal = with types; {
     default = mkOption {
       type = str;

@@ -3,6 +3,8 @@
 with lib;
 let cfg = config.modules.theme;
 in {
+  imports = [./doom];
+
   options.modules.theme = with types; {
     active = mkOption {
       type = nullOr str;

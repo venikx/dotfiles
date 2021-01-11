@@ -6,7 +6,7 @@ in {
   options.modules.desktop.dmenu = with types; {
     enable = mkOption {
       type = bool;
-      default = true;
+      default = false;
     };
   };
 
