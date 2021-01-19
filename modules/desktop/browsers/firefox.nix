@@ -13,8 +13,10 @@ in {
   # TODO(kevin): Setup Plugins (if that's still needed with Firefox Sync)
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      firefox
-    ];
+    home-manager.users.venikx = {
+      home.packages = with pkgs; [
+        firefox
+      ];
+    };
   };
 }

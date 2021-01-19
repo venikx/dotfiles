@@ -1,9 +1,11 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.modules.desktop.dmenu;
+let
+  cfg = config.modules.desktop.communication;
+  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in {
-  options.modules.desktop.dmenu = with types; {
+  options.modules.desktop.communication = with types; {
     enable = mkOption {
       type = bool;
       default = false;
@@ -13,7 +15,8 @@ in {
   config = mkIf cfg.enable {
     home-manager.users.venikx = {
       home.packages = with pkgs; [
-        dmenu
+        unstable.discord
+        slack
       ];
     };
   };

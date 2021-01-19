@@ -12,6 +12,7 @@
       ./modules
     ];
 
+  modules.theme.active = "doom";
   modules.shell.git.enable = true;
   modules.shell.zsh.enable = true;
   modules.editors.emacs.enable = true;
@@ -23,9 +24,17 @@
   modules.desktop.dmenu.enable = true;
   modules.desktop.browsers.firefox.enable = true;
   modules.desktop.browsers.default = "firefox";
-  modules.theme.active = "doom";
+  modules.desktop.media.spotify.enable = true;
+  modules.desktop.media.streaming.enable = true;
+  modules.desktop.media.music-production.enable = true;
+  modules.desktop.media.readers.pdf.enable = true;
+  modules.desktop.media.readers.ebook.enable = true;
+  modules.desktop.communication.enable = true;
+ # programs.light.enable = true;
 
 
+
+  ## device specific
 
 
 

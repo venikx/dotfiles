@@ -1,9 +1,9 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.modules.desktop.dmenu;
+let cfg = config.modules.desktop.media.spotify;
 in {
-  options.modules.desktop.dmenu = with types; {
+  options.modules.desktop.media.spotify = with types; {
     enable = mkOption {
       type = bool;
       default = false;
@@ -13,7 +13,7 @@ in {
   config = mkIf cfg.enable {
     home-manager.users.venikx = {
       home.packages = with pkgs; [
-        dmenu
+        spotify
       ];
     };
   };
