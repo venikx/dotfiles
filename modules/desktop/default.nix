@@ -5,6 +5,7 @@
     [
       ./browsers
       ./communication
+      ./gaming
       ./media
       ./terminal
       ./bspwm.nix

@@ -30,6 +30,12 @@
   modules.desktop.media.readers.pdf.enable = true;
   modules.desktop.media.readers.ebook.enable = true;
   modules.desktop.communication.enable = true;
+  modules.desktop.gaming.steam.enable = true;
+  modules.desktop.gaming.emulators.psx.enable = false;
+  modules.desktop.gaming.emulators.ds.enable = true;
+  modules.desktop.gaming.emulators.gba.enable = true;
+  modules.desktop.gaming.emulators.gb.enable = true;
+  modules.desktop.gaming.emulators.snes.enable = true;
  # programs.light.enable = true;
 
 
