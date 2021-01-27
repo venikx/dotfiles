@@ -39,7 +39,6 @@ in {
           lightdm.greeters.gtk.enable = true;
         };
 
-        videoDrivers = [ "amdgpu" ];
         windowManager.bspwm.enable = true;
       };
     };
