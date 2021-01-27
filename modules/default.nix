@@ -3,12 +3,14 @@
 {
   imports =
     [
-      ./options.nix
-      ./xdg.nix
       ./desktop
       ./editors
+      ./hardware
       ./shell
       ./services
       ./themes
+
+      ./options.nix
+      ./xdg.nix
     ];
 }

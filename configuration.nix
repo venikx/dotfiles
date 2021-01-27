@@ -39,6 +39,7 @@
   modules.desktop.gaming.emulators.gb.enable = true;
   modules.desktop.gaming.emulators.snes.enable = true;
   modules.services.docker.enable = true;
+  modules.hardware.audio.enable = true;
  # programs.light.enable = true;
 
 
