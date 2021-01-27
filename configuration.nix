@@ -16,6 +16,7 @@
   modules.shell.git.enable = true;
   modules.shell.zsh.enable = true;
   modules.editors.emacs.enable = true;
+  modules.editors.vim.enable = true;
   modules.desktop.terminal = {
     default = "xst";
     st.enable = true;
@@ -36,6 +37,7 @@
   modules.desktop.gaming.emulators.gba.enable = true;
   modules.desktop.gaming.emulators.gb.enable = true;
   modules.desktop.gaming.emulators.snes.enable = true;
+  modules.services.docker.enable = true;
  # programs.light.enable = true;
 
 
@@ -121,7 +123,7 @@
   environment.systemPackages = with pkgs; [
     xclip
     git 
-    neovim
+    vim
     pciutils
     screenkey
   ];

@@ -28,7 +28,6 @@ in {
           categories = "Development;System;Utility";
         })
       ];
-
     };
   };
 }

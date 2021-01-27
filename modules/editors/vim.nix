@@ -1,9 +1,9 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.modules.desktop.media.music-production;
+let cfg = config.modules.editors.vim;
 in {
-  options.modules.desktop.media.music-production = with types; {
+  options.modules.editors.vim = with types; {
     enable = mkOption {
       type = bool;
       default = false;
@@ -13,9 +13,12 @@ in {
   config = mkIf cfg.enable {
     home-manager.users.venikx = {
       home.packages = with pkgs; [
-        lmms
-        audacity
+        editorconfig-core-c
+        neovim
       ];
+    };
+    environment.shellAliases = {
+      vim = "nvim";
     };
   };
 }

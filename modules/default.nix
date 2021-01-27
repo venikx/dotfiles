@@ -8,6 +8,7 @@
       ./desktop
       ./editors
       ./shell
+      ./services
       ./themes
     ];
 }
