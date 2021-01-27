@@ -15,6 +15,7 @@
   modules.theme.active = "doom";
   modules.shell.git.enable = true;
   modules.shell.zsh.enable = true;
+  modules.shell.direnv.enable = true;
   modules.editors.emacs.enable = true;
   modules.editors.vim.enable = true;
   modules.desktop.terminal = {
