@@ -40,6 +40,8 @@
   modules.desktop.gaming.emulators.snes.enable = true;
   modules.services.docker.enable = true;
   modules.hardware.audio.enable = true;
+  modules.hardware.bluetooth.enable = true;
+  modules.hardware.bluetooth.audio.enable = true;
  # programs.light.enable = true;
 
 
