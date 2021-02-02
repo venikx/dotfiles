@@ -9,8 +9,6 @@ in {
       default = false;
     };
   };
-  # TODO(kevin): Configure settings
-  # TODO(kevin): Setup Plugins (if that's still needed with Firefox Sync)
 
   config = mkIf cfg.enable {
     home-manager.users.venikx = {

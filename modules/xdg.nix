@@ -1,6 +1,17 @@
 { config, home-manager, ... }:
 {
-  home-manager.users.venikx.xdg.enable = true;
+  home-manager.users.venikx.xdg = {
+    enable = true;
+    userDirs.enable = true;
+    userDirs.download = "$HOME/dl";
+    userDirs.documents = "$HOME/docs";
+    userDirs.pictures = "$HOME/media/pics";
+    userDirs.music = "$HOME/media/music";
+    userDirs.videos = "$HOME/media/videos";
+    userDirs.desktop = "$HOME/system/desktop";
+    userDirs.publicShare = "$HOME/system/public";
+    userDirs.templates = "$HOME/system/templates";
+  };
 
   environment = {
     sessionVariables = {
