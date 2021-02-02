@@ -12,12 +12,20 @@ in {
   };
 
   config = {
-    home-manager.users.venikx = {
-      home.packages = with pkgs; [
-        (mkIf cfg.psx.enable epsxe)
-        (mkIf cfg.ds.enable desmume)
-        (mkIf (cfg.gba.enable || cfg.gb.enable  || cfg.snes.enable) higan)
-      ];
-    };
+    home-manager.users.venikx = mkMerge [
+      {
+        home.packages = with pkgs; [
+          (mkIf cfg.psx.enable epsxe)
+          (mkIf cfg.ds.enable desmume)
+          (mkIf (cfg.gba.enable || cfg.gb.enable  || cfg.snes.enable) higan)
+        ];
+      }
+      (mkIf (cfg.gba.enable || cfg.gb.enable  || cfg.snes.enable) {
+        xdg.configFile."higan" = {
+          source = "/etc/nixos/config/higan";
+          recursive = true;
+        };
+      })
+    ];
   };
 }

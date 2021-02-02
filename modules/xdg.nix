@@ -28,7 +28,8 @@
       # respective modules.
       HISTFILE        = "$XDG_DATA_HOME/bash/history";
       INPUTRC         = "$XDG_CONFIG_HOME/readline/inputrc";
-      LESSHISTFILE    = "$XDG_CACHE_HOME/lesshst";
+      LESSKEY         = "$XDG_CACHE_HOME/less/lesskey";
+      LESSHISTFILE    = "$XDG_CACHE_HOME/less/history";
       WGETRC          = "$XDG_CONFIG_HOME/wgetrc";
    };
 

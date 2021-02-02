@@ -16,6 +16,10 @@ in {
         lmms
         audacity
       ];
+      # TODO(Kevin): Currently not possible for lmms to define a different
+      # configuration folder, so .lmmsrc.xml will be recreated in the home
+      # folder. However the lmms folder itself (containing plugins etc) is
+      # created in XDG_DOCUMENTS_DIR
     };
   };
 }
