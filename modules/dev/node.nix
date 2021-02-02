@@ -16,7 +16,7 @@ in {
   };
   
   config = mkIf cfg.enable (mkMerge [
-    (mkIf cfg.enable {
+    {
       env.NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/config";
       env.NPM_CONFIG_CACHE      = "$XDG_CACHE_HOME/npm";
       env.NPM_CONFIG_TMP        = "$XDG_RUNTIME_DIR/npm";
@@ -29,7 +29,8 @@ in {
         prefix=$XDG_DATA_HOME/npm
       '';
       };
-    })
+    }
+
     (mkIf cfg.binaries.enable {
       env.PATH = [ "$(yarn global bin)" ];
       environment.shellAliases = {

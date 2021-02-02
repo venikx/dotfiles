@@ -47,6 +47,10 @@
   modules.hardware.amd.enable = true;
   modules.dev.node.enable = true;
   modules.dev.node.binaries.enable = false;
+  modules.dev.shell.enable = true;
+  modules.dev.cc.enable = true;
+  modules.dev.rust.enable = true;
+  modules.dev.rust.binaries.enable = true;
 
 
   ## device specific
