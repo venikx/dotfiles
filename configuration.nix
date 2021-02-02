@@ -45,6 +45,8 @@
   # TODO(Kevin): Weird flickering behavior when enabled?
   modules.hardware.nvidia.enable = false;
   modules.hardware.amd.enable = true;
+  modules.dev.node.enable = true;
+  modules.dev.node.binaries.enable = false;
 
 
   ## device specific
