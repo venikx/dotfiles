@@ -27,7 +27,10 @@ in {
     environment.systemPackages = with pkgs; [
       ## Emacs itself
       binutils       # native-comp needs 'as', provided by this
-      emacsPgtkGcc   # 28 + pgtk + native-comp
+      # Not possible due to some changes on HEAD and mismatched doom-emacs,
+      # better use Emacs 27.0
+      # emacsPgtkGcc   # 28 + pgtk + native-comp
+      emacsUnstable   # 28 + pgtk + native-comp
 
       ## Doom dependencies
       git

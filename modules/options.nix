@@ -18,14 +18,14 @@ with lib;
 
   config = {
     home-manager.users.venikx = {
-      xdg.configFile."dotfiles/bin" = {
+      home.file.".local/bin" = {
         source = "/etc/nixos/bin";
         recursive = true;
       };
     };
     # must already begin with pre-existing PATH. Also, can't use binDir here,
     # because it contains a nix store path.
-    env.PATH = [ "$XDG_CONFIG_HOME/dotfiles/bin" "$PATH" ];
+    env.PATH = [ "$XDG_BIN_HOME" "$PATH" ];
 
     environment.extraInit =
       concatStringsSep "\n"
