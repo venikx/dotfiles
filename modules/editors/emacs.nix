@@ -57,8 +57,6 @@ in {
       ccls
       editorconfig-core-c 
       # javascript
-      nodePackages.eslint
-      nodePackages.prettier
       nodePackages.typescript
       nodePackages.typescript-language-server
       nodePackages.vscode-css-languageserver-bin

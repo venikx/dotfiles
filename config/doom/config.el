@@ -141,3 +141,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                                                        (org-agenda-skip-if nil '(scheduled deadline))))
                                                  (org-agenda-overriding-header "Backlog")))
                                        )))))
+
+;; Code
+(setq +format-on-save-enabled-modes '(not js2-mode))
+(add-hook! 'js2-mode-hook prettier-js-mode)
