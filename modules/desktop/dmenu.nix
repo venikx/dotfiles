@@ -13,7 +13,11 @@ in {
   config = mkIf cfg.enable {
     home-manager.users.venikx = {
       home.packages = with pkgs; [
-        dmenu
+        (dmenu.overrideAttrs (oldAttrs: rec {
+          patches = [
+            /etc/nixos/config/dmenu/dmenu-xresources-4.9.diff
+          ];
+        }))
       ];
     };
   };
