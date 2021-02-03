@@ -1,0 +1,10 @@
+#+TITLE: Dreamscape
+
+* Overview
+** Specs
+| CPU     |   |
+| RAM     |   |
+| GPU     |   |
+| Storage |   |
+
+* TODO Instalation

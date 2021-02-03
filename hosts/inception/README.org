@@ -1,0 +1,13 @@
+#+TITLE: Inception
+
+* Overview
+[[https://rog.asus.com/laptops/rog-zephyrus/rog-zephyrus-g14-series][ROG Zephyrus G14 GA401]]
+
+** Specs
+| CPU             | [[https://www.amd.com/en/products/apu/amd-ryzen-7-4800h][AMD Ryzen™ 7 4800H]]           |
+| GPU             | [[https://www.notebookcheck.net/NVIDIA-GeForce-RTX-2060-Max-Q-Graphics-Card.386286.0.html][NVIDIA GeForce RTX 2060 Max-Q]] |
+| Storage         | 1TB NVMe                      |
+| RAM             | 16 GB                         |
+| Network Adapter | wlp2s0                        |
+
+* TODO Instalation
