@@ -24,6 +24,19 @@
     amd.enable = true;
   };
 
+  # CPU
+  hardware.cpu.amd.updateMicrocode = true;
+  # Power Management
+  environment.systemPackages = [ pkgs.acpi ];
+  powerManagement.powertop.enable = true;
+  services.tlp.enable = true;
+  services.thermald.enable = true;
+  # Monitor backlight control
+  programs.light.enable = true;
+  user.extraGroups = [ "video" ];
+  # SSD
+  services.fstrim.enable = lib.mkDefault true;
+
   fileSystems = {
     "/" =
       { device = "/dev/disk/by-uuid/da357781-e455-4df0-b3fe-ecafb3077280";
