@@ -20,23 +20,23 @@ in {
   };
 
   config = mkIf cfg.enable {
-    services.xserver.videoDrivers = mkDefault [ "nvidia" ];
+    services.xserver.videoDrivers = mkDefault [ "modesetting" ];
     hardware = {
-      opengl.enable = true;
-      nvidia.prime = {
-        offload.enable = lib.mkDefault true;
-        # Hardware should specify the bus ID for intel/nvidia devices
-      };
+     # opengl.enable = true;
+     # nvidia.prime = {
+     #   offload.enable = lib.mkDefault true;
+     #   # Hardware should specify the bus ID for intel/nvidia devices
+     # };
     };
 
     environment.systemPackages = with pkgs; [
-      nvidia-offload
+      # nvidia-offload
       # Respect XDG conventions, damn it!
-      (writeScriptBin "nvidia-settings" ''
-        #!${stdenv.shell}
-        mkdir -p "$XDG_CONFIG_HOME/nvidia"
-        exec ${config.boot.kernelPackages.nvidia_x11.settings}/bin/nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"
-      '')
+     #  (writeScriptBin "nvidia-settings" ''
+     #    #!${stdenv.shell}
+     #    mkdir -p "$XDG_CONFIG_HOME/nvidia"
+     #    exec ${config.boot.kernelPackages.nvidia_x11.settings}/bin/nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"
+     #  '')
     ];
   };
 }
