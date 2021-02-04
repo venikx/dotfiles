@@ -1,0 +1,17 @@
+- name: Install personal packages
+  xbps:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ packages }}"
+
+- name: Enable pulseaudio's services on startup
+  runit:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - alsa
+    - dbus
+    - cgmanager
+    - consolekit
+  ignore_errors: yes

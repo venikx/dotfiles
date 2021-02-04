@@ -1,0 +1,29 @@
+#+TITLE: Provisioning machines using the powa of scripting
+#+AUTHOR: venikx
+#+STARTUP: hideblocks
+
+* Void linux
+** Installation
+1. Install via the ISO
+2. Update voidlinux
+3. Install git and ansible
+4. Run the installation
+   ~sudo ansible-pull -U https://gitlab.com/venikx/personal-ops.git void-linux/setup.yml~
+5. Well played, mate.
+
+* Manjaro Linux
+** Installation
+1. Run ~./setup-manjaro.sh~
+
+* OSX
+** Installation
+1. Run ~./setup-osx.sh~
+
+* Common
+** Installation
+1. Run ~./dotifles.sh~
+2. Run ~./web.sh~
+3. Run ~./developer.sh~
+
+** WARNING!!!
+Don't ever re-run dotfile.sh, unless you want to spend time with conflicting files in the home directory.

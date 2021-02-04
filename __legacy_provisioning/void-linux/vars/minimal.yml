@@ -1,0 +1,4 @@
+model: minimal
+user: root
+users:
+  - root

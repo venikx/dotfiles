@@ -1,0 +1,10 @@
+packages:
+  - xf86-video-nouveau
+  - alsa-utils
+  - pulseaudio
+  - ConsoleKit2
+  - playerctl
+  - pamixer
+  - vlc
+  - gimp
+  - obs

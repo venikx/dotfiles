@@ -1,0 +1,19 @@
+- hosts: localhost
+
+  vars_prompt:
+    - name: "configuration"
+      prompt: "What system configuration do you want to install?"
+  vars_files:
+    - vars/{{configuration}}.yml
+
+  roles:
+    - role: base
+
+    - role: common 
+      when: model != "minimal"
+
+    - role: home
+      when: model == "home"
+
+    - role: vm
+      when: model == "vm"
