@@ -37,6 +37,7 @@
       };
       gaming = {
         steam.enable = true;
+        epic.enable = true;
         emulators = {
           psx.enable = true;
           ds.enable = true;

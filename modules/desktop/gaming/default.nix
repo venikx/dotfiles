@@ -6,5 +6,6 @@ with lib;
     [
       ./emulators.nix
       ./steam.nix
+      ./epic.nix
     ];
 }
