@@ -1,5 +1,0 @@
-- name: Install common packages
-  xbps:
-    name: "{{ item }}"
-    state: latest
-  loop: "{{ packages }}"
