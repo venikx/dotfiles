@@ -3,9 +3,12 @@
 # to /etc/nixos/configuration.nix instead.
 { config, lib, pkgs, modulesPath, ... }:
 
-{
+let
+  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+in {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot = {
@@ -13,7 +16,7 @@
 	  initrd.kernelModules = [ ];
 	  kernelModules = [ "kvm-amd" ];
 	  extraModulePackages = [ ];
-	  kernelPackages = pkgs.linuxPackages_latest;
+	  kernelPackages = unstable.linuxPackages_latest;
 # kernelParams = [ "nomodeset" ];
   };
 
@@ -22,6 +25,7 @@
     bluetooth.enable = true;
     bluetooth.audio.enable = true;
     nvidia.enable = true;
+    monitors.home.enable = true;
   };
 
   # CPU

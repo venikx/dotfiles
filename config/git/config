@@ -1,7 +1,7 @@
 [user]
 	name = Kevin Rangel
 	# useconfigonly = true
-	email = me@venikx.com
+	email = code@venikx.com
 
 [core]
 	editor = nvim

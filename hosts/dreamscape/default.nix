@@ -80,6 +80,7 @@
     loader.grub.devices = ["nodev"];
     loader.grub.efiSupport = true;
     loader.grub.useOSProber = true;
+    loader.grub.configurationLimit = 5;
   };
 }
 
