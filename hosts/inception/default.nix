@@ -24,8 +24,6 @@
       };
       media = {
         spotify.enable = true;
-        streaming.enable = true;
-        music-production.enable = true;
         readers = {
           pdf.enable = true;
           ebook.enable = true;
@@ -35,16 +33,7 @@
         default = "xst";
         st.enable = true;
       };
-      gaming = {
-        steam.enable = true;
-        emulators = {
-          psx.enable = true;
-          ds.enable = true;
-          gba.enable = true;
-          gb.enable = true;
-          snes.enable = true;
-        };
-      };
+      gaming = {};
     };
     editors = {
       default = "nvim";
