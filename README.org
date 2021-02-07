@@ -1,0 +1,28 @@
+#+title: So you want to see my dotfiles ehhh?
+#+author: Kevin Rangel
+
+[[https://github.com/hlissner/doom-emacs][https://img.shields.io/badge/Made_with-Doom_Emacs-blueviolet.svg?style=flat-square&logo=GNU%20Emacs&logoColor=white]]
+[[https://nixos.org][https://img.shields.io/badge/NixOS-v20.09-blue.svg?style=flat-square&logo=NixOS&logoColor=white]]
+
+| *Shell*    | zsh + zgen      |
+| *WM*       | bspwm + polybar |
+| *Editor*   | Doom Emacs      |
+| *Terminal* | st              |
+| *Launcher* | dmenu           |
+| *Browser*  | firefox         |
+
+* Credit
+A lot of the configuration is heavily inspired by https://github.com/hlissner/dotfiles, but I've removed some the ~/lib~ functionality and I'm not using ~flake~ (yet).
+
+* Installation
+1. Yoink the latest stable build of [[https://nixos.org/][NixOS 20.09]]
+2. Install NixOS by following one of the hosts configs
+   - [[./hosts/dreamscape/README.org][dreamscape (desktop)]]
+   - [[./hosts/inception/README.org][inception (laptop)]]
+3. Clone these dotfiles into /etc/nixos
+   ~git clone https://gitlab.com/venikx/dotfiles /mnt/etc/nixos~
+4. Rebuild and switch to the configuration from the dotfiles
+   ~sudo nixos-rebuild switch~
+5. Reboot!
+6. Change the ~$USER~ passwords!
+7. [[https://media.giphy.com/media/yJFeycRK2DB4c/giphy.gif]]
