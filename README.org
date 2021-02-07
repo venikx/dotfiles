@@ -12,7 +12,7 @@
 | *Browser*  | firefox         |
 
 * Credit
-A lot of the configuration is heavily inspired by https://github.com/hlissner/dotfiles, but I've removed some the ~/lib~ functionality and I'm not using ~flake~ (yet).
+A lot of the configuration is heavily inspired by [[https://github.com/hlissner/dotfiles][hlissner's dotfiles]], but I've removed some the ~/lib~ functionality and I'm not using ~flake~ (yet).
 
 * Installation
 1. Yoink the latest stable build of [[https://nixos.org/][NixOS 20.09]]
@@ -26,3 +26,7 @@ A lot of the configuration is heavily inspired by https://github.com/hlissner/do
 5. Reboot!
 6. Change the ~$USER~ passwords!
 7. [[https://media.giphy.com/media/yJFeycRK2DB4c/giphy.gif]]
+
+* Improvements
+** TODO Clone the dotfiles during the installation itself
+** TODO Generate the config from the dotfiles during the installation itself

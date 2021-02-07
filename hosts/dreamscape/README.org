@@ -2,9 +2,37 @@
 
 * Overview
 ** Specs
-| CPU     |   |
-| RAM     |   |
-| GPU     |   |
-| Storage |   |
+| CPU     |     |
+| RAM     |     |
+| GPU     |     |
+| Storage |     |
+| UEFI    | yes |
 
-* TODO Instalation
+* TODO Installation
+** Verifying internet connection
+~ping www.google.com~
+
+** Setting up the partitions
+1. UEFI's boot partition should already by there due to dual-boot with Windows
+2. Create partitions
+   #+begin_src sh
+parted /dev/sdb -- mkpart primary XXXGiB 100%
+parted /dev/sda -- mkpart primary XXXGiB 100%
+mkfs.ext4 -L nixos /dev/sdb3
+mkfs.ext4 -L home /dev/sda5
+   #+end_src
+3. Mount the partitions
+   #+begin_src sh
+mount /dev/disk/by-label/nixos /mnt
+mount /dev/sdb1 /mnt/boot # Not sure if we can label the partition without formatting
+mount /dev/disk/by-label/home /mnt/home
+   #+end_src
+
+** Prepare the intial NixOS configuration
+#+begin_src sh
+nixos-generate-config --root /mnt
+vi /etc/nixos/configuration.nix
+vi /etc/nixos/hardware-configuration.nix
+nixos-install
+reboot
+#+end_src
