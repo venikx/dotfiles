@@ -1,8 +1,8 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 (global-auto-revert-mode t)
 
-(setq user-full-name "Kevin De Baerdemaeker"
-      user-mail-address "me@venikx.com")
+(setq user-full-name "Kevin Rangel"
+      user-mail-address "contact@venikx.com")
 
 (setq display-line-numbers-type t)
 (setq lsp-ui-sideline-enable nil
@@ -92,20 +92,20 @@
           ("b" "Book" plain
            (function org-roam--capture-get-point)
            "%?"
-           :file-name "references/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+roam_tags: book\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n-Reason: \n* Notes\n* Highlights"
+           :file-name "%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+title: ${title}\n#+roam_tags: book\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n- Reason: \n* Notes\n* Highlights"
            :unnarrowed t t)
           ("a" "Article" plain
            (function org-roam--capture-get-point)
            "%?"
-           :file-name "references/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+roam_tags: article\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n-Reason: \n* Notes\n* Highlights"
+           :file-name "%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+title: ${title}\n#+roam_tags: article\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n- Reason: \n* Notes\n* Highlights"
            :unnarrowed t t)
           ("w" "Video" plain
            (function org-roam--capture-get-point)
            "%?"
-           :file-name "references/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+roam_tags: video\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n-Reason: \n* Notes\n* Highlights"
+           :file-name "%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+title: ${title}\n#+roam_tags: video\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n- Reason: \n* Notes\n* Highlights"
            :unnarrowed t t)))
   (setq org-roam-dailies-capture-templates
         '(("d" "daily" plain (function org-roam-capture--get-point)
