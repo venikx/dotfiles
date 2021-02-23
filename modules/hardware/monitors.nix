@@ -17,10 +17,10 @@ in {
         "default" = {
           fingerprint = {
             HDMI-0 = "*";
-            DP-0 = "*";
+            DP-4 = "*";
           };
           config = {
-            DP-0 = {
+            DP-4 = {
               enable = true;
               primary = true;
               rate = "144.00";
