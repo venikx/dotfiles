@@ -65,6 +65,9 @@ in {
       nodePackages.vscode-json-languageserver-bin
       # rust
       rustfmt
+      # org-mode
+      plantuml
+      graphviz
     ];
 
     env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];

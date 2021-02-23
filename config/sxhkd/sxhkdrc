@@ -3,6 +3,7 @@ super + shift + x
 	  	prompt "Shuwdown computer?" "shutdown -h now"
 
 super + shift + BackSpace
+	  	#TODO(Kevin) Theme the colours of the prompt correctly
 	  	prompt "Reboot computer?" "reboot"
 
 super + shift + Escape
