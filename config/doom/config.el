@@ -148,4 +148,5 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 
 (setq web-mode-markup-indent-offset 2
       web-mode-code-indent-offset 2
-      web-mode-css-indent-offset 2)
+      web-mode-css-indent-offset 2
+      css-indent-offset 2)
