@@ -24,6 +24,10 @@
       (quote (("@errand" . ?e) ("@mari" . ?m) ("@reading" . ?r) ("@computer" . ?c)
               ("@office" . ?o))))
 
+(use-package! elcord
+  :hook (after-init . elcord-mode)
+  :custom (elcord-use-major-mode-as-main-icon t))
+
 (after! org
   (setq time-stamp-active t
         time-stamp-start "#\\+modified:[ \t]*"
