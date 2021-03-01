@@ -6,19 +6,30 @@ let
   unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in {
   options.modules.desktop.communication = with types; {
-    enable = mkOption {
+    discord.enable = mkOption {
+      type = bool;
+      default = false;
+    };
+
+    slack.enable = mkOption {
+      type = bool;
+      default = false;
+    };
+
+    teams.enable = mkOption {
       type = bool;
       default = false;
     };
   };
 
-  config = mkIf cfg.enable {
+  config = {
     home-manager.users.venikx = {
       home.packages = with pkgs; [
         # If not installed from the bleeding edge, Discord will sometimes
         # soft-lock itself on a "there's an update for discord" screen.
-        unstable.discord
-        slack
+        (mkIf cfg.discord.enable unstable.discord)
+        (mkIf cfg.slack.enable slack)
+        (mkIf cfg.teams.enable teams)
       ];
     };
   };
