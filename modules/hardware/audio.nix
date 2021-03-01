@@ -11,8 +11,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    sound.enable = true;
-    sound.mediaKeys.enable = true;
     hardware.pulseaudio.enable = true;
 
     # HACK Prevents ~/.esd_auth files by disabling the esound protocol module
