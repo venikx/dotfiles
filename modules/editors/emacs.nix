@@ -23,7 +23,7 @@ in {
       (import (builtins.fetchTarball https://github.com/nix-community/emacs-overlay/archive/master.tar.gz))
     ];
 
-    fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
+    fonts.fonts = [ pkgs.emacs-all-the-icons-fonts pkgs.iosevka ];
     environment.systemPackages = with pkgs; [
       ## Emacs itself
       binutils       # native-comp needs 'as', provided by this
