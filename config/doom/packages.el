@@ -50,5 +50,4 @@
                                         ;(unpin! t)
 
 (package! org-caldav)
-(package! prettier-js)
 (package! elcord)

@@ -24,9 +24,7 @@
       (quote (("@errand" . ?e) ("@mari" . ?m) ("@reading" . ?r) ("@computer" . ?c)
               ("@office" . ?o))))
 
-(use-package! elcord
-  :hook (after-init . elcord-mode)
-  :custom (elcord-use-major-mode-as-main-icon t))
+(use-package! elcord :custom (elcord-use-major-mode-as-main-icon t))
 
 (after! org
   (setq time-stamp-active t
@@ -145,12 +143,3 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                                                        (org-agenda-skip-if nil '(scheduled deadline))))
                                                  (org-agenda-overriding-header "Backlog")))
                                        )))))
-
-;; Code
-(setq +format-on-save-enabled-modes '(not js2-mode))
-(add-hook! 'js2-mode-hook prettier-js-mode)
-
-(setq web-mode-markup-indent-offset 2
-      web-mode-code-indent-offset 2
-      web-mode-css-indent-offset 2
-      css-indent-offset 2)
