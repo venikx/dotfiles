@@ -19,6 +19,10 @@
 
 (use-package! elcord :custom (elcord-use-major-mode-as-main-icon t))
 
+(use-package! nov
+  :hook (nov-mode . variable-pitch-mode)
+  :mode ("\\.\\(epub\\|mobi\\)\\'" . nov-mode))
+
 ;; Everything org-mode
 (setq
  deft-directory "~/org/braindump"

@@ -51,3 +51,5 @@
 
 (package! org-caldav)
 (package! elcord)
+(package! nov
+  :recipe (:type git :repo "https://depp.brause.cc/nov.el.git"))
