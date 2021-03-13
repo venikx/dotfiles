@@ -33,7 +33,7 @@
   (setq time-stamp-active t
         time-stamp-start "#\\+modified:[ \t]*"
         time-stamp-end "$"
-        time-stamp-format "\[%04y-%02m-%02d %3a %02H:%02M\]")
+        time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
   (add-hook 'before-save-hook 'time-stamp)
   (setq +org-capture-todo-file "breathe.org"
         org-capture-templates
@@ -86,29 +86,17 @@
 
   (setq org-roam-directory "~/org/braindump")
   (setq org-roam-capture-templates
-        '(("n" "Regular" plain
+        '(("n" "Note" plain
            (function org-roam--capture-get-point)
            "%?"
            :file-name "%<%Y%m%d%H%M%S>-${slug}"
            :head "#+title: ${title}\n#+created: %U\n#+modified: %U\n\n"
            :unnarrowed t t)
-          ("b" "Book" plain
+          ("l" "Literature Note" plain
            (function org-roam--capture-get-point)
-           "%?"
-           :file-name "%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+roam_tags: book\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n- Reason: \n* Notes\n* Highlights"
-           :unnarrowed t t)
-          ("a" "Article" plain
-           (function org-roam--capture-get-point)
-           "%?"
-           :file-name "%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+roam_tags: article\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n- Reason: \n* Notes\n* Highlights"
-           :unnarrowed t t)
-          ("w" "Video" plain
-           (function org-roam--capture-get-point)
-           "%?"
-           :file-name "%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+roam_tags: video\n#+created: %U\n#+modified: %U\n\n* Metadata\n- Author: \n- Source: \n- Reason: \n* Notes\n* Highlights"
+           "* Metadata\n- Author: %^{Author}\n- Reason: %^{Reason}\n* Notes\n** %?\n* Highlights"
+           :file-name "literature-notes/%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+title: ${title}\n#+roam_tags: %^{Tags}\n#+roam_key: %^{Bibliographic Reference}\n#+created: %U\n#+modified: %U\n\n"
            :unnarrowed t t)))
   (setq org-roam-dailies-capture-templates
         '(("d" "daily" plain (function org-roam-capture--get-point)
