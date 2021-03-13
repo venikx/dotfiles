@@ -1,39 +1,40 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 (global-auto-revert-mode t)
 
-(setq user-full-name "Kevin Rangel"
-      user-mail-address "contact@venikx.com")
+(setq
+ user-full-name "Kevin Rangel"
+ user-mail-address "code@venikx.com")
 
-(setq display-line-numbers-type t)
-(setq lsp-ui-sideline-enable nil
-      lsp-enable-symbol-highlighting nil)
+(setq
+ doom-theme 'doom-laserwave
+ ;;doom-theme 'doom-outrun-electric
+ ;;doom-theme 'doom-dracula
+ display-line-numbers-type t
+ projectile-project-search-path '("~/code/")
+ elfeed-feeds
+ '("https://this-week-in-rust.org/rss.xml"))
+
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
 
-;; (setq doom-theme 'doom-challenger-deep)
-;; (setq doom-theme 'doom-dracula)
-;; (setq doom-theme 'doom-outrun-electric)
-(setq doom-theme 'doom-laserwave)
-;; (setq doom-theme 'doom-horizon)
-;; (setq doom-theme 'doom-nord)
-;; (setq doom-theme 'doom-spacegray)
+(use-package! elcord :custom (elcord-use-major-mode-as-main-icon t))
 
 ;; Everything org-mode
-(setq org-directory "~/org/gsd")
-(setq org-tag-alist
+(setq
+ deft-directory "~/org/braindump"
+ deft-extensions '("org" "txt")
+ deft-recursive t
+ org-directory "~/org/gsd"
+ org-tag-alist
       (quote (("@errand" . ?e) ("@mari" . ?m) ("@reading" . ?r) ("@computer" . ?c)
               ("@office" . ?o))))
-
-(use-package! elcord :custom (elcord-use-major-mode-as-main-icon t))
 
 (after! org
   (setq time-stamp-active t
         time-stamp-start "#\\+modified:[ \t]*"
         time-stamp-end "$"
         time-stamp-format "\[%04y-%02m-%02d %3a %02H:%02M\]")
-  (add-hook 'before-save-hook 'time-stamp))
-
-(after! org
+  (add-hook 'before-save-hook 'time-stamp)
   (setq +org-capture-todo-file "breathe.org"
         org-capture-templates
         '(("t" "todo" entry
@@ -67,7 +68,7 @@
                                "~/org/gsd/projects.org")))
 
 ;; Standardizes the slug to use dashes instead of underscores
-(after! (org org-roam)
+(after! org-roam
   (defun org-roam--title-to-slug (title)
     (cl-flet* ((nonspacing-mark-p (char)
                                   (eq 'Mn (get-char-code-property char 'general-category)))
