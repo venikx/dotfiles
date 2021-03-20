@@ -49,7 +49,6 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 
-(package! org-caldav)
 (package! elcord)
 (package! nov
   :recipe (:type git :repo "https://depp.brause.cc/nov.el.git"))

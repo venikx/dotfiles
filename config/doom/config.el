@@ -28,10 +28,7 @@
  deft-directory "~/org/braindump"
  deft-extensions '("org" "txt")
  deft-recursive t
- org-directory "~/org/gsd"
- org-tag-alist
-      (quote (("@errand" . ?e) ("@mari" . ?m) ("@reading" . ?r) ("@computer" . ?c)
-              ("@office" . ?o))))
+ org-directory "~/org/gsd")
 
 (after! org
   (setq time-stamp-active t
@@ -39,7 +36,7 @@
         time-stamp-end "$"
         time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
   (add-hook 'before-save-hook 'time-stamp)
-  (setq +org-capture-todo-file "breathe.org"
+  (setq +org-capture-todo-file "capture.org"
         org-capture-templates
         '(("t" "todo" entry
            (file+headline +org-capture-todo-file "Inbox") "* TODO %?\n%i\n%a" :prepend t :clock-in t :clock-resume t)
@@ -58,18 +55,7 @@
           ("cn" "Project notes" entry
            #'+org-capture-central-project-notes-file "* %U %?\n%i\n%a" :heading "Notes" :prepend t :clock-in t :clock-resume t)
           ("cc" "Project changelog" entry
-           #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend t :clock-in t :clock-resume t)))
-
-  (setq org-icalendar-use-deadline '(event-if-not-todo event-if-not-todo todo-due)
-        org-icalendar-use-scheduled '(event-if-todo-not-done event-if-not-todo todo-start)
-        org-caldav-url "https://cloud.venikx.com/remote.php/dav/calendars/venikx"
-        org-caldav-calendar-id "org-1"
-        org-caldav-inbox "~/org/gsd/breathe.org"
-        org-caldav-debug-level 2
-        org-icalendar-timezone "Europe/Helsinki"
-        org-caldav-files (list "~/org/gsd/personal.org"
-                               "~/org/gsd/business.org"
-                               "~/org/gsd/projects.org")))
+           #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend t :clock-in t :clock-resume t))))
 
 ;; Standardizes the slug to use dashes instead of underscores
 (after! org-roam
