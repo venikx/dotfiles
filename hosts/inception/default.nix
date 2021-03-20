@@ -31,6 +31,7 @@
           pdf.enable = true;
           ebook.enable = true;
         };
+        backup.enable = true;
       };
       terminal = {
         default = "xst";
