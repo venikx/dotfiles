@@ -1,9 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.modules.dev.rust;
+let cfg = config.modules.dev.clojure;
 in {
-  options.modules.dev.rust = with types; {
+  options.modules.dev.clojure = with types; {
     enable = mkOption {
       type = bool;
       default = false;
@@ -16,22 +16,11 @@ in {
   };
 
   config = mkIf cfg.enable (mkMerge [
-    {
-      env.RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
-      env.CARGO_HOME = "$XDG_DATA_HOME/cargo";
-      env.PATH = [ "$CARGO_HOME/bin" ];
-    }
-
     (mkIf cfg.binaries.enable {
-      environment.shellAliases = {
-        rs  = "rustc";
-        rsp = "rustup";
-        ca  = "cargo";
-      };
-
       home-manager.users.venikx = {
         home.packages = with pkgs; [
-          rustup
+          clojure
+          leiningen
         ];
       };
     })

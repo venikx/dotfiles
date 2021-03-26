@@ -48,12 +48,14 @@
       vim.enable = true;
     };
     dev = {
-      shell.enable = true;
+      cc.enable = true;
+      clojure.enable = true;
+      clojure.binaries.enable = true;
       node.enable = true;
       node.binaries.enable = true;
-      cc.enable = true;
       rust.enable = true;
       rust.binaries.enable = true;
+      shell.enable = true;
     };
     shell = {
       git.enable = true;
