@@ -59,21 +59,6 @@
 
 ;; Standardizes the slug to use dashes instead of underscores
 (after! org-roam
-  (defun org-roam--title-to-slug (title)
-    (cl-flet* ((nonspacing-mark-p (char)
-                                  (eq 'Mn (get-char-code-property char 'general-category)))
-               (strip-nonspacing-marks (s)
-                                       (apply #'string (seq-remove #'nonspacing-mark-p
-                                                                   (ucs-normalize-NFD-string s))))
-               (cl-replace (title pair)
-                           (replace-regexp-in-string (car pair) (cdr pair) title)))
-      (let* ((pairs `(("[^[:alnum:][:digit:]]" . "-")  ;; convert anything not alphanumeric
-                      ("--*" . "-")  ;; remove sequential underscores
-                      ("^-" . "")  ;; remove starting underscore
-                      ("-$" . "")))  ;; remove ending underscore
-             (slug (-reduce-from #'cl-replace (strip-nonspacing-marks title) pairs)))
-        (s-downcase slug))))
-
   (setq org-roam-directory "~/org/braindump")
   (setq org-roam-capture-templates
         '(("n" "Note" plain
@@ -81,12 +66,13 @@
            "%?"
            :file-name "%<%Y%m%d%H%M%S>-${slug}"
            :head "#+title: ${title}\n#+created: %U\n#+modified: %U\n\n"
+           :head "#+title: ${title}\n#+roam_tags: %^{Tags}\n#+created: %U\n#+modified: %U\n\n"
            :unnarrowed t t)
           ("l" "Literature Note" plain
            (function org-roam--capture-get-point)
-           "* Metadata\n- Author: %^{Author}\n- Reason: %^{Reason}\n* Notes\n** %?\n* Highlights"
-           :file-name "literature-notes/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+roam_tags: %^{Tags}\n#+roam_key: %^{Bibliographic Reference}\n#+created: %U\n#+modified: %U\n\n"
+           "* Metadata\n- Creator(s): %^{Creator(s)}\n- Origin: %^{Origin}\n- Recommended By: %^{Recommended By}\n- Reason: %^{Reason}\n* Notes\n** %?\n* Highlights"
+           :file-name "literature/%<%Y%m%d%H%M%S>-${slug}"
+           :head "#+title: ${title}\n#+roam_tags: %^{Tags}\n#+roam_key: cite:%^{Bibliographic Reference}\n#+created: %U\n#+modified: %U\n\n"
            :unnarrowed t t)))
   (setq org-roam-dailies-capture-templates
         '(("d" "daily" plain (function org-roam-capture--get-point)
