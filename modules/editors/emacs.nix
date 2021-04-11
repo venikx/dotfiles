@@ -68,6 +68,7 @@ in {
       # org-mode
       plantuml
       graphviz
+      pandoc
     ];
 
     env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
