@@ -11,8 +11,8 @@
  ;;doom-theme 'doom-dracula
  display-line-numbers-type t
  projectile-project-search-path '("~/code/")
- elfeed-feeds
- '("https://this-week-in-rust.org/rss.xml"))
+ elfeed-feeds '("https://this-week-in-rust.org/rss.xml"
+                "https://weekly.nixos.org/feeds/all.rss.xml"))
 
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
