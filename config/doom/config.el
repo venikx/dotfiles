@@ -35,6 +35,7 @@
         time-stamp-start "#\\+modified:[ \t]*"
         time-stamp-end "$"
         time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
+  (setq org-startup-folded 'content)
   (add-hook 'before-save-hook 'time-stamp)
   (setq +org-capture-todo-file "capture.org"
         org-capture-templates
@@ -57,44 +58,53 @@
           ("cc" "Project changelog" entry
            #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend t :clock-in t :clock-resume t))))
 
-;; Standardizes the slug to use dashes instead of underscores
-(after! org-roam
-  (defun org-roam--title-to-slug (title)
-    (cl-flet* ((nonspacing-mark-p (char)
-                                  (eq 'Mn (get-char-code-property char 'general-category)))
-               (strip-nonspacing-marks (s)
-                                       (apply #'string (seq-remove #'nonspacing-mark-p
-                                                                   (ucs-normalize-NFD-string s))))
-               (cl-replace (title pair)
-                           (replace-regexp-in-string (car pair) (cdr pair) title)))
-      (let* ((pairs `(("[^[:alnum:][:digit:]]" . "-")  ;; convert anything not alphanumeric
-                      ("--*" . "-")  ;; remove sequential underscores
-                      ("^-" . "")  ;; remove starting underscore
-                      ("-$" . "")))  ;; remove ending underscore
-             (slug (-reduce-from #'cl-replace (strip-nonspacing-marks title) pairs)))
-        (s-downcase slug))))
-
-  (setq org-roam-directory "~/org/braindump")
+(use-package! org-roam
+  :init
+  (map! :leader
+        :prefix "r"
+        :desc "org-roam" "l" #'org-roam-buffer-toggle
+        :desc "org-roam-node-insert" "i" #'org-roam-node-insert
+        :desc "org-roam-node-find" "f" #'org-roam-node-find
+        :desc "org-roam-show-graph" "g" #'org-roam-show-graph
+        :desc "org-roam-capture" "c" #'org-roam-capture
+        :desc "org-roam-dailies-capture-today" "j" #'org-roam-dailies-capture-today)
+  (setq org-roam-directory "~/org/braindump"
+        org-roam-db-gc-threshold most-positive-fixnum
+        org-id-link-to-org-use-id t)
+  (setq org-roam-node-display-template
+        "${title:*}  ${tags:20}")
+  (add-to-list 'display-buffer-alist
+               '(("\\*org-roam\\*"
+                  (display-buffer-in-direction)
+                  (direction . right)
+                  (window-width . 0.33)
+                  (window-height . fit-window-to-buffer))))
+  :config
+  (setq org-roam-mode-sections
+        (list #'org-roam-backlinks-section
+              #'org-roam-unlinked-references-section))
+  (org-roam-setup)
   (setq org-roam-capture-templates
         '(("n" "Note" plain
-           (function org-roam--capture-get-point)
-           "%?\n* Metadata\n- Tags :: \n- Related Notes :: "
-           :file-name "%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+created: %U\n#+modified: %U\n\n"
-           :head "#+title: ${title}\n#+roam_tags: %^{Tags}\n#+created: %U\n#+modified: %U\n\n"
-           :unnarrowed t t)
-          ("l" "Literature Note" plain
-           (function org-roam--capture-get-point)
-           "* Metadata\n- Creator(s) :: %^{Creator(s)}\n- Origin :: %^{Origin}\n- Recommended By :: %^{Recommended By}\n- Reason :: %^{Reason}\n* Notes\n** %?\n* Highlights"
-           :file-name "literature/%<%Y%m%d%H%M%S>-${slug}"
-           :head "#+title: ${title}\n#+roam_tags: %^{Tags}\n#+roam_key: cite:%^{Bibliographic Reference}\n#+created: %U\n#+modified: %U\n\n"
-           :unnarrowed t t)))
-  (setq org-roam-dailies-capture-templates
-        '(("d" "daily" plain (function org-roam-capture--get-point)
-           ""
+           "\n\n%?\n\n* Metadata\n- Tags :: \n- Related Notes :: "
+           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                              "#+title: ${title}\n#+created: %U\n#+modified: %U")
            :immediate-finish t
-           :file-name "journal/%<%Y>/%<%y%m%d>"
-           :head "#+title: %<%A %B %-d, %Y>\n#+created: %U\n#+modified: %U\n\n"))))
+           :unnarrowed t)
+          ("l" "Literature" plain
+           "\n\n* Metadata\n- Creator(s) :: \n- Origin :: \n- Recommended By :: \n- Reason :: \n* Notes\n** %?\n* Highlights"
+           :if-new (file+head "literature/%<%Y%m%d%H%M%S>-${slug}.org"
+                              "#+title: ${title}\n#+roam_key: \n#+created: %U\n#+modified: %U")
+           :immediate-finish t
+           :unnarrowed t)))
+
+  (setq org-roam-dailies-directory "daily/")
+  (setq org-roam-dailies-capture-templates
+        '(("d" "default" entry
+           "* %?"
+           :if-new (file+head "daily/%<%Y-%m-%d>.org"
+                              "#+title: %<%Y-%m-%d>\n#+created: %U\n#+modified: %U\n\n"))))
+  (set-company-backend! 'org-mode '(company-capf)))
 
 (defun venikx/org-skip-subtree-if-priority (priority)
   "Skip an agenda subtree if it has a priority of PRIORITY.
