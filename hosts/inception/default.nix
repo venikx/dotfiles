@@ -45,12 +45,12 @@
       vim.enable = true;
     };
     dev = {
-      shell.enable = true;
-      node.enable = true;
-      node.binaries.enable = true;
       cc.enable = true;
+      node.enable = true;
+      node.binaries.enable = false;
       rust.enable = true;
-      rust.binaries.enable = true;
+      rust.binaries.enable = false;
+      shell.enable = true;
     };
     shell = {
       git.enable = true;

@@ -32,15 +32,9 @@ in {
     }
 
     (mkIf cfg.binaries.enable {
-      env.PATH = [ "$(yarn global bin)" ];
-      environment.shellAliases = {
-        ya = "yarn";
-      };
-
       home-manager.users.venikx = {
         home.packages = with pkgs; [
           nodejs
-          yarn
         ];
       };
     })
