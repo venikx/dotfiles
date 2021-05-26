@@ -20,7 +20,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    services.xserver.videoDrivers = [ "nvidia" ];
+    services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];
     hardware = {
       opengl.enable = true;
      # nvidia.prime = {

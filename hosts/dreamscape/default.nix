@@ -10,7 +10,8 @@
     hostName = "dreamscape";
     networkmanager.enable = true;
     useDHCP = false;
-    interfaces.enp34s0.useDHCP = true;
+    interfaces.eno1.useDHCP = true; # ethernet
+    # interfaces.wlp5s0.useDHCP = true; # wifi
   };
 
   modules = {
@@ -69,13 +70,10 @@
   };
 
   boot = {
+    loader.systemd-boot.enable = true;
+    loader.systemd-boot.configurationLimit = 2;
     loader.efi.canTouchEfiVariables = true;
     loader.efi.efiSysMountPoint = "/boot";
-    loader.grub.enable = true;
-    loader.grub.devices = ["nodev"];
-    loader.grub.efiSupport = true;
-    loader.grub.useOSProber = true;
-    loader.grub.configurationLimit = 5;
   };
 }
 

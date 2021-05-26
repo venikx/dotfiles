@@ -4,8 +4,8 @@
   imports =
     [
       <home-manager/nixos>
-      ./hosts/inception
-      # ./hosts/dreamscape
+      ./hosts/dreamscape  # desktop
+      # ./hosts/inception # laptop
       ./modules
     ];
 
