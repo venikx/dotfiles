@@ -5,6 +5,7 @@ let cfg = config.modules.desktop.browsers;
 in {
   imports =
     [
+      ./brave.nix
       ./firefox.nix
     ];
 

@@ -25,6 +25,7 @@
       browsers = {
         default = "firefox";
         firefox.enable = true;
+        brave.enable = true;
       };
       media = {
         spotify.enable = true;
