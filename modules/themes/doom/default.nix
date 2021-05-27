@@ -19,6 +19,9 @@ in {
         };
 
         shell.zsh.rcFiles  = [ ./config/zsh/prompt.zsh ];
+        desktop.browsers.firefox.userChrome = concatMapStringsSep "\n" readFile [
+            ./config/firefox/userChrome.css
+          ];
       };
     }
 
