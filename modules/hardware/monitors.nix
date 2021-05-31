@@ -16,25 +16,26 @@ in {
       profiles = {
         "default" = {
           fingerprint = {
+            DP-0 = "*";
             HDMI-0 = "*";
-            DP-4 = "*";
           };
           config = {
-            DP-4 = {
+            DP-0 = {
               enable = true;
               primary = true;
               rate = "144.00";
               mode = "2560x1440";
               dpi = 100;
+              position = "0x0";
             };
             HDMI-0 = {
               enable = true;
-              dpi = 100;
               primary = false;
               mode = "1920x1080";
               rate = "60.00";
               rotate = "right";
-              position = "2560x0";
+              dpi = 100;
+              position = "2561x0";
             };
           };
         };
