@@ -2,6 +2,7 @@
 	name = Kevin Rangel
 	# useconfigonly = true
 	email = code@venikx.com
+	signingkey = AA445668182C2AD4
 
 [core]
 	editor = nvim
@@ -19,6 +20,9 @@
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
 	ls = ls-files
 	undo-commit = reset --soft "HEAD^"
+
+[commit]
+	gpgsign = true
 
 [push]
 	default = simple

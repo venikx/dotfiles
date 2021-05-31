@@ -63,6 +63,7 @@
       git.enable = true;
       zsh.enable = true;
       direnv.enable = true;
+      gnupg.enable = true;
     };
     services = {
       docker.enable = true;
