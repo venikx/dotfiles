@@ -9,6 +9,9 @@
 	ignorecase = false
 	whitespace = trailing-space
 
+[init]
+	defaultBranch = main
+
 [github]
 	user = venikx
 
