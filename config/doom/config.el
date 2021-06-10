@@ -10,6 +10,7 @@
  ;;doom-theme 'doom-outrun-electric
  ;;doom-theme 'doom-dracula
  display-line-numbers-type t
+ standard-indent 2
  projectile-project-search-path '("~/code/")
  elfeed-feeds '("https://this-week-in-rust.org/rss.xml"
                 "https://weekly.nixos.org/feeds/all.rss.xml"))

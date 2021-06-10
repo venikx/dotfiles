@@ -16,11 +16,11 @@ in {
       profiles = {
         "default" = {
           fingerprint = {
-            DP-0 = "*";
+            DP-4 = "*";
             HDMI-0 = "*";
           };
           config = {
-            DP-0 = {
+            DP-4 = {
               enable = true;
               primary = true;
               rate = "144.00";
