@@ -21,9 +21,6 @@
 	ls = ls-files
 	undo-commit = reset --soft "HEAD^"
 
-[commit]
-	gpgsign = true
-
 [push]
 	default = simple
 
