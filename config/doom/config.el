@@ -88,7 +88,7 @@
   (setq org-roam-capture-templates
         '(("n" "Note" plain
            "\n\n%?\n\n* Metadata\n- Tags :: \n- Related Notes :: "
-           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+           :if-new (file+head "%<%Y%m%d%H%M%S>.org"
                               "#+title: ${title}\n#+created: %U\n#+modified: %U")
            :immediate-finish t
            :unnarrowed t)
@@ -99,12 +99,21 @@
            :immediate-finish t
            :unnarrowed t)))
 
-  (setq org-roam-dailies-directory "daily/")
+  (setq org-roam-dailies-directory "journal/")
   (setq org-roam-dailies-capture-templates
         '(("d" "default" entry
-           "* %?"
-           :if-new (file+head "daily/%<%Y-%m-%d>.org"
-                              "#+title: %<%Y-%m-%d>\n#+created: %U\n#+modified: %U\n\n"))))
+           "\n* %?"
+           :if-new (file+head "journal/%<%Y-%m-%d>.org"
+                              "#+title: %<%Y-%m-%d>\n#+created: %U\n#+modified: %U
+\n* [[id:f15b45dd-3baa-42ca-80ad-05cc3da96688][Morning Routine]]
+** What happened yesterday?
+** What is today's main purpose?
+- [ ]
+** What am I anxious about?
+** What am I grateful for?
+** What am I excited about?
+* [[id:70364f2a-8d4d-4dd1-b571-f354f3a54dd0][Highlights]]"))))
+
   (set-company-backend! 'org-mode '(company-capf)))
 
 (defun venikx/org-skip-subtree-if-priority (priority)
