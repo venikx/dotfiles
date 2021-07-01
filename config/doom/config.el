@@ -29,7 +29,8 @@
  deft-directory "~/org/braindump"
  deft-extensions '("org" "txt")
  deft-recursive t
- org-directory "~/org/gsd")
+ org-directory "~/org/gsd"
+ org-contacts-files "~/org/braindump/braindump-private/contacts.org")
 
 (after! org
   (setq time-stamp-active t
@@ -86,11 +87,23 @@
               #'org-roam-unlinked-references-section))
   (org-roam-setup)
   (setq org-roam-capture-templates
-        '(("n" "Note" plain
+        '(("n" "Note" entry
            "\n\n%?\n\n* Metadata\n- Tags :: \n- Related Notes :: "
            :if-new (file+head "%<%Y%m%d%H%M%S>.org"
                               "#+title: ${title}\n#+created: %U\n#+modified: %U")
            :immediate-finish t
+           :unnarrowed t)
+          ("c" "Contact" entry "* ${title} :@:
+:PROPERTIES:
+:TYPE: person
+:MOBILE: %^{+358 45 265 HELLO}
+:BIRTHDAY: %^{yyyy-mm-dd}
+:EMAIL: %(org-contacts-template-email)
+:ADDRESS: %^{Main Street, 00100 Helsinki, Finland}
+:CREATED: %t
+:ID: %(org-id-uuid)
+:END:"
+           :if-new (file "~/org/braindump/braindump-private/contacts.org")
            :unnarrowed t)
           ("l" "Literature" plain
            "\n\n* Metadata\n- Creator(s) :: \n- Origin :: \n- Recommended By :: \n- Reason :: \n* Notes\n** %?\n* Highlights"
@@ -99,11 +112,11 @@
            :immediate-finish t
            :unnarrowed t)))
 
-  (setq org-roam-dailies-directory "journal/")
+  (setq org-roam-dailies-directory "braindump-private/journal/")
   (setq org-roam-dailies-capture-templates
         '(("d" "default" entry
            "\n* %?"
-           :if-new (file+head "journal/%<%Y-%m-%d>.org"
+           :if-new (file+head "braindump-private/journal/%<%Y-%m-%d>.org"
                               "#+title: %<%Y-%m-%d>\n#+created: %U\n#+modified: %U
 \n* [[id:f15b45dd-3baa-42ca-80ad-05cc3da96688][Morning Routine]]
 ** What happened yesterday?
