@@ -52,5 +52,3 @@
 (package! elcord)
 (package! nov
   :recipe (:type git :repo "https://depp.brause.cc/nov.el.git"))
-(package! org-roam
-  :recipe (:host github :repo "org-roam/org-roam" :branch "v2"))

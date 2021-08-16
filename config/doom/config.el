@@ -38,7 +38,8 @@
         time-stamp-start "#\\+modified:[ \t]*"
         time-stamp-end "$"
         time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
-  (setq org-startup-folded 'content)
+  (setq org-startup-folded 'content
+        org-log-into-drawer t)
   (add-hook 'before-save-hook 'time-stamp)
   (setq +org-capture-todo-file "capture.org"
         org-capture-templates

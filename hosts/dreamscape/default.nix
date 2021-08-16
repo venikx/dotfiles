@@ -11,7 +11,7 @@
     networkmanager.enable = true;
     useDHCP = false;
     interfaces.eno1.useDHCP = true; # ethernet
-    # interfaces.wlp5s0.useDHCP = true; # wifi
+    interfaces.wlp5s0.useDHCP = true; # wifi
   };
 
   modules = {
