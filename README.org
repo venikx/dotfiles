@@ -2,7 +2,7 @@
 #+author: Kevin Rangel
 
 [[https://github.com/hlissner/doom-emacs][https://img.shields.io/badge/Made_with-Doom_Emacs-blueviolet.svg?style=flat-square&logo=GNU%20Emacs&logoColor=white]]
-[[https://nixos.org][https://img.shields.io/badge/NixOS-v20.09-blue.svg?style=flat-square&logo=NixOS&logoColor=white]]
+[[https://nixos.org][https://img.shields.io/badge/NixOS-v21.05-blue.svg?style=flat-square&logo=NixOS&logoColor=white]]
 
 | *Shell*    | zsh + zgen      |
 | *WM*       | bspwm + polybar |

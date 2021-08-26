@@ -118,7 +118,7 @@
   (setq org-roam-dailies-capture-templates
         '(("d" "default" entry
            "\n* %?"
-           :if-new (file+head "braindump-private/journal/%<%Y-%m-%d>.org"
+           :if-new (file+head "%<%Y-%m-%d>.org"
                               "#+title: %<%Y-%m-%d>\n#+created: %U\n#+modified: %U
 \n* [[id:f15b45dd-3baa-42ca-80ad-05cc3da96688][Morning Routine]]
 ** What happened yesterday?
