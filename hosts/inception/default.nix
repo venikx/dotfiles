@@ -18,6 +18,7 @@
       bspwm.enable = true;
       dmenu.enable = true;
       communication = {
+        discord.enable = true;
         slack.enable = true;
         teams.enable = true;
       };

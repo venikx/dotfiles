@@ -26,6 +26,7 @@ in {
   config = {
     home-manager.users.venikx = {
       home.packages = with pkgs; [
+        (mkIf cfg.discord.enable discord)
         #(mkIf cfg.discord.enable unstable.discord)
         (mkIf cfg.slack.enable slack)
         (mkIf cfg.teams.enable teams)
