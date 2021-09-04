@@ -89,11 +89,11 @@
               #'org-roam-unlinked-references-section))
   (org-roam-setup)
   (setq org-roam-capture-templates
-        '(("n" "Note" entry
-           "\n\n%?\n\n* Metadata\n- Tags :: \n- Related Notes :: "
+        '(("n" "Note" plain
+           "%?\n\n* Metadata\n- Tags :: \n- Related Notes :: "
            :if-new (file+head "%<%Y%m%d%H%M%S>.org"
                               "#+title: ${title}\n#+created: %U\n#+modified: %U")
-           :immediate-finish t
+           :empty-lines 1
            :unnarrowed t)
           ("c" "Contact" entry "* ${title} :@:
 :PROPERTIES:
@@ -105,12 +105,13 @@
 :CREATED: %t
 :ID: %(org-id-uuid)
 :END:"
-           :if-new (file "~/org/braindump/braindump-private/contacts.org")
+           :if-new (file "braindump-private/contacts.org")
            :unnarrowed t)
           ("l" "Literature" plain
-           "\n\n* Metadata\n- Creator(s) :: \n- Origin :: \n- Recommended By :: \n- Reason :: \n* Notes\n** %?\n* Highlights"
+           "* Metadata\n- Creator(s) :: \n- Origin :: \n- Recommended By :: \n- Reason :: \n* Notes\n** %?\n* Highlights"
            :if-new (file+head "literature/%<%Y%m%d%H%M%S>-${slug}.org"
                               "#+title: ${title}\n#+roam_key: \n#+created: %U\n#+modified: %U")
+           :empty-lines 1
            :immediate-finish t
            :unnarrowed t)))
 
