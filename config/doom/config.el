@@ -11,6 +11,7 @@
  ;;doom-theme 'doom-dracula
  display-line-numbers-type t
  standard-indent 2
+ calendar-week-start-day 1 ;; Start on Monday
  projectile-project-search-path '("~/code/")
  elfeed-feeds '("https://blog.tecosaur.com/tmio/rss.xml"
                 "https://weekly.nixos.org/feeds/all.rss.xml"
@@ -26,6 +27,8 @@
   :mode ("\\.\\(epub\\|mobi\\)\\'" . nov-mode))
 
 ;; Everything org-mode
+(add-to-list 'org-modules 'org-checklist)
+
 (setq
  deft-directory "~/org/braindump"
  deft-extensions '("org" "txt")
@@ -121,14 +124,14 @@
            "\n* %?"
            :if-new (file+head "%<%Y-%m-%d>.org"
                               "#+title: %<%Y-%m-%d>\n#+created: %U\n#+modified: %U
-\n* [[id:f15b45dd-3baa-42ca-80ad-05cc3da96688][Morning Routine]]
+\n* Morning Routine
 ** What happened yesterday?
 ** What is today's main purpose?
 - [ ]
 ** What am I anxious about?
 ** What am I grateful for?
 ** What am I excited about?
-* [[id:70364f2a-8d4d-4dd1-b571-f354f3a54dd0][Highlights]]"))))
+* Highlights"))))
 
   (set-company-backend! 'org-mode '(company-capf)))
 
@@ -146,6 +149,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 (use-package! org-agenda
   :init
   (setq org-agenda-use-time-grid nil
+        org-agenda-start-on-weekday 1
         org-agenda-custom-commands '((" " "Agenda"
                                       ((agenda ""
                                                ((org-agenda-span 'day)
