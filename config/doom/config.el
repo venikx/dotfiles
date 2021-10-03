@@ -94,7 +94,7 @@
   (setq org-roam-capture-templates
         '(("n" "Note" plain
            "%?\n\n* Metadata\n- Tags :: \n- Related Notes :: "
-           :if-new (file+head "%<%Y%m%d%H%M%S>.org"
+           :target (file+head "%<%Y%m%d%H%M%S>.org"
                               "#+title: ${title}\n#+created: %U\n#+modified: %U")
            :empty-lines 1
            :unnarrowed t)
@@ -108,11 +108,11 @@
 :CREATED: %t
 :ID: %(org-id-uuid)
 :END:"
-           :if-new (file "braindump-private/contacts.org")
+           :target (file "braindump-private/contacts.org")
            :unnarrowed t)
           ("l" "Literature" plain
            "* Metadata\n- Creator(s) :: \n- Origin :: \n- Recommended By :: \n- Reason :: \n* Notes\n** %?\n* Highlights"
-           :if-new (file+head "literature/%<%Y%m%d%H%M%S>-${slug}.org"
+           :target (file+head "literature/%<%Y%m%d%H%M%S>-${slug}.org"
                               "#+title: ${title}\n#+roam_key: \n#+created: %U\n#+modified: %U")
            :empty-lines 1
            :immediate-finish t
@@ -120,18 +120,18 @@
 
   (setq org-roam-dailies-directory "braindump-private/journal/")
   (setq org-roam-dailies-capture-templates
-        '(("d" "default" entry
-           "\n* %?"
-           :if-new (file+head "%<%Y-%m-%d>.org"
-                              "#+title: %<%Y-%m-%d>\n#+created: %U\n#+modified: %U
-\n* Morning Routine
+        '(("j" "Journal" entry "* %U %?"
+           :target (file+datetree "journal.org" day))
+          ("m" "Morning Routine" entry "* Morning Routine
 ** What happened yesterday?
+%?
 ** What is today's main purpose?
 - [ ]
 ** What am I anxious about?
 ** What am I grateful for?
-** What am I excited about?
-* Highlights"))))
+** What am I excited about?"
+           :target (file+datetree "journal.org" day)
+           :prepend t)))
 
   (set-company-backend! 'org-mode '(company-capf)))
 
