@@ -52,3 +52,6 @@
 (package! elcord)
 (package! nov
   :recipe (:type git :repo "https://depp.brause.cc/nov.el.git"))
+(unpin! org-roam)
+(package! websocket)
+(package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
