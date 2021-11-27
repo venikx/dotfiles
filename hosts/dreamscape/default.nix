@@ -23,7 +23,7 @@
         slack.enable = true;
       };
       browsers = {
-        default = "firefox";
+        default = "brave";
         firefox.enable = true;
         brave.enable = true;
       };
