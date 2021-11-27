@@ -24,6 +24,9 @@ in {
     monitors.home.enable = true;
   };
 
+  # Are these really needed? Seems so atm.
+  hardware.enableRedistributableFirmware = true;
+  hardware.enableAllFirmware = true;
   # CPU
   hardware.cpu.amd.updateMicrocode = true;
 
