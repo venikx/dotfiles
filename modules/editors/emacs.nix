@@ -75,10 +75,11 @@ in {
     modules.shell.zsh.rcFiles = [ "/etc/nixos/config/emacs/aliases.zsh" ];
     
     home-manager.users.venikx = mkIf cfg.doom.enable {
-      xdg.configFile."doom".source = "/etc/nixos/config/doom";
-    };
-    home-manager.users.root = mkIf cfg.doom.enable {
-      xdg.configFile."doom".source = "/etc/nixos/config/doom";
+      xdg.configFile."doom" = {
+        source = "/etc/nixos/config/doom";
+        # link recursively so other modules can link files in their folders
+        recursive = true;
+      };
     };
   };
 }

@@ -52,12 +52,12 @@ in {
       serviceConfig.ExecStart = "${pkgs.dunst}/bin/dunst";
     };
 
-    # link recursively so other modules can link files in their folders
     home-manager.users.venikx = {
       xdg.configFile = {
         "sxhkd".source = "/etc/nixos/config/sxhkd";
         "bspwm" = {
           source = "/etc/nixos/config/bspwm";
+          # link recursively so other modules can link files in their folders
           recursive = true;
         };
       };

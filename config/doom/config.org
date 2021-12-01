@@ -1,9 +1,23 @@
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-(global-auto-revert-mode t)
+#+title: Doom Configuration
 
+* Meta
+** Add lexical binding support
+Allegedly makes Emacs go fast, vrooooom!
+
+#+begin_src elisp
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+#+end_src
+
+* Defining Variables
+** Personal Details
+#+begin_src elisp
 (setq
  user-full-name "Kevin Rangel"
  user-mail-address "code@venikx.com")
+#+end_src
+** Interaction & Design
+#+begin_src elisp
+(global-auto-revert-mode t)
 
 (setq
  doom-theme 'doom-laserwave
@@ -13,23 +27,30 @@
  standard-indent 2
  calendar-week-start-day 1 ;; Start on Monday
  projectile-project-search-path '("~/code/"))
+#+end_src
 
-;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+* Package Configuration
+** Discord
+Display what I'm working on in Emacs on Discord.
 
+#+begin_src elisp
 (use-package! elcord :custom (elcord-use-major-mode-as-main-icon t))
+#+end_src
 
+** e-Readers
+Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
+
+#+begin_src elisp
 (use-package! nov
   :hook (nov-mode . variable-pitch-mode)
   :mode ("\\.\\(epub\\|mobi\\)\\'" . nov-mode))
+#+end_src
 
-;; Everything org-mode
+** Org-Mode
+#+begin_src elisp
 (add-to-list 'org-modules 'org-checklist)
 
 (setq
- deft-directory "~/org/braindump"
- deft-extensions '("org" "txt")
- deft-recursive t
  org-directory "~/org/gsd"
  org-contacts-files "~/org/braindump/braindump-private/contacts.org")
 
@@ -61,7 +82,10 @@
            #'+org-capture-central-project-notes-file "* %U %?\n%i\n%a" :heading "Notes" :prepend t :clock-in t :clock-resume t)
           ("cc" "Project changelog" entry
            #'+org-capture-central-project-changelog-file "* %U %?\n%i\n%a" :heading "Changelog" :prepend t :clock-in t :clock-resume t))))
+#+end_src
 
+** Org Roam
+#+begin_src elisp
 (use-package! org-roam
   :init
   (map! :leader
@@ -119,19 +143,46 @@
   (setq org-roam-dailies-capture-templates
         '(("j" "Journal" entry "* %U %?"
            :target (file+datetree "journal.org" day))
-          ("m" "Morning Routine" entry "* Morning Routine
-** What happened yesterday?
-%?
-** What is today's main purpose?
-- [ ]
-** What am I anxious about?
-** What am I grateful for?
-** What am I excited about?"
+          ("m" "Morning Routine" entry "* Morning Routine/n** What happened yesterday?
+%?/n** What is today's main purpose?
+- [ ]/n** What am I anxious about?/n** What am I grateful for?/n** What am I excited about?"
            :target (file+datetree "journal.org" day)
            :prepend t)))
 
   (set-company-backend! 'org-mode '(company-capf)))
 
+(defun venikx/org-skip-subtree-if-priority (priority)
+  "Skip an agenda subtree if it has a priority of PRIORITY.
+
+PRIORITY may be one of the characters ?A, ?B, or ?C."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+        (pri-value (* 1000 (- org-lowest-priority priority)))
+        (pri-current (org-get-priority (thing-at-point 'line t))))
+    (if (= pri-value pri-current)
+        subtree-end
+      nil)))
+#+end_src
+
+*** Note Graph in Browser
+#+begin_src elisp
+(use-package! websocket
+    :after org-roam)
+
+(use-package! org-roam-ui
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+;;  :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+#+end_src
+
+** Org Agenda
+#+begin_src elisp
 (defun venikx/org-skip-subtree-if-priority (priority)
   "Skip an agenda subtree if it has a priority of PRIORITY.
 
@@ -160,23 +211,11 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                                                        (org-agenda-skip-if nil '(scheduled deadline))))
                                                  (org-agenda-overriding-header "Backlog")))
                                        )))))
+#+end_src
 
-(use-package! websocket
-    :after org-roam)
-
-(use-package! org-roam-ui
-    :after org-roam ;; or :after org
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-;;  :hook (after-init . org-roam-ui-mode)
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start t))
-
-;; Language Configuration
+* Language Configuration
+** C/C++
+#+begin_src elisp
 (setq lsp-clients-clangd-args '("-j=3"
                                 "--background-index"
                                 "--clang-tidy"
@@ -184,3 +223,4 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                                 "--header-insertion=never"
                                 "--header-insertion-decorators=0"))
 (after! lsp-clangd (set-lsp-priority! 'clangd 2))
+#+end_src
