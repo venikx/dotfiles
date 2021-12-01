@@ -49,10 +49,6 @@ in {
       (aspellWithDicts (ds: with ds; [
         en en-computers en-science
       ]))
-      languagetool
-      # org-mode
-      sqlite
-      texlive.combined.scheme-medium
       # c programming
       ccls
       editorconfig-core-c 
@@ -66,9 +62,13 @@ in {
       # rust
       rustfmt
       # org-mode
+      sqlite
+      texlive.combined.scheme-medium
       plantuml
       graphviz
       pandoc
+      #docker
+      nodePackages.dockerfile-language-server-nodejs
     ];
 
     env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
