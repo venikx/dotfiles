@@ -12,10 +12,7 @@
  display-line-numbers-type t
  standard-indent 2
  calendar-week-start-day 1 ;; Start on Monday
- projectile-project-search-path '("~/code/")
- elfeed-feeds '("https://blog.tecosaur.com/tmio/rss.xml"
-                "https://weekly.nixos.org/feeds/all.rss.xml"
-                ))
+ projectile-project-search-path '("~/code/"))
 
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
