@@ -16,7 +16,7 @@ A lot of the configuration is heavily inspired by [[https://github.com/hlissner/
 
 * Installation
 1. Yoink the latest stable build of [[https://nixos.org/][NixOS 21.05]]
-2. Install NixOS by following one of the hosts configs
+2. Install NixOS by following one of the hosts config
    - [[./hosts/dreamscape/README.org][dreamscape (desktop)]]
    - [[./hosts/inception/README.org][inception (laptop)]]
 3. Clone these dotfiles into /etc/nixos
