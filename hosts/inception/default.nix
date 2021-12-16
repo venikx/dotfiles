@@ -33,7 +33,7 @@
           ebook.enable = true;
         };
         backup.enable = true;
-        music-production = true;
+        music-production.enable = true;
       };
       terminal = {
         default = "xst";

@@ -10,7 +10,7 @@ in {
     };
 
     libDir = mkOption {
-      type = string;
+      type = str;
       default = "$XDG_DATA_HOME/steamlib";
     };
   };
