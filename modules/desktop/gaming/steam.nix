@@ -8,9 +8,46 @@ in {
       type = bool;
       default = false;
     };
+
+    libDir = mkOption {
+      type = string;
+      default = "$XDG_DATA_HOME/steamlib";
+    };
   };
 
   config = mkIf cfg.enable {
-    programs.steam.enable = true;
+    hardware = {
+      opengl.enable = true;
+      opengl.driSupport32Bit  = true;
+      pulseaudio.support32Bit = config.hardware.pulseaudio.enable;
+    };
+    system.userActivationScripts.setupSteamDir = ''mkdir -p "${cfg.libDir}"'';
+
+    home-manager.users.venikx = {
+      home.packages = with pkgs; [
+        # Prevent steam from polluting $HOME
+        (writeScriptBin "steam" ''
+          #!${stdenv.shell}
+          HOME="${cfg.libDir}" exec ${steam}/bin/steam "$@"
+        '')
+
+        # To run DRM free games
+        (writeScriptBin "steam-run" ''
+          #!${stdenv.shell}
+          HOME="${cfg.libDir}" exec ${steam-run-native}/bin/steam-run "$@"
+        '')
+
+        # Needed for a dmenu entry
+        (makeDesktopItem {
+          name = "steam";
+          desktopName = "Steam";
+          icon = "steam";
+          exec = "steam";
+          terminal = "false";
+          mimeType = "x-scheme-handler/steam";
+          categories = "Network;FileTransfer;Game";
+        })
+      ];
+    };
   };
 }
