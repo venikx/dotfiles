@@ -60,7 +60,11 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
         time-stamp-end "$"
         time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
   (setq org-startup-folded 'content
-        org-log-into-drawer t)
+        org-log-into-drawer t
+        org-log-done 'time
+        org-log-redeadline 'time
+        org-log-reschedule 'time
+        org-log-refile 'time)
   (add-hook 'before-save-hook 'time-stamp)
   (setq +org-capture-todo-file "capture.org"
         org-capture-templates
