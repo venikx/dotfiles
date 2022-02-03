@@ -90,35 +90,13 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 
 ** Org Roam
 #+begin_src elisp
-(use-package! org-roam
-  :init
-  (map! :leader
-        :prefix "r"
-        :desc "org-roam" "l" #'org-roam-buffer-toggle
-        :desc "org-roam-node-insert" "i" #'org-roam-node-insert
-        :desc "org-roam-node-find" "f" #'org-roam-node-find
-        :desc "org-roam-show-graph" "g" #'org-roam-show-graph
-        :desc "org-roam-capture" "c" #'org-roam-capture
-        :desc "org-roam-dailies-capture-today" "j" #'org-roam-dailies-capture-today)
+(after! org-roam
   (setq org-roam-directory "~/org/braindump"
-        org-roam-db-gc-threshold most-positive-fixnum
-        org-id-link-to-org-use-id t)
-  (setq org-roam-node-display-template
-        "${title:*}  ${tags:20}")
-  (add-to-list 'display-buffer-alist
-               '(("\\*org-roam\\*"
-                  (display-buffer-in-direction)
-                  (direction . right)
-                  (window-width . 0.33)
-                  (window-height . fit-window-to-buffer))))
-  :config
-  (setq org-roam-mode-sections
-        (list #'org-roam-backlinks-section
-              #'org-roam-unlinked-references-section))
-  (org-roam-setup)
+        org-roam-dailies-directory "braindump-private/journal/")
+
   (setq org-roam-capture-templates
         '(("n" "Note" plain
-           "%?\n\n* Metadata\n- Tags :: \n- Related Notes :: "
+           "%?\n\n* Metadata\n- Tags :: \n- Related Notes :: \n- References :: "
            :target (file+head "%<%Y%m%d%H%M%S>.org"
                               "#+title: ${title}\n#+created: %U\n#+modified: %U")
            :empty-lines 1
@@ -126,45 +104,42 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
           ("c" "Contact" entry "* ${title} :@:
 :PROPERTIES:
 :TYPE: person
-:MOBILE: %^{+358 45 265 HELLO}
-:BIRTHDAY: %^{yyyy-mm-dd}
+:MOBILE: %^{Phone Number (+358 45 265 HEYO)}
+:BIRTHDAY: %^{Birthday (yyyy-mm-dd)}
 :EMAIL: %(org-contacts-template-email)
-:ADDRESS: %^{Main Street, 00100 Helsinki, Finland}
+:ADDRESS: %^{Address (MainStreet, 00100 Helsinki, Finland)}
 :CREATED: %t
 :ID: %(org-id-uuid)
 :END:"
            :target (file "braindump-private/contacts.org")
            :unnarrowed t)
-          ("l" "Literature" plain
-           "* Metadata\n- Creator(s) :: \n- Origin :: \n- Recommended By :: \n- Reason :: \n* Notes\n** %?\n* Highlights"
-           :target (file+head "literature/%<%Y%m%d%H%M%S>-${slug}.org"
-                              "#+title: ${title}\n#+roam_key: \n#+created: %U\n#+modified: %U")
+          ("l" "Literature" entry "* TODO ${title}
+:PROPERTIES:
+:Creator(s): %^{Creator(s)}
+:Origin: %?
+:Recommended: %^{Recommended By}
+:Rating:
+:BTYPE: %^{Type (article)}
+:ADDED: %t
+:CUSTOM_ID: %^{Cite Key (zzz1970hello)}
+:ID: %(org-id-uuid)
+:END:"
+           :target (file "literature/references.org")
+           :prepend t
            :empty-lines 1
-           :immediate-finish t
            :unnarrowed t)))
-
-  (setq org-roam-dailies-directory "braindump-private/journal/")
   (setq org-roam-dailies-capture-templates
         '(("j" "Journal" entry "* %U %?"
            :target (file+datetree "journal.org" day))
-          ("m" "Morning Routine" entry "* Morning Routine/n** What happened yesterday?
-%?/n** What is today's main purpose?
-- [ ]/n** What am I anxious about?/n** What am I grateful for?/n** What am I excited about?"
+          ("m" "Morning Routine" entry "* Morning Routine
+,** What happened yesterday?
+,** What is today's main purpose?
+- [ ]
+,** What am I anxious about?
+,** What am I grateful for?
+,** What am I excited about?"
            :target (file+datetree "journal.org" day)
-           :prepend t)))
-
-  (set-company-backend! 'org-mode '(company-capf)))
-
-(defun venikx/org-skip-subtree-if-priority (priority)
-  "Skip an agenda subtree if it has a priority of PRIORITY.
-
-PRIORITY may be one of the characters ?A, ?B, or ?C."
-  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-        (pri-value (* 1000 (- org-lowest-priority priority)))
-        (pri-current (org-get-priority (thing-at-point 'line t))))
-    (if (= pri-value pri-current)
-        subtree-end
-      nil)))
+           :prepend t))))
 #+end_src
 
 *** Note Graph in Browser
@@ -590,8 +565,8 @@ holding contextual information."
               (content ,(substring-no-properties (car (plist-get info :title))))))
      (meta (@ (name "og:description")
               (content ,(plist-get info :description))))
-     ;;            (meta (@ (name "og:type")
-     ;;                     (content ,(plist-get info :title))))
+     (meta (@ (name "og:type")
+              (content ,(plist-get info :meta-type))))
      (meta (@ (name "og:image")
               (content ,(venikx.com-head-image info))))
      (meta (@ (name "og:image:alt")
@@ -730,7 +705,9 @@ common assets among multiple pages.
              :publishing-function 'venikx.com-html-publish-to-html
              :publishing-directory (expand-file-name "public" venikx.com-root)
              :with-title t
-             :with-toc nil)
+             :with-toc nil
+             ;; custom variables
+             )
        (list "venikx.com:global-assets"
              :base-directory (expand-file-name "assets" venikx.com-root)
              :base-extension venikx.com-site-attachments
