@@ -113,7 +113,7 @@
 
        :lang
        ;;agda              ; types of types of types of types...
-       ;;beancount         ; mind the GAAP
+       (beancount +lsp)         ; mind the GAAP
        (cc +lsp)           ; C/C++/Obj-C madness
        clojure           ; java with a lisp
        ;;common-lisp       ; if you've seen one lisp, you've seen them all
@@ -144,7 +144,7 @@
        ;;kotlin            ; a better, slicker Java(Script)
        ;;latex             ; writing papers in Emacs has never been so fun
        ;;lean              ; for folks with too much to prove
-       ledger            ; be audit you can be
+       ;;ledger            ; be audit you can be
        ;;lua               ; one-based indices? one-based indices
        markdown          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c

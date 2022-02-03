@@ -67,8 +67,11 @@ in {
       plantuml
       graphviz
       pandoc
-      #docker
+      # docker
       nodePackages.dockerfile-language-server-nodejs
+      # accounting
+      beancount
+      # nodePackages.beancount-langserver
     ];
 
     env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
