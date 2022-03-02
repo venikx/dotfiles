@@ -194,6 +194,15 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 #+end_src
 
 * Language Configuration
+** Javascript
+#+begin_src elisp
+;;(setq +format-on-save-enabled-modes '(not js2-mode))
+;;(add-hook! 'js2-mode-hook 'prettier-js-mode)
+;;(set-formatter! 'yapf "yapf --style=google " :modes '(python-mode))
+;;(after! format-all (advice-add 'format-all-buffer :around #'envrc-propagate-environment))
+(setq-hook! 'js-mode-hook +format-with-lsp nil)
+(setq-hook! 'web-mode-hook +format-with-lsp nil)
+#+end_src
 ** C/C++
 #+begin_src elisp
 (setq lsp-clients-clangd-args '("-j=3"
