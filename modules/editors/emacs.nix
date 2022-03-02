@@ -53,7 +53,6 @@ in {
       ccls
       editorconfig-core-c 
       # javascript
-      nodePackages.typescript
       nodePackages.typescript-language-server
       nodePackages.vscode-css-languageserver-bin
       nodePackages.vscode-html-languageserver-bin

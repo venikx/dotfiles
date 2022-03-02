@@ -177,6 +177,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
   :init
   (setq org-agenda-use-time-grid nil
         org-agenda-start-on-weekday 1
+        org-agenda-files '("~/org/gsd/todo.org" "~/org/gsd/projects.org")
         org-agenda-custom-commands '((" " "Agenda"
                                       ((agenda ""
                                                ((org-agenda-span 'day)
