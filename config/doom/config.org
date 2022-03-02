@@ -162,35 +162,9 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 
 ** Org Agenda
 #+begin_src elisp
-(defun venikx/org-skip-subtree-if-priority (priority)
-  "Skip an agenda subtree if it has a priority of PRIORITY.
-
-PRIORITY may be one of the characters ?A, ?B, or ?C."
-  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-        (pri-value (* 1000 (- org-lowest-priority priority)))
-        (pri-current (org-get-priority (thing-at-point 'line t))))
-    (if (= pri-value pri-current)
-        subtree-end
-      nil)))
-
-(use-package! org-agenda
-  :init
+(after! org-agenda
   (setq org-agenda-use-time-grid nil
-        org-agenda-start-on-weekday 1
-        org-agenda-files '("~/org/gsd/todo.org" "~/org/gsd/projects.org")
-        org-agenda-custom-commands '((" " "Agenda"
-                                      ((agenda ""
-                                               ((org-agenda-span 'day)
-                                                (org-deadline-warning-days 31)))
-                                       (tags "PRIORITY=\"A\""
-                                             ((org-agenda-skip-function '(org-agenda-skip-entry-if 'done))
-                                              (org-agenda-overriding-header "Important")))
-                                       (alltodo ""
-                                                ((org-agenda-skip-function
-                                                  '(or (venikx/org-skip-subtree-if-priority ?A)
-                                                       (org-agenda-skip-if nil '(scheduled deadline))))
-                                                 (org-agenda-overriding-header "Backlog")))
-                                       )))))
+        org-agenda-start-on-weekday 1))
 #+end_src
 
 * Language Configuration
