@@ -23,8 +23,8 @@ in {
             DP-4 = {
               enable = true;
               primary = true;
-              rate = "59.95";
-              mode = "1920x1200";
+              rate = "144.00";
+              mode = "2560x1440";
               dpi = 100;
               position = "0x0";
             };
