@@ -48,14 +48,15 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 
 ** Org-Mode
 #+begin_src elisp
-(add-to-list 'org-modules 'org-checklist)
-
 (setq
  org-directory "~/org/gsd"
  org-contacts-files "~/org/braindump/braindump-private/contacts.org")
 
 (after! org
+  (add-to-list 'org-modules 'org-habit)
+  (add-to-list 'org-modules 'org-checklist)
   (setq time-stamp-active t
+        org-modules '(ol-bibtex org-checklist org-habit)
         time-stamp-start "#\\+modified:[ \t]*"
         time-stamp-end "$"
         time-stamp-format "\[%Y-%02m-%02d %3a %02H:%02M\]")
@@ -173,7 +174,7 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 ;;(setq +format-on-save-enabled-modes '(not js2-mode))
 ;;(add-hook! 'js2-mode-hook 'prettier-js-mode)
 ;;(set-formatter! 'yapf "yapf --style=google " :modes '(python-mode))
-;;(after! format-all (advice-add 'format-all-buffer :around #'envrc-propagate-environment))
+(after! format-all (advice-add 'format-all-buffer :around #'envrc-propagate-environment))
 (setq-hook! 'js-mode-hook +format-with-lsp nil)
 (setq-hook! 'web-mode-hook +format-with-lsp nil)
 #+end_src
