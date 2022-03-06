@@ -14,7 +14,7 @@ in {
   config = mkIf cfg.enable {
     home-manager.users.venikx = {
       programs.direnv.enable = true;
-      programs.direnv.enableNixDirenvIntegration = true;
+      programs.direnv.nix-direnv.enable = true;
     };
     modules.shell.zsh.rcInit = ''eval "$(direnv hook zsh)"'';
   };
