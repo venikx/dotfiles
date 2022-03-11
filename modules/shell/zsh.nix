@@ -45,7 +45,7 @@ in {
   };
   
   config = mkIf cfg.enable {
-    users.defaultUserShell = pkgs.zsh;
+    users.users.venikx.shell = pkgs.zsh;
 
     programs.zsh = {
       enable = true;
