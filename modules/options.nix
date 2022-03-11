@@ -1,4 +1,4 @@
-{ config, options, lib, pkgs, ... }:
+{ config, options, lib, ... }:
 
 with builtins;
 with lib;
@@ -18,17 +18,12 @@ with lib;
 
   config = {
     # Define a user account. Don't forget to set a password with ‘passwd’.
-    users.users.venikx = mkMerge [
-      {
-        description = "Kevin Rangel";
-      }
-      (mkIf pkgs.stdenv.isLinux {
-        isNormalUser = true;
-        extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-        initialPassword = "v3nikx";
-      })
-
-    ];
+    users.users.venikx = {
+      isNormalUser = true;
+      initialPassword = "v3nikx";
+      description = "Kevin Rangel";
+      extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    };
 
     home-manager.users.venikx = {
       home.file.".local/bin" = {
