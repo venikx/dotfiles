@@ -49,8 +49,8 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 ** Org-Mode
 #+begin_src elisp
 (setq
- org-directory "~/org/gsd"
- org-contacts-files "~/org/braindump/braindump-private/contacts.org")
+ org-directory "~/org/gtd"
+ org-contacts-files "~/org/gtd/contacts.org")
 
 (after! org
   (add-to-list 'org-modules 'org-habit)
@@ -92,8 +92,8 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 ** Org Roam
 #+begin_src elisp
 (after! org-roam
-  (setq org-roam-directory "~/org/braindump"
-        org-roam-dailies-directory "braindump-private/journal/")
+  (setq org-roam-directory "~/org"
+        org-roam-dailies-directory "gtd/journal/")
 
   (setq org-roam-capture-templates
         '(("n" "Note" plain
@@ -112,7 +112,7 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 :CREATED: %t
 :ID: %(org-id-uuid)
 :END:"
-           :target (file "braindump-private/contacts.org")
+           :target (file "gtd/contacts.org")
            :unnarrowed t)
           ("l" "Literature" entry "* TODO ${title}
 :PROPERTIES:
@@ -131,7 +131,7 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
            :unnarrowed t)))
   (setq org-roam-dailies-capture-templates
         '(("j" "Journal" entry "* %U %?"
-           :target (file+datetree "journal.org" day))
+           :target (file+datetree "index.org" day))
           ("m" "Morning Routine" entry "* Morning Routine
 ,** What happened yesterday?
 ,** What is today's main purpose?
@@ -139,7 +139,7 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 ,** What am I anxious about?
 ,** What am I grateful for?
 ,** What am I excited about?"
-           :target (file+datetree "journal.org" day)
+           :target (file+datetree "index.org" day)
            :prepend t))))
 #+end_src
 
