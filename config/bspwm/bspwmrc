@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 autorandr -c
+pcloud &
 
 export MONITOR=$(xrandr -q | grep primary | cut -d' ' -f1)
 export MONITORS=( $(xrandr -q | grep ' connected' | cut -d' ' -f1) )
