@@ -99,7 +99,7 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
         '(("n" "Note" plain
            "%?\n\n* Metadata\n- Tags :: \n- Related Notes :: \n- References :: "
            :target (file+head "%<%Y%m%d%H%M%S>.org"
-                              "#+title: ${title}\n#+created: %U\n#+modified: %U")
+                              "#+title: ${title}\n#+filetags: ever/sprout\n#+created: %U\n#+modified: %U")
            :empty-lines 1
            :unnarrowed t)
           ("c" "Contact" entry "* ${title} :@:
