@@ -5,6 +5,31 @@ with lib;
 
 {
   options = with types; {
+    user = mkOption {
+      type = attrs;
+      default = {};
+    };
+
+    dotfiles = {
+      dir = mkOption {
+        type = path;
+        default = (findFirst pathExists (toString ../.) [
+          "${config.user.home}/.config.dotfiles"
+          "/etc/nixos"
+        ]);
+      };
+
+      binDir = mkOption {
+        type = path;
+        default = "${config.dotfiles.dir}/bin";
+      };
+
+      configDir = mkOption {
+        type = path;
+        default = "${config.dotfiles.dir}/config";
+      };
+    };
+
     env = mkOption {
       type = attrsOf (oneOf [ str path (listOf (either str path)) ]);
       apply = mapAttrs
@@ -12,28 +37,29 @@ with lib;
                then concatMapStringsSep ":" (x: toString x) v
                else (toString v));
       default = {};
-      description = "TODO";
+      description = "The variables added here are exported after init.";
     };
   };
 
   config = {
-    # Define a user account. Don't forget to set a password with ‘passwd’.
-    users.users.venikx = {
+    user = {
       isNormalUser = true;
-      initialPassword = "v3nikx";
+      name = "venikx";
       description = "Kevin Rangel";
+      home = "/home/venikx";
       extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+      # Define a user account. Don't forget to set a password with ‘passwd’.
+      initialPassword = "v3nikx";
     };
 
-    home-manager.users.venikx = {
-      home.file.".local/bin" = {
-        source = "/etc/nixos/bin";
-        recursive = true;
-      };
-    };
+    environment.variables.DOTFILES = config.dotfiles.dir;
+    environment.variables.DOTFILES_BIN = config.dotfiles.binDir;
+
+    users.users.${config.user.name} = mkAliasDefinitions options.user;
+
     # must already begin with pre-existing PATH. Also, can't use binDir here,
     # because it contains a nix store path.
-    env.PATH = [ "$XDG_BIN_HOME" "$PATH" ];
+    env.PATH = [ "$DOTFILES_BIN" "$XDG_BIN_HOME" "$PATH" ];
 
     environment.extraInit =
       concatStringsSep "\n"

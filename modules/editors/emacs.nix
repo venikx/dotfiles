@@ -3,6 +3,7 @@
 with lib;
 let
   cfg = config.modules.editors.emacs;
+  configDir = config.dotfiles.configDir;
 in {
   options.modules.editors.emacs = with types; {
     enable = mkOption {
@@ -26,11 +27,7 @@ in {
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
     environment.systemPackages = with pkgs; [
       ## Emacs itself
-      binutils       # native-comp needs 'as', provided by this
-      # Not possible due to some changes on HEAD and mismatched doom-emacs,
-      # better use Emacs 27.0
-      # emacsPgtkGcc   # 28 + pgtk + native-comp
-      emacsUnstable   # 28 + pgtk + native-comp
+      emacs
 
       ## Doom dependencies
       git
@@ -42,7 +39,7 @@ in {
       imagemagick         # for image-dired
       zstd                # for undo-fu-session/undo-tree compression
       fd
-      clang
+      (mkIf (config.programs.gnupg.agent.enable) pinentry_emacs)
 
       ## Module dependencies
       # checkers
@@ -74,11 +71,11 @@ in {
     ];
 
     env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
-    modules.shell.zsh.rcFiles = [ "/etc/nixos/config/emacs/aliases.zsh" ];
+    modules.shell.zsh.rcFiles = [ "${configDir}/emacs/aliases.zsh" ];
     
     home-manager.users.venikx = mkIf cfg.doom.enable {
       xdg.configFile."doom" = {
-        source = "/etc/nixos/config/doom";
+        source = "${configDir}/doom";
         # link recursively so other modules can link files in their folders
         recursive = true;
       };
