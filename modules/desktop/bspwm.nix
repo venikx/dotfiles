@@ -17,6 +17,8 @@ in {
     '';
 
     environment.systemPackages = with pkgs; [
+      xclip
+      screenkey
       lightdm
       dunst
       libnotify

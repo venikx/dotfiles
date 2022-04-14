@@ -14,8 +14,6 @@
     "openssl-1.0.2u"
   ];
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     coreutils
     pciutils
@@ -24,11 +22,7 @@
     unzip
     zip
     wget
-
-    #TODO(Kevin) Move to other config folder
-    xclip
     ranger
-    screenkey
   ];
 
   # This value determines the NixOS release from which the default
