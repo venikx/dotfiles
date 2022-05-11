@@ -97,33 +97,35 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 
   (setq org-roam-capture-templates
         '(("n" "Note" plain
-           "%?\n\n* Metadata\n- Tags :: \n- Related Notes :: \n- References :: "
+           "%?\n\n* References"
            :target (file+head "%<%Y%m%d%H%M%S>.org"
                               "#+title: ${title}\n#+filetags: ever/sprout\n#+created: %U\n#+modified: %U")
            :empty-lines 1
            :unnarrowed t)
           ("c" "Contact" entry "* ${title} :@:
 :PROPERTIES:
-:TYPE: person
-:MOBILE: %^{Phone Number (+358 45 265 HEYO)}
-:BIRTHDAY: %^{Birthday (yyyy-mm-dd)}
-:EMAIL: %(org-contacts-template-email)
-:ADDRESS: %^{Address (MainStreet, 00100 Helsinki, Finland)}
-:CREATED: %t
+:Mobile: %^{Phone Number (+358 45 265 HEYO)}
+:Email: %(org-contacts-template-email)
+:Birthday: %^{Birthday (yyyy-mm-dd)}
+:Address: %^{Address (MainStreet, 00100 Helsinki, Finland)}
+:Type: person
+:Created: %t
 :ID: %(org-id-uuid)
 :END:"
            :target (file "gtd/contacts.org")
            :unnarrowed t)
           ("l" "Literature" entry "* TODO ${title}
 :PROPERTIES:
-:Creator(s): %^{Creator(s)}
+:Author: %^{Creator(s)}
+:Year: %^{Year}
+:Name: ${title}
 :Origin: %?
+:Pages: %^{Pages}
 :Recommended: %^{Recommended By}
 :Rating:
-:BTYPE: %^{Type (article)}
-:ADDED: %t
 :CUSTOM_ID: %^{Cite Key (zzz1970hello)}
 :ID: %(org-id-uuid)
+:Created: %t
 :END:"
            :target (file "literature/references.org")
            :prepend t
