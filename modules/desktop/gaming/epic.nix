@@ -2,6 +2,7 @@
 
 with lib;
 let cfg = config.modules.desktop.gaming.epic;
+    unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in {
   options.modules.desktop.gaming.epic = with types; {
     enable = mkOption {
@@ -11,12 +12,17 @@ in {
   };
 
   config = mkIf cfg.enable {
-    hardware.opengl.driSupport32Bit = true;
+    hardware = {
+      opengl.enable = true;
+      opengl.driSupport32Bit  = true;
+      pulseaudio.support32Bit = config.hardware.pulseaudio.enable;
+    };
 
     home-manager.users.venikx = {
       home.packages = with pkgs; [
         lutris
-        legendary-gl
+        unstable.legendary-gl
+        unstable.heroic
       ];
     };
   };

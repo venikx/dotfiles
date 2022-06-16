@@ -43,6 +43,7 @@
       };
       gaming = {
         steam.enable = true;
+        epic.enable = true;
       };
     };
     editors = {
