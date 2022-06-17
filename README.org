@@ -15,7 +15,7 @@
 A lot of the configuration is heavily inspired by [[https://github.com/hlissner/dotfiles][hlissner's dotfiles]], but I've removed some the ~/lib~ functionality and I'm not using ~flake~ (yet).
 
 * Installation
-1. Yoink the latest stable build of [[https://nixos.org/][NixOS 21.05]]
+1. Yoink the latest stable build of [[https://nixos.org/][NixOS 22.05]]
 2. Install NixOS by following one of the hosts config
    - [[./hosts/dreamscape/README.org][dreamscape (desktop)]]
    - [[./hosts/inception/README.org][inception (laptop)]]

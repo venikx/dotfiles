@@ -25,18 +25,19 @@ in {
   };
 
   # Are these really needed? Seems so atm.
+  hardware.video.hidpi.enable = lib.mkDefault true;
   hardware.enableRedistributableFirmware = true;
   hardware.enableAllFirmware = true;
   # CPU
   hardware.cpu.amd.updateMicrocode = true;
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/e26e2be0-5f75-41a0-bf3c-81df80629226";
+    { device = "/dev/disk/by-uuid/4df3f4a4-fac6-471c-a8e1-11c03c2c093c";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/B612-E9FB";
+    { device = "/dev/disk/by-uuid/C831-07CF";
       fsType = "vfat";
     };
 
@@ -48,5 +49,5 @@ in {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.09"; # Did you read the comment?
+  system.stateVersion = "22.05"; # Did you read the comment?
 }
