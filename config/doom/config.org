@@ -91,10 +91,10 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 
 ** Org Roam
 #+begin_src elisp
-(after! org-roam
-  (setq org-roam-directory "~/org"
-        org-roam-dailies-directory "gtd/journal/")
+(setq org-roam-directory "~/org"
+      org-roam-dailies-directory "gtd/journal/")
 
+(after! org-roam
   (setq org-roam-capture-templates
         '(("n" "Note" plain
            "%?\n\n* References"
