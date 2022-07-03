@@ -80,5 +80,13 @@ in {
         recursive = true;
       };
     };
+
+    system.userActivationScripts = mkIf cfg.doom.enable {
+      installDoomEmacs = ''
+        if [ ! -d "$XDG_CONFIG_HOME/emacs" ]; then
+           git clone --depth=1 --single-branch https://github.com/doomemacs/doomemacs "$XDG_CONFIG_HOME/emacs"
+        fi
+      '';
+    };
   };
 }
