@@ -2,7 +2,9 @@
 
 with builtins;
 with lib;
-let cfg = config.modules.shell.zsh;
+let
+  cfg = config.modules.shell.zsh;
+  configDir = config.dotfiles.configDir;
 in {
   options.modules.shell.zsh = with types; {
     enable = mkOption {
@@ -76,7 +78,7 @@ in {
       ];
 
       xdg.configFile."zsh" = {
-        source = "/etc/nixos/config/zsh";
+        source = "${configDir}/zsh";
         recursive = true; # needed so other modules can write files to it
       };
 

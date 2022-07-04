@@ -3,6 +3,7 @@
 with lib;
 let
   cfg = config.modules.shell.git;
+  configDir = config.dotfiles.configDir;
 in {
   options.modules.shell.git = with types; {
     enable = mkOption {
@@ -19,10 +20,10 @@ in {
         gitAndTools.diff-so-fancy
       ];
 
-      xdg.configFile."git/config".source = "/etc/nixos/config/git/config";
-      xdg.configFile."git/ignore".source = "/etc/nixos/config/git/ignore";
+      xdg.configFile."git/config".source = "${configDir}/git/config";
+      xdg.configFile."git/ignore".source = "${configDir}/git/ignore";
     };
 
-    modules.shell.zsh.rcFiles = [ "/etc/nixos/config/git/aliases.zsh" ];
+    modules.shell.zsh.rcFiles = [ "${configDir}/git/aliases.zsh" ];
   };
 }

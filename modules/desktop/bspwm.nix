@@ -1,7 +1,9 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.modules.desktop.bspwm;
+let
+  cfg = config.modules.desktop.bspwm;
+  configDir = config.dotfiles.configDir;
 in {
   options.modules.desktop.bspwm = with types; {
     enable = mkOption {
@@ -56,9 +58,9 @@ in {
 
     home-manager.users.venikx = {
       xdg.configFile = {
-        "sxhkd".source = "/etc/nixos/config/sxhkd";
+        "sxhkd".source = "${configDir}/sxhkd";
         "bspwm" = {
-          source = "/etc/nixos/config/bspwm";
+          source = "${configDir}/bspwm";
           # link recursively so other modules can link files in their folders
           recursive = true;
         };

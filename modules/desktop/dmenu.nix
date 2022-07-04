@@ -1,7 +1,9 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.modules.desktop.dmenu;
+let
+  cfg = config.modules.desktop.dmenu;
+  configDir = config.dotfiles.configDir;
 in {
   options.modules.desktop.dmenu = with types; {
     enable = mkOption {
@@ -15,7 +17,7 @@ in {
       home.packages = with pkgs; [
         (dmenu.overrideAttrs (oldAttrs: rec {
           patches = [
-            /etc/nixos/config/dmenu/dmenu-xresources-4.9.diff
+            "${configDir}/dmenu/dmenu-xresources-4.9.diff"
           ];
         }))
       ];
