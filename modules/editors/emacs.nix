@@ -21,7 +21,10 @@ in {
 
   config = mkIf cfg.enable {
     nixpkgs.overlays = [ 
-      (import (builtins.fetchTarball https://github.com/nix-community/emacs-overlay/archive/master.tar.gz))
+      (import (builtins.fetchTarball {
+        url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+        sha256 = "01d337ap2hfjxic4dfhyp6g60y3vvifvagfb2bhf16cfxhxip69y";
+      }))
     ];
 
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];

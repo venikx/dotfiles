@@ -1,8 +1,6 @@
 { config, lib, pkgs, modulesPath, ... }:
 
-let
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-in {
+{
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
@@ -13,7 +11,7 @@ in {
     extraModulePackages = [ ];
     kernelModules = [ "kvm-amd" ];
     kernelParams = [ ];
-    kernelPackages = unstable.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
   modules.hardware = {
@@ -43,6 +41,7 @@ in {
 
   swapDevices = [ ];
 
+  home-manager.users.venikx.home.stateVersion = "22.05";
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

@@ -3,7 +3,6 @@
 with lib;
 let
   cfg = config.modules.theme;
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in {
   config = mkIf (cfg.active == "doom") (mkMerge [
     # Desktop-agnostic configuration
@@ -29,7 +28,7 @@ in {
     (mkIf config.services.xserver.enable {
       home-manager.users.venikx = {
         home.packages = with pkgs; [
-          unstable.dracula-theme
+          dracula-theme
         ];
 
         # Other dotfiles

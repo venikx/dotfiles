@@ -3,7 +3,6 @@
 with lib;
 let
   cfg = config.modules.desktop.media.backup;
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in {
   options.modules.desktop.media.backup = with types; {
     enable = mkOption {
@@ -24,7 +23,7 @@ in {
         # Get pcloud to keep its garbage out of $HOME
         # (writeScriptBin "pcloud" ''
         #   #!${stdenv.shell}
-        #   HOME="${cfg.driveDir}" exec ${unstable.pcloud}/bin/pcloud "$@"
+        #   HOME="${cfg.driveDir}" exec ${pcloud}/bin/pcloud "$@"
         # '')
         # # So a dmenu entry exists
         # (makeDesktopItem {

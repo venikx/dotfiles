@@ -3,7 +3,6 @@
 with lib;
 let
   cfg = config.modules.desktop.communication;
-  unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in {
   options.modules.desktop.communication = with types; {
 
@@ -27,7 +26,6 @@ in {
     home-manager.users.venikx = {
       home.packages = with pkgs; [
         (mkIf cfg.discord.enable discord)
-        #(mkIf cfg.discord.enable unstable.discord)
         (mkIf cfg.slack.enable slack)
         (mkIf cfg.teams.enable teams)
       ];

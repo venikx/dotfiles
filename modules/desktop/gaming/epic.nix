@@ -2,7 +2,6 @@
 
 with lib;
 let cfg = config.modules.desktop.gaming.epic;
-    unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in {
   options.modules.desktop.gaming.epic = with types; {
     enable = mkOption {
@@ -21,8 +20,8 @@ in {
     home-manager.users.venikx = {
       home.packages = with pkgs; [
         lutris
-        unstable.legendary-gl
-        unstable.heroic
+        legendary-gl
+        heroic
       ];
     };
   };
