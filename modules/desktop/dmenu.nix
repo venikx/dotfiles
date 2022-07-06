@@ -15,11 +15,14 @@ in {
   config = mkIf cfg.enable {
     home-manager.users.venikx = {
       home.packages = with pkgs; [
-        (dmenu.overrideAttrs (oldAttrs: rec {
-          patches = [
-            "${configDir}/dmenu/dmenu-xresources-4.9.diff"
-          ];
-        }))
+        dmenu
+        # Currently dmenu.xresources patch can be applied, but breaks dmenu :(
+        #
+        #(dmenu.overrideAttrs (oldAttrs: rec {
+        #  patches = [
+        #    "${configDir}/dmenu/dmenu-xresources-4.9.diff"
+        #  ];
+        #}))
       ];
     };
   };
