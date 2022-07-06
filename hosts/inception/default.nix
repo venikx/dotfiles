@@ -2,6 +2,8 @@
 
 {
   imports = [
+    ../../modules
+    ../nix.nix
     ../personal.nix
     ./hardware-configuration.nix
   ];
