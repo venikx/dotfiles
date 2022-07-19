@@ -56,6 +56,7 @@
 (unpin! envrc)
 (package! websocket)
 (package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
+(package! elfeed-protocol)
 
 ;; Publishing Websites
 (package! esxml)

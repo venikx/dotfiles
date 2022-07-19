@@ -46,6 +46,17 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
   :mode ("\\.\\(epub\\|mobi\\)\\'" . nov-mode))
 #+end_src
 
+** RSS
+#+begin_src elisp
+(use-package elfeed
+  :defer t
+  :init
+  (elfeed-protocol-enable)
+  :custom
+  (elfeed-use-curl t)
+  (elfeed-feeds    '(("ttrss+http://admin@192.168.1.244:8002"
+		      :password "gyw7vgu@JEA5ybr1ebh"))))
+#+end_src
 ** Org-Mode
 #+begin_src elisp
 (setq
