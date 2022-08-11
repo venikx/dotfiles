@@ -69,6 +69,8 @@ in {
       # docker
       nodePackages.dockerfile-language-server-nodejs
       # accounting
+      ledger
+      hledger
       beancount
       # nodePackages.beancount-langserver
     ];

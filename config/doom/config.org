@@ -59,13 +59,10 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 #+end_src
 ** Org-Mode
 #+begin_src elisp
-(setq
- org-directory "~/org/gtd"
- org-contacts-files "~/org/gtd/contacts.org")
-
 (after! org
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'org-checklist)
+
   (setq time-stamp-active t
         org-modules '(ol-bibtex org-checklist org-habit)
         time-stamp-start "#\\+modified:[ \t]*"
