@@ -6,6 +6,7 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+    gc.automatic = true;
   };
 
   # can I remove this?
