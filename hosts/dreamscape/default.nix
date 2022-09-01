@@ -38,6 +38,7 @@
         };
         backup.enable = true;
         music-production.enable = true;
+        video.enable = true;
       };
       terminal = {
         default = "xst";

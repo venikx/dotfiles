@@ -5,9 +5,10 @@ with lib;
   imports =
     [
       ./backup.nix
-      ./spotify.nix
-      ./streaming.nix
       ./music-production.nix
       ./readers.nix
+      ./spotify.nix
+      ./streaming.nix
+      ./video.nix
     ];
 }
