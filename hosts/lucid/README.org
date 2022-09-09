@@ -1,0 +1,10 @@
+#+title: MacBook Air
+
+* Overview
+** Specs
+| CPU         | M1 |
+| GPU         |    |
+| RAM         |    |
+| Motherboard |    |
+| Storage     |    |
+| UEFI        |    |
