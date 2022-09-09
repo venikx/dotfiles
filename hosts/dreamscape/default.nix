@@ -4,7 +4,7 @@
   imports = [
     ../../modules
     ../nix.nix
-    ../personal.nix
+    ../linux.nix
     ./hardware-configuration.nix
   ];
 

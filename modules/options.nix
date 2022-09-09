@@ -13,15 +13,12 @@ with lib;
     dotfiles = {
       dir = mkOption {
         type = path;
+        # TODO(Kevin): Set env variable for nixos to store dotfiles under
+        # .config/dotfiles
         default = (findFirst pathExists (toString ../.) [
-          "${config.user.home}/.config.dotfiles"
-          "/etc/nixos"
+          "/etc/nixos" # nixos
+          "${config.user.home}/.config/dotfiles" # darwin, macbook
         ]);
-      };
-
-      binDir = mkOption {
-        type = path;
-        default = "${config.dotfiles.dir}/bin";
       };
 
       configDir = mkOption {
@@ -30,6 +27,7 @@ with lib;
       };
     };
 
+    # deprecated, prefer to set environment.variables or via home.
     env = mkOption {
       type = attrsOf (oneOf [ str path (listOf (either str path)) ]);
       apply = mapAttrs
@@ -43,23 +41,11 @@ with lib;
 
   config = {
     user = {
-      isNormalUser = true;
       name = "venikx";
       description = "Kevin Rangel";
-      home = "/home/venikx";
-      extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-      # Define a user account. Don't forget to set a password with ‘passwd’.
-      initialPassword = "v3nikx";
     };
 
-    environment.variables.DOTFILES = config.dotfiles.dir;
-    environment.variables.DOTFILES_BIN = config.dotfiles.binDir;
-
     users.users.${config.user.name} = mkAliasDefinitions options.user;
-
-    # must already begin with pre-existing PATH. Also, can't use binDir here,
-    # because it contains a nix store path.
-    env.PATH = [ "$DOTFILES_BIN" "$XDG_BIN_HOME" "$PATH" ];
 
     environment.extraInit =
       concatStringsSep "\n"
