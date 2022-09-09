@@ -28,7 +28,7 @@
       nixosConfigurations = {
         dreamscape = lib.nixosSystem { #desktop
           system = "x86_64-linux";
-          specialArgs = { inherit user home-manager; };
+          specialArgs = { inherit user home-manager emacs-overlay; };
           pkgs = import nixpkgs {
             system = "x86_64-linux";
             config.allowUnfree = true;
@@ -46,7 +46,7 @@
 
         inception = lib.nixosSystem { #laptop
           system = "x86_64-linux";
-          specialArgs = { inherit user home-manager; };
+          specialArgs = { inherit user home-manager emacs-overlay; };
           pkgs = import nixpkgs {
             system = "x86_64-linux";
             config.allowUnfree = true;

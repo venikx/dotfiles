@@ -1,4 +1,4 @@
-{ config, lib, pkgs, options, ... }:
+{ config, lib, pkgs, options, emacs-overlay, ... }:
 
 with lib;
 let
@@ -20,17 +20,14 @@ in {
   };
 
   config = mkIf cfg.enable {
-    nixpkgs.overlays = [ 
-      (import (builtins.fetchTarball {
-        url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-        sha256 = "0v0jlj06bzif1pqd2gqykh9yp1b75f3k58w0bbpv8wgamqzz8zdk";
-      }))
-    ];
+    nixpkgs.overlays = [ emacs-overlay.overlay ];
 
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
     environment.systemPackages = with pkgs; [
-      ## Emacs itself
-      emacs
+      #emacs fast
+      emacsPgtk # ok for now
+      #emacsUnstable #toTest
+      #emacsPgtkNativeComp # slow as balls
 
       ## Doom dependencies
       git
@@ -75,23 +72,29 @@ in {
       # nodePackages.beancount-langserver
     ];
 
-    env.PATH = [ "$XDG_CONFIG_HOME/emacs/bin" ];
-    modules.shell.zsh.rcFiles = [ "${configDir}/emacs/aliases.zsh" ];
-    
     home-manager.users.venikx = mkIf cfg.doom.enable {
       xdg.configFile."doom" = {
         source = "${configDir}/doom";
         # link recursively so other modules can link files in their folders
         recursive = true;
       };
+
+      home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ]; 
+      programs.zsh = {
+        shellAliases = {
+          e = "emacsclient -n";
+          ediff = ''e --eval "(ediff-files \"$1\" \"$2\")"''; # used to be a function
+        };
+      };
     };
 
-    system.userActivationScripts = mkIf cfg.doom.enable {
-      installDoomEmacs = ''
-        if [ ! -d "$XDG_CONFIG_HOME/emacs" ]; then
-           git clone --depth=1 --single-branch https://github.com/doomemacs/doomemacs "$XDG_CONFIG_HOME/emacs"
-        fi
-      '';
-    };
+    # TODO(Kevin): Install doom emacs as an emacs-overlay
+    #system.activationScripts = mkIf cfg.doom.enable {
+    #  installDoomEmacs = ''
+    #    if [ ! -d "$XDG_CONFIG_HOME/emacs" ]; then
+    #       git clone --depth=1 --single-branch https://github.com/doomemacs/doomemacs "$XDG_CONFIG_HOME/emacs"
+    #    fi
+    #  '';
+    #};
   };
 }
