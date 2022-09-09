@@ -16,9 +16,10 @@ in {
         editorconfig-core-c
         neovim
       ];
-    };
-    environment.shellAliases = {
-      vim = "nvim";
+
+      programs.zsh.shellAliases = {
+        vim = "nvim";
+      };
     };
   };
 }
