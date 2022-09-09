@@ -108,7 +108,7 @@
        ;;upload            ; map local to remote projects via ssh/ftp
 
        :os
-       ;;(:if IS-MAC macos)  ; improve compatibility with macOS
+       (:if IS-MAC macos)  ; improve compatibility with macOS
        ;;tty
 
        :lang
