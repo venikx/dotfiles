@@ -8,6 +8,7 @@
     ../../modules/editors
     ../../modules/shell/git.nix
     ../../modules/shell/gnupg.nix
+    ../../modules/shell/direnv.nix
   ];
 
   user = {
@@ -22,7 +23,7 @@
     shell = {
       git.enable = true;
       #zsh.enable = true;
-      #direnv.enable = true;
+      direnv.enable = true;
       gnupg.enable = true;
     };
   };
