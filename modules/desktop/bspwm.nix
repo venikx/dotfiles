@@ -13,14 +13,13 @@ in {
   };
 
   config = mkIf cfg.enable {
-    modules.theme.onReload.bspwm = ''
-      ${pkgs.bspwm}/bin/bspc wm -r
-      source $XDG_CONFIG_HOME/bspwm/bspwmrc
-    '';
+    #modules.theme.onReload.bspwm = ''
+    #  ${pkgs.bspwm}/bin/bspc wm -r
+    #  source $XDG_CONFIG_HOME/bspwm/bspwmrc
+    #'';
 
     environment.systemPackages = with pkgs; [
       xclip
-      screenkey
       lightdm
       dunst
       libnotify
@@ -56,13 +55,26 @@ in {
     };
 
     home-manager.users.venikx = {
+      xsession.windowManager.bspwm = {
+        enable = true;
+        monitors = {
+          DP-4 = ["1" "2" "3" "4" "5" "6" "7" "8" "9" "10"];
+        };
+        settings = {
+          "remove_disabled_monitors" = true;
+          "remove_unplugged_monitors" = true;
+          "focus_follows_pointer" = true;
+          "split_ratio" = 0.52;
+        };
+        startupPrograms = [ "sxhkd" "autorandr -c" "pcloud" ];
+      };
       services.sxhkd = {
         enable = true;
         keybindings = {
           # Shutting down the system
-          "super + shift + x" = "prompt 'Shuwdown computer?' 'shutdown -h now'";
-          "super + shift + BackSpace" = "prompt 'Reboot computer?' 'reboot'";
-          "super + shift + Escape" = "prompt 'Leave Xorg?' 'killall Xorg'";
+          "super + shift + x" = ''prompt "Shuwdown computer?" "shutdown -h now"'';
+          "super + shift + BackSpace" = ''prompt "Reboot computer?" "reboot"'';
+          "super + shift + Escape" = ''prompt "Leave Xorg?" "killall Xorg"'';
           # Restarts bspwm (most when testing out configurations)
           "super + shift + r" = "bspc wm -r";
           "super + {_,shift + }q" = "bspc node -{c,k}";
@@ -73,7 +85,7 @@ in {
           "super + w" = "$BROWSER";
 
           # Moving around windows
-          "super + {_,shift +}{1-9,0}" = "bspc {desktop -f, node -d} {1-9,10};";
+          "super + {_,shift +}{1-9,0}" = "bspc {desktop -f, node -d} {1-9,10}";
           "super + {h,j,k,l}" = "bspc node -f {west,south,north,east}";
           "super + shift + {h,j,k,l}" = "bspc node -s {west,south,north,east}";
           "super + {_,ctrl + }f" = "bspc node -t ~{fullscreen,floating}";
@@ -89,13 +101,6 @@ in {
           "XF86Audio{Play,Pause}" = "spt-send toggle";
           "XF86AudioNext" = "spt-send next";
           "XF86AudioPrev" = "spt-send prev";
-        };
-      };
-      xdg.configFile = {
-        "bspwm" = {
-          source = "${configDir}/bspwm";
-          # link recursively so other modules can link files in their folders
-          recursive = true;
         };
       };
     };

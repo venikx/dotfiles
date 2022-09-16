@@ -18,6 +18,11 @@ in {
 
   config = mkIf cfg.enable {
     home-manager.users.venikx = {
+      xsession.windowManager.bspwm.rules = {
+        "pcloud" = {
+          state = "tiled";
+        };
+      };
       home.packages = with pkgs; [
         pcloud
         # Get pcloud to keep its garbage out of $HOME
