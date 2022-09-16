@@ -86,6 +86,7 @@ in {
           ediff = ''e --eval "(ediff-files \"$1\" \"$2\")"''; # used to be a function
         };
       };
+      programs.git.ignores = [ "*~" "*.*~" "\#*" ".\#*"];
     };
 
     # TODO(Kevin): Install doom emacs as an emacs-overlay

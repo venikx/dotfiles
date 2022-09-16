@@ -18,6 +18,8 @@ in {
         nix-direnv.enable = true;
         enableZshIntegration = true;
       };
+
+      programs.git.ignores = [ ".direnv" ];
     };
   };
 }
