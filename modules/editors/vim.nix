@@ -20,6 +20,14 @@ in {
       programs.zsh.shellAliases = {
         vim = "nvim";
       };
+
+      programs.git.ignores = [
+        "*.swp"
+        ".*.sw[a-z]"
+        "*.un~"
+        "Session.vim"
+        ".netrwhist"
+      ];
     };
   };
 }
