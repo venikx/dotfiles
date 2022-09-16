@@ -14,20 +14,18 @@ in {
       default = false;
     };
   };
-
-  config = mkIf cfg.enable {
-    #TODO(Kevin): These are specific to Linux and need to be checked if these really are needed
-    #services.pcscd.enable = true;
-    #services.udev.packages = [ pkgs.yubikey-personalization ];
-
+  config = mkIf (cfg.enable) (mkMerge [
+    (mkIf pkgs.stdenv.isLinux {
+      services.pcscd.enable = true;
+      services.udev.packages = [ pkgs.yubikey-personalization ];
+    })
+    (mkIf pkgs.stdenv.isDarwin {
+      #homebrew.brews = [ "pinentry-mac"];
+    })
+    {
     programs.gnupg.agent = {
       enable = true;
-    #  enableSSHSupport = true;
     };
-
-    #TODO(Kevin): Extract out as these are yubikey specific and not pure gpg
-    #TODO(Kevin): Why do I need these?
-    homebrew.brews = [ "pinentry-mac"];
 
     home-manager.users.venikx = {
       home = {
@@ -42,9 +40,9 @@ in {
       };
 
       programs.zsh.initExtra = ''
-      gpg-connect-agent /bye
-      export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-      gpgconf --launch gpg-agent
+        gpg-connect-agent /bye
+        export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+        gpgconf --launch gpg-agent
     '';
 
       programs.gpg = {
@@ -55,17 +53,16 @@ in {
         };
       };
 
-      #TODO(Kevin): properly separate between macos and linux
       xdg.configFile."gnupg/gpg-agent.conf" = {
         text = ''
           homedir ${config.environment.variables.XDG_CONFIG_HOME}/gnupg
           enable-ssh-support
           default-cache-ttl 300
           max-cache-ttl 3600
-          pinentry-program /opt/homebrew/bin/pinentry-mac
+          pinentry-program ${if pkgs.stdenv.isDarwin then /opt/homebrew/bin/pinentry-mac else "${pkgs.pinentry.qt}/bin/pinentry" }
         '';
       };
     };
-  };
+    }]);
 }
 
