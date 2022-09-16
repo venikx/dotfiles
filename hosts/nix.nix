@@ -9,6 +9,8 @@
     gc.automatic = true;
   };
 
+  nixpkgs.config.allowUnfree = true;
+
   # can I remove this?
   nixpkgs.config.permittedInsecurePackages = [
     "openssl-1.0.2u"
