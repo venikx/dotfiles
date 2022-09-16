@@ -28,6 +28,13 @@ in {
     };
 
     home-manager.users.venikx = {
+      xsession.windowManager.bspwm.rules = {
+        "Pinentry" = {
+          state = "floating";
+          center = true;
+        };
+      };
+
       home = {
         #TODO(Kevin): Extract out as these are yubikey specific and not pure gpg
         packages = with pkgs; [

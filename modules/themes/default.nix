@@ -104,6 +104,12 @@ in {
            xdg.dataFile = mkIf (cfg.wallpaper != null) {
              "wallpaper".source = cfg.wallpaper;
            };
+
+           xsession.windowManager.bspwm.rules = {
+             "feh" = {
+               state = "fullscreen";
+             };
+           };
          };
        }))
 

@@ -87,6 +87,17 @@ in {
         };
       };
       programs.git.ignores = [ "*~" "*.*~" "\#*" ".\#*"];
+      xsession.windowManager.bspwm.rules = {
+        "Emacs" = {
+          state = "tiled";
+        };
+        "Emacs:org*" = {
+          state = "floating";
+        };
+        "Emacs:scratch" = {
+          state = "floating";
+        };
+      };
     };
 
     # TODO(Kevin): Install doom emacs as an emacs-overlay
