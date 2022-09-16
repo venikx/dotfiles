@@ -2,7 +2,7 @@
   description = "Flake to rule em all.";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     emacs-overlay = {
       url  = "github:nix-community/emacs-overlay/master";
@@ -10,7 +10,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-22.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -29,10 +29,6 @@
         dreamscape = lib.nixosSystem { #desktop
           system = "x86_64-linux";
           specialArgs = { inherit user home-manager emacs-overlay; };
-          pkgs = import nixpkgs {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
-          };
           modules = [
             ./hosts/dreamscape
 
@@ -47,10 +43,6 @@
         inception = lib.nixosSystem { #laptop
           system = "x86_64-linux";
           specialArgs = { inherit user home-manager emacs-overlay; };
-          pkgs = import nixpkgs {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
-          };
           modules = [
             ./hosts/inception
 
