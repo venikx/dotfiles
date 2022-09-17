@@ -3,7 +3,7 @@
 {
   imports =
     [
-      ./gnupg.nix
-      ./zsh.nix
+      ./direnv.nix
+      ./git.nix
     ];
 }
