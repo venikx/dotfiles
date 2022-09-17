@@ -1,33 +1,19 @@
-{ options, config, lib, pkgs, ... }:
+{ pkgs, ... }:
+{
+  home.packages = with pkgs; [
+    editorconfig-core-c
+    neovim
+  ];
 
-with lib;
-let cfg = config.modules.editors.vim;
-in {
-  options.modules.editors.vim = with types; {
-    enable = mkOption {
-      type = bool;
-      default = false;
-    };
+  programs.zsh.shellAliases = {
+    vim = "nvim";
   };
 
-  config = mkIf cfg.enable {
-    home-manager.users.venikx = {
-      home.packages = with pkgs; [
-        editorconfig-core-c
-        neovim
-      ];
-
-      programs.zsh.shellAliases = {
-        vim = "nvim";
-      };
-
-      programs.git.ignores = [
-        "*.swp"
-        ".*.sw[a-z]"
-        "*.un~"
-        "Session.vim"
-        ".netrwhist"
-      ];
-    };
-  };
+  programs.git.ignores = [
+    "*.swp"
+    ".*.sw[a-z]"
+    "*.un~"
+    "Session.vim"
+    ".netrwhist"
+  ];
 }
