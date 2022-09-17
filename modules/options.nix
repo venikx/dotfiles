@@ -45,6 +45,7 @@ with lib;
       description = "Kevin Rangel";
     };
 
+    env.PATH = ["${config.dotfiles.dir}/bin" "$PATH" ];
     users.users.${config.user.name} = mkAliasDefinitions options.user;
 
     environment.extraInit =
