@@ -13,20 +13,11 @@ in {
   };
 
   config = mkIf cfg.enable {
-    #modules.theme.onReload.bspwm = ''
-    #  ${pkgs.bspwm}/bin/bspc wm -r
-    #  source $XDG_CONFIG_HOME/bspwm/bspwmrc
-    #'';
-
     environment.systemPackages = with pkgs; [
       xclip
       lightdm
       dunst
       libnotify
-      (polybar.override {
-        pulseSupport = true;
-        nlSupport = true;
-      })
     ];
 
     services = {

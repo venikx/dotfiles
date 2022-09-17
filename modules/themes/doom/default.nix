@@ -49,9 +49,6 @@ in {
             "xtheme/doom".source = ./config/Xresources;
           }
           (mkIf desktop.bspwm.enable {
-            "bspwm/rc.d/polybar".source = ./config/polybar/run.sh;
-            "bspwm/rc.d/theme".source = ./config/bspwmrc;
-            "polybar" = { source = ./config/polybar; recursive = true; };
             "dunst/dunstrc".source = ./config/dunstrc;
           })
         ];
