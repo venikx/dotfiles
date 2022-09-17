@@ -1,9 +1,7 @@
 { ... }:
-
 {
   imports =
     [
-      ./direnv.nix
-      ./git.nix
+      ./bspwm.nix
     ];
 }

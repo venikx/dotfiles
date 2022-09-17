@@ -14,6 +14,7 @@
     ./xdg.nix
     ./cli
     ./editors
+    ./nixos
   ];
 
   nixpkgs.config = {
