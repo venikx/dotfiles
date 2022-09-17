@@ -39,7 +39,7 @@ with lib;
     home = {
       homeDirectory = config.users.users.venikx.home;
       username = config.users.users.venikx.name;
-      sessionPath = [ config.environment.variables.XDG_CACHE_HOME ];
+      sessionPath = [ config.environment.variables.XDG_BIN_HOME ];
 
       sessionVariables = {
         # Conform more programs to XDG conventions. The rest are handled by their
