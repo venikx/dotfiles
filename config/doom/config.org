@@ -78,7 +78,7 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
         org-log-reschedule 'time
         org-log-refile 'time)
   (add-hook 'before-save-hook 'time-stamp)
-  (setq +org-capture-todo-file "capture.org"
+  (setq +org-capture-todo-file "gtd/capture.org"
         org-capture-templates
         '(("t" "todo" entry
            (file+headline +org-capture-todo-file "Inbox") "* TODO %?\n%i\n%a" :prepend t :clock-in t :clock-resume t)
