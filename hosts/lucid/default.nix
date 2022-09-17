@@ -1,27 +1,24 @@
-{ ... }:
+{ user, ... }:
 
 {
   imports = [
     ../../modules/options.nix
     ../../modules/common.nix
     ../../modules/darwin
+    ../../modules/shell
     ../../modules/editors
   ];
 
   user = {
-    home = "/Users/venikx";
+    home = "/Users/${user}";
   };
 
   modules = {
     editors = {
       emacs.enable = true;
-      vim.enable = true;
     };
     shell = {
-      git.enable = true;
-      #zsh.enable = true;
-      direnv.enable = true;
-      gnupg.enable = true;
+      zsh.enable = false;
     };
   };
 
@@ -34,7 +31,7 @@
       upgrade = true;
     };
     masApps = {
-      Xcode = 497799835;
+      #Xcode = 497799835;
       "1Password 7 - Password Manager" = 1333542190;
     };
   };

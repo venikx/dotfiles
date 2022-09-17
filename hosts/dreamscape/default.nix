@@ -9,6 +9,10 @@
     ./hardware-configuration.nix
   ];
 
+  home-manager.users.venikx.imports = [
+    ../../modules/home-manager/nixos
+  ];
+
   networking = {
     hostName = "dreamscape";
     networkmanager.enable = true;
