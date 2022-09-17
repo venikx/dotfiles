@@ -4,7 +4,6 @@
   imports = [
     ../nix.nix
     ../../modules/options.nix
-    ../../modules/xdg.nix
     ../../modules/editors
     ../../modules/shell/git.nix
     ../../modules/shell/gnupg.nix
