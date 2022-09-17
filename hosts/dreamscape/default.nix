@@ -5,7 +5,6 @@
     ../../modules
     ../../modules/common.nix
     ../../modules/nixos
-    ../nix.nix
     ../linux.nix
     ./hardware-configuration.nix
   ];

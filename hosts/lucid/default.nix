@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ../nix.nix
     ../../modules/options.nix
     ../../modules/common.nix
     ../../modules/darwin
