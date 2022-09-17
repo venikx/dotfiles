@@ -4,6 +4,7 @@
   imports = [
     ../../modules
     ../../modules/common.nix
+    ../../modules/nixos
     ../nix.nix
     ../linux.nix
     ./hardware-configuration.nix
@@ -65,7 +66,6 @@
     };
     shell = {
       zsh.enable = true;
-      gnupg.enable = true;
     };
     services = {
       docker.enable = true;

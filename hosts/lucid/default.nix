@@ -4,10 +4,9 @@
   imports = [
     ../nix.nix
     ../../modules/options.nix
+    ../../modules/common.nix
+    ../../modules/darwin
     ../../modules/editors
-    ../../modules/shell/git.nix
-    ../../modules/shell/gnupg.nix
-    ../../modules/shell/direnv.nix
   ];
 
   user = {
