@@ -27,7 +27,7 @@
       "super + {_,shift + }q" = "bspc node -{c,k}";
 
       # Opening common commands
-      "super + Return" = "$TERMINAL";
+      "super + Return" = "${pkgs.alacritty}/bin/alacritty";
       "super + d" = "dmenu_run";
       "super + w" = "$BROWSER";
 

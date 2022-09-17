@@ -12,6 +12,7 @@
 
   home-manager.users.venikx.imports = [
     ./xdg.nix
+    ./desktop
     ./cli
     ./editors
   ];
