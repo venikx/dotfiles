@@ -3,6 +3,7 @@
 {
   imports = [
     ../../modules
+    ../../modules/common.nix
     ../nix.nix
     ../linux.nix
     ./hardware-configuration.nix
@@ -51,7 +52,6 @@
     };
     editors = {
       emacs.enable = true;
-      vim.enable = true;
     };
     dev = {
       cc.enable = true;
@@ -64,9 +64,7 @@
       shell.enable = true;
     };
     shell = {
-      git.enable = true;
       zsh.enable = true;
-      direnv.enable = true;
       gnupg.enable = true;
     };
     services = {
