@@ -31,6 +31,17 @@ in {
           dracula-theme
         ];
 
+        xsession.windowManager.bspwm.settings = {
+          "borderless_monocle" = true;
+          "gapless_monocle" = true;
+          "border_width" = 1;
+          "window_gap" = 0;
+          "normal_border_color" = "#181a23";
+          "active_border_color" = "#181a23";
+          "focused_border_color" = "#bd93f9";
+          "presel_feedback_color" = "#bd93f9";
+        };
+
         # Other dotfiles
         xdg.configFile = with config.modules; mkMerge [
           {
