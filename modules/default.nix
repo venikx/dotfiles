@@ -12,6 +12,5 @@
       ./themes
 
       ./options.nix
-      ./xdg.nix
     ];
 }
