@@ -4,7 +4,7 @@
 
 with lib;
 {
-  environment.variables.GNUPGHOME = "${config.environment.variables.XDG_CONFIG_HOME}/gnupg";
+  environment.variables.GNUPGHOME = "$HOME/.config/gnupg";
   environment.shellInit = ''
       gpg-connect-agent /bye
       export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)

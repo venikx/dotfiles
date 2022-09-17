@@ -4,7 +4,7 @@
 
 with lib;
 {
-  environment.variables.GNUPGHOME = "${config.environment.variables.XDG_CONFIG_HOME}/gnupg";
+  environment.variables.GNUPGHOME = "$HOME/.config/gnupg";
   modules.shell.zsh.rcInit = ''
       export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
       gpgconf --launch gpg-agent
