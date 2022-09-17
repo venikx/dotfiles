@@ -25,9 +25,7 @@ in {
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
     environment.systemPackages = with pkgs; [
       #emacs fast
-      emacsPgtk # ok for now
-      #emacsUnstable #toTest
-      #emacsPgtkNativeComp # slow as balls
+      emacsUnstable # TODO(Kevin): Does this work on darwin?
 
       ## Doom dependencies
       git
