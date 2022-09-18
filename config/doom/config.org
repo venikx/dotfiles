@@ -128,13 +128,11 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
           ("l" "Literature" entry "* TODO ${title}
 :PROPERTIES:
 :Author: %^{Creator(s)}
-:Year: %^{Year}
 :Name: ${title}
 :Origin: %?
 :Pages: %^{Pages}
 :Recommended: %^{Recommended By}
 :Rating:
-:CUSTOM_ID: %^{Cite Key (zzz1970hello)}
 :ID: %(org-id-uuid)
 :Created: %t
 :END:"
