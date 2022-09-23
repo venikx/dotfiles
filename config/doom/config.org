@@ -60,7 +60,7 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 #+end_src
 ** Org-Mode
 #+begin_src elisp
-(setq org-agenda-files '("~/org/gtd")
+(setq org-agenda-files '("~/org/gtd" "~/org/books.org")
       org-contacts-files "~/org/gtd/contacts.org")
 
 (after! org
@@ -114,6 +114,17 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
                               "#+title: ${title}\n#+filetags: ever/sprout\n#+created: %U\n#+modified: %U")
            :empty-lines 1
            :unnarrowed t)
+          ("r" "Reference" plain "%?
+
+,* Metadata
+- Creator(s) :: %^{Creator(s)}
+- [[%^{Source}][Source]]
+- Recommended By :: %^{Recommended By}
+- Reason :: "
+           :target (file+head "%<%Y%m%d%H%M%S>.org"
+                              "#+title: ${title}\n#+filetags: reference\n#+created: %U\n#+modified: %U")
+           :empty-lines 1
+           :unnarrowed t)
           ("c" "Contact" entry "* ${title} :@:
 :PROPERTIES:
 :Mobile: %^{Phone Number (+358 45 265 HEYO)}
@@ -126,18 +137,16 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 :END:"
            :target (file "gtd/contacts.org")
            :unnarrowed t)
-          ("l" "Literature" entry "* TODO ${title}
+          ("b" "Book" entry "* TODO %?${title}
 :PROPERTIES:
 :Author: %^{Creator(s)}
-:Name: ${title}
-:Origin: %?
-:Pages: %^{Pages}
 :Recommended: %^{Recommended By}
 :Rating:
-:ID: %(org-id-uuid)
+:Pages: %^{Pages}
+:Year: %^{Year}
 :Created: %t
 :END:"
-           :target (file "literature/references.org")
+           :target (file "collections/books.org")
            :prepend t
            :empty-lines 1
            :unnarrowed t)))
