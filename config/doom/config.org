@@ -20,7 +20,8 @@ Allegedly makes Emacs go fast, vrooooom!
 (global-auto-revert-mode t)
 
 (setq
- doom-theme 'doom-laserwave
+ doom-theme 'doom-tokyo-night
+ ;;doom-theme 'doom-laserwave
  ;;doom-theme 'doom-outrun-electric
  ;;doom-theme 'doom-dracula
  display-line-numbers-type t
