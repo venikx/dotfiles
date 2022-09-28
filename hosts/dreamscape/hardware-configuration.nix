@@ -12,6 +12,7 @@
     kernelModules = [ "kvm-amd" ];
     kernelParams = [ ];
     kernelPackages = pkgs.linuxPackages_latest;
+    loader.grub.configurationLimit = 3;
   };
 
   modules.hardware = {
