@@ -104,9 +104,13 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 ** Org Roam
 #+begin_src elisp
 (setq org-roam-directory "~/org"
-      org-roam-dailies-directory "gtd/journal/")
+      org-roam-dailies-directory "gtd/")
 
 (after! org-roam
+  (setq org-roam-db-node-include-function
+        (lambda ()
+          (not (member '("ATTACH" "ARCHIVE") (org-get-tags)))))
+
   (setq org-roam-capture-templates
         '(("n" "Note" plain
            "%?\n\n* References"
@@ -152,7 +156,7 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
            :unnarrowed t)))
   (setq org-roam-dailies-capture-templates
         '(("j" "Journal" entry "* %U %?"
-           :target (file+datetree "index.org" day))
+           :target (file+datetree "journal.org" day))
           ("m" "Morning Routine" entry "* Morning Routine
 ,** What happened yesterday?
 ,** What is today's main purpose?
@@ -160,7 +164,7 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 ,** What am I anxious about?
 ,** What am I grateful for?
 ,** What am I excited about?"
-           :target (file+datetree "index.org" day)
+           :target (file+datetree "journal.org" day)
            :prepend t))))
 #+end_src
 
