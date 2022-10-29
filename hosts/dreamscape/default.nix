@@ -30,7 +30,7 @@
         slack.enable = true;
       };
       browsers = {
-        default = "brave";
+        default = "firefox";
         firefox.enable = true;
         brave.enable = true;
       };

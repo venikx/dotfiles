@@ -39,34 +39,39 @@ in {
       (mkIf (config.programs.gnupg.agent.enable) pinentry-emacs)
 
       ## Module dependencies
-      # checkers
-      (aspellWithDicts (ds: with ds; [
-        en en-computers en-science
-      ]))
-      # c programming
+      # :checkers spell
+      (aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
+      # :tools editorconfig
+      editorconfig-core-c
+      # :tools lookup & :lang org +roam
+      sqlite
+      # :lang latex & :lang org (latex previews)
+      texlive.combined.scheme-medium
+      # :lang beancount
+      beancount
+      fava  # HACK Momentarily broken on nixos-unstable
+      # :lang cc
       ccls
-      editorconfig-core-c 
-      # javascript
+      # :lang json
+      nodePackages.vscode-json-languageserver-bin
+      # :lang javascript
       nodePackages.typescript-language-server
+      nodePackages.typescript # NOTE(Kevin): Eglot can't resolve the globally installed package when typescript packages doesn't exist in root of project
+      # :lang web
       nodePackages.vscode-css-languageserver-bin
       nodePackages.vscode-html-languageserver-bin
-      nodePackages.vue-language-server
-      nodePackages.vscode-json-languageserver-bin
-      # rust
+      # :lang rust
       rustfmt
-      # org-mode
-      sqlite
+      # :lang org
       texlive.combined.scheme-medium
-      plantuml
+      # :lang org +roam2 & org-roam-ui
       graphviz
+      # :lang org +pandoc
       pandoc
-      # docker
+      # :lang yaml
+      nodePackages.yaml-language-server
+      # :tools docker
       nodePackages.dockerfile-language-server-nodejs
-      # accounting
-      ledger
-      hledger
-      beancount
-      # nodePackages.beancount-langserver
     ];
 
     home-manager.users.venikx = mkIf cfg.doom.enable {

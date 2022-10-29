@@ -18,5 +18,6 @@ in {
 
   config = mkIf (cfg.default != null) {
     env.BROWSER = cfg.default;
+    # TODO(Kevin): Check https://rycee.gitlab.io/home-manager/options.html#opt-xdg.mimeApps.defaultApplications
   };
 }

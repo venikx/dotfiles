@@ -192,6 +192,9 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 * Language Configuration
 ** Javascript
 #+begin_src elisp
+(after! eglot (add-to-list 'eglot-server-programs
+               '(typescript-tsx-mode . ("typescript-language-server" "--stdio"))))
+
 (after! format-all (advice-add 'format-all-buffer :around #'envrc-propagate-environment))
 #+end_src
 ** C/C++
