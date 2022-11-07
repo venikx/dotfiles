@@ -2,11 +2,12 @@
 {
   home.packages = with pkgs; [
     editorconfig-core-c
-    neovim
   ];
 
-  programs.zsh.shellAliases = {
-    vim = "nvim";
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
   };
 
   programs.git.ignores = [

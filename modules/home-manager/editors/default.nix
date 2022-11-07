@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ./vim.nix
+    ./neovim.nix
   ];
 
   home.sessionVariables = {
