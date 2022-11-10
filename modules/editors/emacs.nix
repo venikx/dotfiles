@@ -62,7 +62,7 @@ in {
       nodePackages.vscode-html-languageserver-bin
       # :lang rust
       rustfmt
-      # :lang org
+      # :lang org latex
       texlive.combined.scheme-medium
       # :lang org +roam2 & org-roam-ui
       graphviz
