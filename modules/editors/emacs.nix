@@ -46,7 +46,8 @@ in {
       # :tools lookup & :lang org +roam
       sqlite
       # :lang latex & :lang org (latex previews)
-      texlive.combined.scheme-medium
+      texlive.combined.scheme-full
+      epdfview
       # :lang beancount
       beancount
       fava  # HACK Momentarily broken on nixos-unstable
@@ -62,8 +63,6 @@ in {
       nodePackages.vscode-html-languageserver-bin
       # :lang rust
       rustfmt
-      # :lang org latex
-      texlive.combined.scheme-medium
       # :lang org +roam2 & org-roam-ui
       graphviz
       # :lang org +pandoc

@@ -57,6 +57,7 @@ in {
 
       fonts = {
         fonts = with pkgs; [
+          barlow
           fira-code
           fira-code-symbols
           jetbrains-mono
