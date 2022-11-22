@@ -41,6 +41,8 @@ in {
       ## Module dependencies
       # :checkers spell
       (aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
+      # :checkers grammar
+      languagetool
       # :tools editorconfig
       editorconfig-core-c
       # :tools lookup & :lang org +roam

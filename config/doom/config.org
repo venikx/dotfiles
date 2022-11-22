@@ -211,6 +211,11 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
                                 "--header-insertion-decorators=0"))
 (after! lsp-clangd (set-lsp-priority! 'clangd 2))
 #+end_src
+** LanguageTool
+#+begin_src elisp
+(after! langtool
+  (setq langtool-bin (executable-find "languagetool-commandline")))
+#+end_src
 * Publishing
 #+begin_src elisp
 (use-package! esxml)
