@@ -4,7 +4,6 @@
   imports =
     [
       ./browsers
-      ./communication
       ./gaming
       ./media
       ./terminal

@@ -19,10 +19,6 @@
     desktop = {
       bspwm.enable = true;
       dmenu.enable = true;
-      communication = {
-        discord.enable = true;
-        slack.enable = true;
-      };
       browsers = {
         default = "brave";
         firefox.enable = true;
