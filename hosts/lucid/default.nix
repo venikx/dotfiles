@@ -30,6 +30,15 @@
       cleanup = "uninstall";
       upgrade = true;
     };
+    brews = [
+      {
+         name = "emacs-mac";
+         args = [ "with-modules" ];
+      }
+    ];
+    taps = [
+      "railwaycat/emacsmacport"
+    ];
     masApps = {
       Xcode = 497799835;
       "1Password 7 - Password Manager" = 1333542190;

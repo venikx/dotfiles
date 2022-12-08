@@ -24,7 +24,7 @@ in {
 
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
     environment.systemPackages = with pkgs; [
-      emacsUnstable # TODO(Kevin): Does this work on darwin?
+      (mkIf pkgs.stdenv.isLinux emacsUnstable) # emacs on mac handled by brew
 
       ## Doom dependencies
       git
@@ -42,14 +42,14 @@ in {
       # :checkers spell
       (aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
       # :checkers grammar
-      languagetool
+      (mkIf pkgs.stdenv.isLinux languagetool)
       # :tools editorconfig
       editorconfig-core-c
       # :tools lookup & :lang org +roam
       sqlite
       # :lang latex & :lang org (latex previews)
       texlive.combined.scheme-full
-      epdfview
+      (mkIf pkgs.stdenv.isLinux epdfview)
       # :lang beancount
       beancount
       fava  # HACK Momentarily broken on nixos-unstable
