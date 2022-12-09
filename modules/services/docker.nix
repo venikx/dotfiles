@@ -13,7 +13,6 @@ in {
   config = mkIf cfg.enable {
     env.DOCKER_CONFIG = "$XDG_CONFIG_HOME/docker";
     env.MACHINE_STORAGE_PATH = "$XDG_DATA_HOME/docker/machine";
-    modules.shell.zsh.rcFiles = [ "/etc/nixos/config/docker/aliases.zsh" ];
 
     home-manager.users.venikx = {
       home.packages = with pkgs; [

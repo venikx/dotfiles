@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
+  users.users.venikx.shell = pkgs.zsh;
+
   environment = {
    variables = {
      XDG_CACHE_HOME  = "$HOME/.cache";

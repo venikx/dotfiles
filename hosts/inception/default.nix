@@ -51,12 +51,6 @@
       rust.binaries.enable = false;
       shell.enable = true;
     };
-    shell = {
-      git.enable = true;
-      zsh.enable = true;
-      direnv.enable = true;
-      gnupg.enable = true;
-    };
     services = {
       docker.enable = true;
     };

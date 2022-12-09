@@ -63,9 +63,6 @@
       rust.binaries.enable = false;
       shell.enable = true;
     };
-    shell = {
-      zsh.enable = true;
-    };
     services = {
       docker.enable = true;
     };

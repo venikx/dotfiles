@@ -83,11 +83,9 @@ in {
       };
 
       home.sessionPath = [ "$XDG_CONFIG_HOME/emacs/bin" ]; 
-      programs.zsh = {
-        shellAliases = {
-          e = "emacsclient -n";
-          ediff = ''e --eval "(ediff-files \"$1\" \"$2\")"''; # used to be a function
-        };
+      programs.zsh.shellAliases = {
+        e = "emacsclient -n";
+        ediff = ''e --eval "(ediff-files \"$1\" \"$2\")"''; # used to be a function
       };
       programs.git.ignores = [ "*~" "*.*~" "\#*" ".\#*"];
       xsession.windowManager.bspwm.rules = {

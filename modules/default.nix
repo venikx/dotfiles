@@ -7,7 +7,6 @@
       ./dev
       ./editors
       ./hardware
-      ./shell
       ./services
       ./themes
 

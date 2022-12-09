@@ -17,12 +17,15 @@ in {
           };
         };
 
-        shell.zsh.rcFiles  = [ ./config/zsh/prompt.zsh ];
         desktop.browsers.firefox.userChrome = concatMapStringsSep "\n" readFile [
             ./config/firefox/userChrome.css
           ];
       };
-    }
+
+      home-manager.users.venikx.programs.zsh.iniExtraBeforeCompInit = ''
+        source ${./config/zsh/prompt.zsh}
+      '';
+      }
 
     # Desktop (X11) theming
     (mkIf config.services.xserver.enable {

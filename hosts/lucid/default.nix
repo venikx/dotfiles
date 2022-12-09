@@ -5,7 +5,6 @@
     ../../modules/options.nix
     ../../modules/common.nix
     ../../modules/darwin
-    ../../modules/shell
     ../../modules/editors
   ];
 
@@ -16,9 +15,6 @@
   modules = {
     editors = {
       emacs.enable = true;
-    };
-    shell = {
-      zsh.enable = false;
     };
   };
 

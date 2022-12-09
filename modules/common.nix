@@ -5,12 +5,6 @@
     ./home-manager
   ];
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    enableBashCompletion = true;
-  };
-
   environment = {
     systemPackages = with pkgs; [
       # usefull shell stuff
