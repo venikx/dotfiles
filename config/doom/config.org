@@ -106,8 +106,13 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 (setq org-roam-directory "~/org"
       org-roam-dailies-directory "gtd/")
 
+(after! org-download
+  (setq org-download-timestamp "%Y%m%d-"))
+
 (after! org-roam
-  (setq org-roam-db-node-include-function
+  (setq org-roam-completion-everywhere nil
+        org-roam-file-exclude-regexp (rx (or ".attach/" "index.org"))
+        org-roam-db-node-include-function
         (lambda ()
           (not (member '("ATTACH" "ARCHIVE") (org-get-tags)))))
 

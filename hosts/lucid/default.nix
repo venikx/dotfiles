@@ -31,6 +31,7 @@
          name = "emacs-mac";
          args = [ "with-modules" ];
       }
+      "pngpaste" # needed to paste from clipboard to Emacs
     ];
     taps = [
       "railwaycat/emacsmacport"
