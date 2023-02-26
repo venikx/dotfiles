@@ -122,60 +122,25 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
           (not (member '("ATTACH" "ARCHIVE") (org-get-tags)))))
 
   (setq org-roam-capture-templates
-        '(("n" "Note" plain
-           "%?\n\n* References"
-           :target (file+head "%<%Y%m%d%H%M%S>.org"
-                              "#+title: ${title}\n#+filetags: ever/sprout\n#+created: %U\n#+modified: %U")
-           :empty-lines 1
+        '(("n" "Note" plain (file "~/org/templates/default-note.org")
+           :target (file "%<%Y%m%d%H%M%S>.org")
            :unnarrowed t)
-          ("r" "Reference" plain "%?
-
-,* Metadata
-- Creator(s) :: %^{Creator(s)}
-- [[%^{Source}][Source]]
-- Recommended By :: %^{Recommended By}
-- Reason :: "
-           :target (file+head "%<%Y%m%d%H%M%S>.org"
-                              "#+title: ${title}\n#+filetags: reference\n#+created: %U\n#+modified: %U")
-           :empty-lines 1
+           ("w" "Work" plain (file "~/org/templates/default-note.org")
+           :target (file "work/%<%Y%m%d%H%M%S>.org")
            :unnarrowed t)
-          ("c" "Contact" entry "* ${title} :@:
-:PROPERTIES:
-:Mobile: %^{Phone Number (+358 45 265 HEYO)}
-:Email: %(org-contacts-template-email)
-:Birthday: %^{Birthday (yyyy-mm-dd)}
-:Address: %^{Address (MainStreet, 00100 Helsinki, Finland)}
-:Type: person
-:Created: %t
-:ID: %(org-id-uuid)
-:END:"
+           ("s" "Source" plain (file "~/org/templates/source-note.org")
+           :target (file "%<%Y%m%d%H%M%S>.org")
+           :unnarrowed t)
+          ("c" "Contact" entry (file "~/org/templates/contact-entry.org")
            :target (file "gtd/contacts.org")
            :unnarrowed t)
-          ("b" "Book" entry "* TODO %?${title}
-:PROPERTIES:
-:Author: %^{Creator(s)}
-:Recommended: %^{Recommended By}
-:Rating:
-:Pages: %^{Pages}
-:Year: %^{Year}
-:Created: %t
-:END:"
+          ("b" "Book" entry (file "~/org/templates/book-entry.org")
            :target (file "collections/books.org")
            :prepend t
-           :empty-lines 1
            :unnarrowed t)))
   (setq org-roam-dailies-capture-templates
         '(("j" "Journal" entry "* %U %?"
-           :target (file+datetree "journal.org" day))
-          ("m" "Morning Routine" entry "* Morning Routine
-,** What happened yesterday?
-,** What is today's main purpose?
-- [ ]
-,** What am I anxious about?
-,** What am I grateful for?
-,** What am I excited about?"
-           :target (file+datetree "journal.org" day)
-           :prepend t))))
+           :target (file+datetree "journal.org" day)))))
 #+end_src
 
 *** Note Graph in Browser
