@@ -30,7 +30,6 @@
           pdf.enable = true;
           ebook.enable = true;
         };
-        backup.enable = true;
         music-production.enable = true;
       };
       terminal = {

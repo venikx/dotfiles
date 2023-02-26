@@ -12,7 +12,7 @@
       "focus_follows_pointer" = true;
       "split_ratio" = 0.52;
     };
-    startupPrograms = [ "sxhkd" "autorandr -c" "pcloud" ];
+    startupPrograms = [ "sxhkd" "autorandr -c" ];
   };
 
   services.sxhkd = {

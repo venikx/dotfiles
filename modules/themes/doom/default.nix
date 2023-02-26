@@ -22,7 +22,7 @@ in {
           ];
       };
 
-      home-manager.users.venikx.programs.zsh.iniExtraBeforeCompInit = ''
+      home-manager.users.venikx.programs.zsh.initExtraBeforeCompInit = ''
         source ${./config/zsh/prompt.zsh}
       '';
       }
