@@ -27,7 +27,8 @@ Allegedly makes Emacs go fast, vrooooom!
  display-line-numbers-type t
  standard-indent 2
  calendar-week-start-day 1 ;; Start on Monday
- projectile-project-search-path '("~/code/"))
+ projectile-project-search-path '("~/code/")
+ browse-url-browser-function 'browse-url-firefox)
 #+end_src
 
 * Package Configuration
@@ -60,8 +61,12 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 #+end_src
 ** Org-Mode
 #+begin_src elisp
-(setq org-agenda-files '("~/org/gtd" "~/org/books.org")
-      org-contacts-files "~/org/gtd/contacts.org")
+(setq org-agenda-files '("~/org/gtd"))
+
+(use-package org-contacts
+  :ensure nil
+  :after org
+  :custom (org-contacts-files '("~/org/gtd/contacts.org")))
 
 (after! org
   (add-to-list 'org-modules 'org-habit)

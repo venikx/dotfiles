@@ -154,6 +154,7 @@
        ;;ocaml             ; an objective camel
        (org
         +pandoc
+        +contacts
         +pomodoro
         +dragndrop
         +present
