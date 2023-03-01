@@ -9,7 +9,7 @@
 | Storage     | 1TB SSD                            |
 | UEFI        | yes                                |
 
-* TODO Installation
+* Installation
 ** Verifying internet connection
 ~ping www.google.com~
 

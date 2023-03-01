@@ -11,7 +11,7 @@
 | Network Adapter | wlp2s0                        |
 | UEFI            | yes                           |
 
-* TODO Installation
+* Installation
 ** Verifying internet connection
 ~ping www.google.com~
 
@@ -31,7 +31,7 @@ mount /dev/sdb1 /mnt/boot # Not sure if we can label the partition without forma
 mount /dev/disk/by-label/home /mnt/home
    #+end_src
 
-** Prepare the intial NixOS configuration
+** Prepare the initial NixOS configuration
 #+begin_src sh
 nixos-generate-config --root /mnt
 vi /etc/nixos/configuration.nix
