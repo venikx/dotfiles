@@ -3,7 +3,6 @@
 {
   imports =
     [
-      ./browsers
       ./gaming
       ./media
       ./terminal

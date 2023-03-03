@@ -19,11 +19,6 @@
     desktop = {
       bspwm.enable = true;
       dmenu.enable = true;
-      browsers = {
-        default = "brave";
-        firefox.enable = true;
-        brave.enable = true;
-      };
       media = {
         spotify.enable = true;
         readers = {

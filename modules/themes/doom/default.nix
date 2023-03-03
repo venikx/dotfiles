@@ -16,10 +16,6 @@ in {
             cursorTheme = "Paper";
           };
         };
-
-        desktop.browsers.firefox.userChrome = concatMapStringsSep "\n" readFile [
-            ./config/firefox/userChrome.css
-          ];
       };
 
       home-manager.users.venikx.programs.zsh.initExtraBeforeCompInit = ''

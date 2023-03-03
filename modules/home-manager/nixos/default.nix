@@ -2,6 +2,7 @@
 {
   imports =
     [
+      ./browsers.nix
       ./bspwm.nix
     ];
 

@@ -25,11 +25,6 @@
     desktop = {
       bspwm.enable = true;
       dmenu.enable = true;
-      browsers = {
-        default = "firefox";
-        firefox.enable = true;
-        brave.enable = true;
-      };
       media = {
         spotify.enable = true;
         streaming.enable = true;
