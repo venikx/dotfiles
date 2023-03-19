@@ -15,6 +15,7 @@ in {
       home.packages = with pkgs; [
         clang
         clang-tools
+        man-pages # https://www.kernel.org/doc/man-pages/
       ];
     };
   };
