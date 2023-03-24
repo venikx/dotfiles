@@ -8,6 +8,6 @@
     # communication
     discord
     slack
-    # teams
+    teams
   ];
 }
