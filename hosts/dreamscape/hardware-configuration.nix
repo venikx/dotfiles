@@ -24,7 +24,6 @@
   };
 
   # Are these really needed? Seems so atm.
-  hardware.video.hidpi.enable = lib.mkDefault true;
   hardware.enableRedistributableFirmware = true;
   # CPU
   hardware.cpu.amd.updateMicrocode = true;

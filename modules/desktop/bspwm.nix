@@ -25,6 +25,7 @@ in {
       redshift.enable = true;
       xserver = {
         enable = true;
+        dpi = 100;
         libinput.enable = true;
         displayManager = {
           defaultSession = "none+bspwm";
