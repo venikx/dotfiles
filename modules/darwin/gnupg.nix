@@ -13,9 +13,6 @@ with lib;
         yubikey-manager
         yubikey-personalization
       ];
-      sessionVariables = {
-        GNUPGHOME = "${config.environment.variables.XDG_CONFIG_HOME}/gnupg";
-      };
     };
 
     programs.zsh.initExtra = ''
