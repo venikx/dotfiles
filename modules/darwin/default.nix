@@ -3,6 +3,8 @@
   imports =
     [
       ./gnupg.nix
+      ./osx.nix
+      ./yabai.nix
     ];
 
   homebrew = {
@@ -17,6 +19,7 @@
       "railwaycat/emacsmacport"
     ];
     casks = [
+      "google-chrome"
       "firefox"
       "steam"
     ];
