@@ -39,7 +39,8 @@
         whitespace = "trailing-space";
       };
       init.defaultBranch = "main";
-      push.rebase = true;
+      push.default = "simple";
+      pull.rebase = true;
       credential.helper = "helper = cache --timeout=3600";
       url."https://github.com/".insteadOf = "gh";
     };
