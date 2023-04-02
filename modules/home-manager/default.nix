@@ -2,6 +2,7 @@
 
 {
   users.users.venikx.shell = pkgs.zsh;
+  programs.zsh.enable = true;
 
   environment = {
    variables = {
