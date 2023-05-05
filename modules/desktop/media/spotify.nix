@@ -14,6 +14,7 @@ in {
     home-manager.users.venikx = {
       home.packages = with pkgs; [
         spotify
+        youtube-music
       ];
     };
   };
