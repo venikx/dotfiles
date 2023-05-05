@@ -61,12 +61,8 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 #+end_src
 ** Org-Mode
 #+begin_src elisp
-(setq org-agenda-files '("~/org/gtd"))
-
-(use-package org-contacts
-  :ensure nil
-  :after org
-  :custom (org-contacts-files '("~/org/gtd/contacts.org")))
+(setq org-agenda-files '("~/org/gtd")
+      org-contacts-files '("~/org/gtd/contacts.org"))
 
 (after! org
   (add-to-list 'org-modules 'org-habit)
