@@ -9,5 +9,7 @@
     discord
     slack
     teams
+    # learning
+    anki
   ];
 }
