@@ -12,6 +12,12 @@
       "focus_follows_pointer" = true;
       "split_ratio" = 0.52;
     };
+    rules = {
+      "steam_app_1284210" = { # Guild Wars 2 - Launcher
+        state = "pseudo_tiled";
+        #follow = true;
+      };
+    };
     startupPrograms = [ "sxhkd" "autorandr -c" ];
   };
 
