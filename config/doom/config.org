@@ -27,7 +27,7 @@ Allegedly makes Emacs go fast, vrooooom!
  display-line-numbers-type t
  standard-indent 2
  calendar-week-start-day 1 ;; Start on Monday
- projectile-project-search-path '("~/code/")
+ projectile-project-search-path '("~/code/" "/etc/nixos/")
  browse-url-browser-function 'browse-url-firefox)
 #+end_src
 
