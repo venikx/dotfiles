@@ -54,6 +54,20 @@
             }
           ];
         };
+
+        air = lib.nixosSystem { # asahi macbook
+          system = "aarch64-linux";
+          specialArgs = { inherit user home-manager emacs-overlay; };
+          modules = [
+            ./hosts/aarch64-linux/air
+
+            home-manager.nixosModules.home-manager {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.extraSpecialArgs = { inherit user; };
+            }
+          ];
+        };
       };
 
       darwinConfigurations =  {
