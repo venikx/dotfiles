@@ -3,7 +3,7 @@
 {
   imports =
     [
-     ./hardware.nix
+     ./hardware-configuration.nix
      ./apple-silicon-support
     ];
 

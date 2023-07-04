@@ -30,10 +30,16 @@
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
             ./hosts/${system}/dreamscape
+            ./modules/nixos
 
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.users.venikx = lib.mkMerge [
+                (import ./modules/home-manager)
+                (import ./modules/home-manager/nixos)
+                (import ./hosts/${system}/air/venikx.nix)
+              ];
             }
           ];
         };
@@ -43,10 +49,16 @@
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
             ./hosts/${system}/inception
+            ./modules/nixos
 
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.users.venikx = lib.mkMerge [
+                (import ./modules/home-manager)
+                (import ./modules/home-manager/nixos)
+                (import ./hosts/${system}/air/venikx.nix)
+              ];
             }
           ];
         };
@@ -83,8 +95,8 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [
-                import ./modules/home-manager
-                import ./hosts/${system}/lucid/venikx.nix
+                (import ./modules/home-manager)
+                (import ./hosts/${system}/lucid/venikx.nix)
               ];
             }
           ];
