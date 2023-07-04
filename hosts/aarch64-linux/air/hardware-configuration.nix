@@ -10,6 +10,10 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
+  modules.hardware = {
+    monitors.home.enable = true;
+  };
+
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/b1566969-a85d-4110-9f30-46e75e220566";
       fsType = "ext4";
