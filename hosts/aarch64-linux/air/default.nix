@@ -16,8 +16,8 @@
   ];
 
   networking = {
-	  hostName = "air";
-	  networkmanager.enable = true;
+    hostName = "air";
+    networkmanager.enable = true;
   };
 
   modules = {
@@ -32,12 +32,25 @@
     editors = {
       emacs.enable = true;
     };
+    dev = {
+      cc.enable = true;
+      clojure.enable = true;
+      clojure.binaries.enable = false;
+      node.enable = true;
+      node.binaries.enable = false;
+      rust.enable = true;
+      rust.binaries.enable = false;
+      shell.enable = true;
+    };
+    services = {
+      docker.enable = true;
+    };
     theme.active = "doom";
   };
 
   boot = {
-	  loader.systemd-boot.enable = true;
-	  loader.efi.canTouchEfiVariables = false;
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = false;
   };
 
   hardware.asahi.peripheralFirmwareDirectory = ./firmware;
