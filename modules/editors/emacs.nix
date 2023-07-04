@@ -24,7 +24,7 @@ in {
 
     fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
     environment.systemPackages = with pkgs; [
-      (mkIf pkgs.stdenv.isLinux emacsUnstable) # emacs on mac handled by brew
+      (mkIf pkgs.stdenv.isLinux emacs-unstable) # emacs on mac handled by brew
 
       ## Doom dependencies
       git
