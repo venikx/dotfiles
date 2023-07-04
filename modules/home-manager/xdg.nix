@@ -1,4 +1,4 @@
-{ config, lib, pkgs, user, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 {
@@ -20,9 +20,9 @@ with lib;
       })
     ]);
 
-    home = {
-      homeDirectory = if pkgs.stdenv.isLinux then "/home/${user}" else "/Users/${user}";
-      username = user;
+    home = rec {
+      username = "venikx";
+      homeDirectory = if pkgs.stdenv.isLinux then "/home/${username}" else "/Users/${username}";
       sessionPath = [ "$HOME/.local/bin" ];
 
       sessionVariables = {

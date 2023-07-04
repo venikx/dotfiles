@@ -9,10 +9,10 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = false;
 
-  modules.hardware = {
-    monitors.home.enable = true;
-  };
+  hardware.asahi.peripheralFirmwareDirectory = ./firmware;
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/b1566969-a85d-4110-9f30-46e75e220566";
@@ -25,8 +25,6 @@
     };
 
   swapDevices = [ ];
-
-  networking.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";

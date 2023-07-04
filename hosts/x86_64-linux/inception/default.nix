@@ -2,15 +2,21 @@
 
 {
   imports = [
-    ../../modules
-    ../nix.nix
-    ../linux.nix
     ./hardware-configuration.nix
   ];
 
+  users.users.venikx = {
+    name = "venikx";
+    description = "Kevin De Baerdemaeker";
+    home = "/home/venikx";
+    shell = pkgs.zsh;
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    initialPassword = "v3nikx";
+  };
+
   networking = {
     hostName = "inception";
-    networkmanager.enable = true;
     useDHCP = false;
     interfaces.wlp2s0.useDHCP = true;
   };

@@ -1,26 +1,32 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
     [
-     ../../../modules
-     ../../../modules/common.nix
-     ../../../modules/nixos
-     ../../linux.nix
-     ./hardware-configuration.nix
+     ./hardware.nix
      ./apple-silicon-support
     ];
 
-  home-manager.users.venikx.imports = [
-    ../../../modules/home-manager/nixos
-  ];
+  programs.zsh.enable = true;
+  users.users.venikx = {
+    name = "venikx";
+    description = "Kevin De Baerdemaeker";
+    home = "/home/venikx";
+    shell = pkgs.zsh;
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    initialPassword = "v3nikx";
+  };
 
   networking = {
     hostName = "air";
-    networkmanager.enable = true;
+    useDHCP = lib.mkDefault true;
   };
 
   modules = {
+    hardware = {
+      monitors.home.enable = true;
+    };
     desktop = {
       bspwm.enable = true;
       dmenu.enable = true;
@@ -48,15 +54,5 @@
     theme.active = "doom";
   };
 
-  boot = {
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = false;
-  };
-
-  hardware.asahi.peripheralFirmwareDirectory = ./firmware;
-
-  home-manager.users.venikx.home.stateVersion = "23.05";
-  system.stateVersion = "23.11"; # Did you read the comment?
-
+  system.stateVersion = "23.11";
 }
-

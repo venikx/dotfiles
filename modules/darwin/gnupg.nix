@@ -7,6 +7,7 @@ with lib;
     enable = true;
   };
 
+  # TODO(Kevin): Should separate this out, but meh
   home-manager.users.venikx = {
     home = {
       packages = with pkgs; [

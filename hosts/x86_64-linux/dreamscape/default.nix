@@ -2,20 +2,21 @@
 
 {
   imports = [
-    ../../modules
-    ../../modules/common.nix
-    ../../modules/nixos
-    ../linux.nix
     ./hardware-configuration.nix
   ];
 
-  home-manager.users.venikx.imports = [
-    ../../modules/home-manager/nixos
-  ];
+  users.users.venikx = {
+    name = "venikx";
+    description = "Kevin De Baerdemaeker";
+    home = "/home/venikx";
+    shell = pkgs.zsh;
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    initialPassword = "v3nikx";
+  };
 
   networking = {
     hostName = "dreamscape";
-    networkmanager.enable = true;
     useDHCP = false;
     interfaces.eno1.useDHCP = true; # ethernet
   };

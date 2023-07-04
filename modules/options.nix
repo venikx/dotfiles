@@ -5,11 +5,6 @@ with lib;
 
 {
   options = with types; {
-    user = mkOption {
-      type = attrs;
-      default = {};
-    };
-
     dotfiles = {
       dir = mkOption {
         type = path;
@@ -17,7 +12,7 @@ with lib;
         # .config/dotfiles
         default = (findFirst pathExists (toString ../.) [
           "/etc/nixos" # nixos
-          "${config.user.home}/.config/dotfiles" # darwin, macbook
+          "${config.users.users.venikx.home}/.config/dotfiles" # darwin, macbook
         ]);
       };
 
@@ -40,13 +35,7 @@ with lib;
   };
 
   config = {
-    user = {
-      name = "venikx";
-      description = "Kevin De Baerdemaeker";
-    };
-
     env.PATH = ["${config.dotfiles.dir}/bin" "$PATH" ];
-    users.users.${config.user.name} = mkAliasDefinitions options.user;
 
     environment.extraInit =
       concatStringsSep "\n"
