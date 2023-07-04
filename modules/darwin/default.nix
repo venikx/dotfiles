@@ -3,8 +3,6 @@
   imports =
     [
       ./gnupg.nix
-      ./osx.nix
-      ./yabai.nix
     ];
 
   homebrew = {

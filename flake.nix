@@ -26,11 +26,11 @@
       lib = nixpkgs.lib;
     in {
       nixosConfigurations = {
-        dreamscape = lib.nixosSystem { #desktop
+        dreamscape = lib.nixosSystem rec { #desktop
           system = "x86_64-linux";
           specialArgs = { inherit user home-manager emacs-overlay; };
           modules = [
-            ./hosts/dreamscape
+            ./hosts/${system}/dreamscape
 
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
@@ -40,26 +40,25 @@
           ];
         };
 
-        inception = lib.nixosSystem { #laptop
+        inception = lib.nixosSystem rec { #laptop
           system = "x86_64-linux";
           specialArgs = { inherit user home-manager emacs-overlay; };
           modules = [
-            ./hosts/inception
+            ./hosts/${system}/inception
 
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = { inherit user; };
-
             }
           ];
         };
 
-        air = lib.nixosSystem { # asahi macbook
+        air = lib.nixosSystem rec { # asahi macbook
           system = "aarch64-linux";
           specialArgs = { inherit user home-manager emacs-overlay; };
           modules = [
-            ./hosts/aarch64-linux/air
+            ./hosts/${system}/air
 
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;
@@ -71,11 +70,11 @@
       };
 
       darwinConfigurations =  {
-        lucid = darwin.lib.darwinSystem {
+        lucid = darwin.lib.darwinSystem rec {
           system = "aarch64-darwin";
           specialArgs = { inherit user home-manager emacs-overlay; };
           modules = [
-            ./hosts/lucid
+            ./hosts/${system}/lucid
 
             home-manager.darwinModules.home-manager {
               home-manager.useGlobalPkgs = true;

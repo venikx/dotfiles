@@ -42,7 +42,7 @@ with lib;
   config = {
     user = {
       name = "venikx";
-      description = "Kevin Rangel";
+      description = "Kevin De Baerdemaeker";
     };
 
     env.PATH = ["${config.dotfiles.dir}/bin" "$PATH" ];
