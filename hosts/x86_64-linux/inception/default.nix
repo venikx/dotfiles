@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -26,23 +26,13 @@
     desktop = {
       bspwm.enable = true;
       dmenu.enable = true;
-      media = {
-        spotify.enable = true;
-        readers = {
-          pdf.enable = true;
-          ebook.enable = true;
-        };
-        music-production.enable = true;
-      };
       terminal = {
         default = "xst";
         st.enable = true;
       };
-      gaming = {};
     };
     editors = {
       emacs.enable = true;
-      vim.enable = true;
     };
     dev = {
       cc.enable = true;

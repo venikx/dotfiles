@@ -38,7 +38,7 @@
               home-manager.users.venikx = lib.mkMerge [
                 (import ./modules/home-manager)
                 (import ./modules/home-manager/nixos)
-                (import ./hosts/${system}/air/venikx.nix)
+                (import ./hosts/${system}/dreamscape/venikx.nix)
               ];
             }
           ];
@@ -57,7 +57,7 @@
               home-manager.users.venikx = lib.mkMerge [
                 (import ./modules/home-manager)
                 (import ./modules/home-manager/nixos)
-                (import ./hosts/${system}/air/venikx.nix)
+                (import ./hosts/${system}/inception/venikx.nix)
               ];
             }
           ];
