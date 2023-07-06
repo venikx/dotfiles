@@ -18,6 +18,8 @@
     initialPassword = "v3nikx";
   };
 
+  time.timeZone = "Europe/Brussels";
+
   networking = {
     hostName = "air";
     useDHCP = lib.mkDefault true;

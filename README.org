@@ -15,16 +15,16 @@
 ** Workstations
 Based on [[https://avatar.fandom.com/wiki/Avatar:_The_Last_Airbender][Avatar: The Last Airbender]] 🙃
 
-- [[file:hosts/x86_64-linux/dreamscape/README.org][earth]] :: brick of desktop computer, solid as a rock, stable, fast, bliss
-- [[file:hosts/x86_64-linux/fire/README.org][fire]] :: gaming laptop, that's always running steaming hot
-- [[file:hosts/aarch64-linux/air/README.org][air]] :: simply, because it's installed on my MacBook Air
-- water :: possible nix-darwin, but that kinda sucks, so maybe not => unused
+- [[file:hosts/x86_64-linux/dreamscape/README.org][earth]]: brick of desktop computer, solid as a rock, stable, fast, bliss
+- [[file:hosts/x86_64-linux/fire/README.org][fire]]: gaming laptop, that's always running steaming hot
+- [[file:hosts/aarch64-linux/air/README.org][air]]: simply, because it's installed on my MacBook Air
+- water: possible nix-darwin, but that kinda sucks, so maybe not => unused
 ** TODO Servers
 I need to nixify my current servers:
 
-- raspberry pi => currently runs the PiOS
-- NAS => currently run TrueNAS Scale
-- VPN server => currently runs ubuntu server
+- raspberry pi: currently runs the PiOS
+- NAS: currently run TrueNAS Scale
+- VPN server: currently runs ubuntu server
 
 * Credit
 A lot of the configuration is heavily inspired by [[https://github.com/hlissner/dotfiles][hlissner's dotfiles]].
