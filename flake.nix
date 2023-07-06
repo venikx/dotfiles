@@ -44,11 +44,11 @@
           ];
         };
 
-        inception = lib.nixosSystem rec { #laptop
+        fire = lib.nixosSystem rec { #laptop
           system = "x86_64-linux";
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
-            ./hosts/${system}/inception
+            ./hosts/${system}/fire
             ./modules/nixos
 
             home-manager.nixosModules.home-manager {
@@ -57,7 +57,7 @@
               home-manager.users.venikx = lib.mkMerge [
                 (import ./modules/home-manager)
                 (import ./modules/home-manager/nixos)
-                (import ./hosts/${system}/inception/venikx.nix)
+                (import ./hosts/${system}/fire/venikx.nix)
               ];
             }
           ];

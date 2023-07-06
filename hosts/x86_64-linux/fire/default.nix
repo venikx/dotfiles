@@ -17,7 +17,7 @@
   };
 
   networking = {
-    hostName = "inception";
+    hostName = "fire";
     useDHCP = false;
     interfaces.wlp2s0.useDHCP = true;
   };
