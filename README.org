@@ -15,18 +15,34 @@
 A lot of the configuration is heavily inspired by [[https://github.com/hlissner/dotfiles][hlissner's dotfiles]], but I've removed some the ~/lib~ functionality and I'm not using ~flake~ (yet).
 
 * Installation
-1. Yoink the latest stable build of [[https://nixos.org/][NixOS 22.05]]
-2. Install NixOS by following one of the hosts config
-   - [[./hosts/dreamscape/README.org][dreamscape (desktop)]]
-   - [[./hosts/inception/README.org][inception (laptop)]]
-3. Clone these dotfiles into /etc/nixos
-   ~git clone https://gitlab.com/venikx/dotfiles /mnt/etc/nixos~
-4. Rebuild and switch to the configuration from the dotfiles
-   ~sudo nixos-rebuild switch~
-5. Reboot!
-6. Change the ~$USER~ passwords!
-7. [[https://media.giphy.com/media/yJFeycRK2DB4c/giphy.gif]]
+1. Yoink the latest stable build of [[https://nixos.org/][NixOS]]
+2. Boot into the installer, and follow the [[file:./hosts/][host]] specific steps
+3. Install the dotfiles
+#+begin_src sh
+nix-shell -p git nixFlakes
 
-* Improvements
-** TODO Clone the dotfiles during the installation itself
-** TODO Generate the config from the dotfiles during the installation itself
+git clone https://github.com/hlissner/dotfiles /etc/dotfiles
+cd /etc/dotfiles
+
+# Create a new host config in `hosts/`
+mkdir -p hosts/${system}/${hostName}
+nixos-generate-config --root /mnt --dir /etc/dotfiles/hosts/${system}/${hostName}
+# Update existing hosts based on the generated config for hardware
+vi hosts/${system}/${hostName}/configuration.nix
+vi hosts/${system}/${hostName}/hardware-configuration.nix
+
+# Add it to git
+git add  hosts/${system}/${hostName}
+
+# Install nixOS
+nixos-install --root /mnt --flake .#${hostName}
+
+# Move to the dotfiles to mounted drive
+mv /etc/dotfiles /mnt/etc/dotfiles
+
+# Change ownership of the nixo folder of mounted drive
+chown -R venikx:users /mnt/etc/nixos
+#+end_src
+1. Reboot!
+2. Change the passwords for the users, most likely only ~venikx~!
+3. [[https://media.giphy.com/media/yJFeycRK2DB4c/giphy.gif]]
