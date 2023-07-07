@@ -52,6 +52,7 @@
     };
     services = {
       docker.enable = true;
+      tailscale.enable = true;
     };
     theme.active = "doom";
   };
