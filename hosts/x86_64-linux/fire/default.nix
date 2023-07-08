@@ -31,6 +31,10 @@
         default = "xst";
         st.enable = true;
       };
+
+      gaming = {
+        steam.enable = true;
+      };
     };
     editors = {
       emacs.enable = true;
