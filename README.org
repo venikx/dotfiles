@@ -33,7 +33,7 @@ A lot of the configuration is heavily inspired by [[https://github.com/hlissner/
 1. Yoink the latest stable build of [[https://nixos.org/][NixOS]]
 2. Boot into the installer, and follow the [[file:./hosts/][host]] specific steps
 3. Install the dotfiles
-#+begin_src sh
+   #+begin_src sh :eval no
 nix-shell -p git nixFlakes
 
 git clone https://github.com/hlissner/dotfiles /etc/dotfiles
@@ -57,7 +57,8 @@ mv /etc/dotfiles /mnt/etc/dotfiles
 
 # Change ownership of the nixo folder of mounted drive
 chown -R venikx:users /mnt/etc/nixos
-#+end_src
-1. Reboot!
-2. Change the passwords for the users, most likely only ~venikx~!
-3. [[https://media.giphy.com/media/yJFeycRK2DB4c/giphy.gif]]
+   #+end_src
+
+4. Reboot!
+5. Change the passwords for the users, most likely only ~venikx~!
+6. [[https://media.giphy.com/media/yJFeycRK2DB4c/giphy.gif]]

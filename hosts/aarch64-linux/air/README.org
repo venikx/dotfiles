@@ -1,0 +1,12 @@
+#+title: Air
+
+* Overview
+[[https://www.apple.com/macbook-air-m1/][MacBook Air with M1]]
+
+** Specs
+| CPU              | Icestorm-M1 |
+| GPU              |             |
+| Storage          | 500GB NVMe  |
+| RAM              | 16 GB       |
+| Network Adapter  | wlp1s0f0    |
+| Asahi Bootloader | 2023-06-25  |

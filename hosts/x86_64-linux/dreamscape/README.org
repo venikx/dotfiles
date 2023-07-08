@@ -1,36 +1,30 @@
-#+TITLE: Dreamscape (desktop)
+#+TITLE: Earth
 
 * Overview
 ** Specs
 | CPU         | AMD Ryzen 7 5800X 8-Core Processor |
 | GPU         | Asus GeForce RTX 3070              |
-| RAM         | KHX3200C16D4/16GX                  |
+| RAM         | KHX3200C16D4/32GX                  |
 | Motherboard | B550I AORUS PRO AX                 |
 | Storage     | 1TB SSD                            |
 | UEFI        | yes                                |
 
 * Installation
-** Verifying internet connection
+** Verifying the internet connection
 ~ping www.google.com~
 
 ** Setting up the partitions
 1. The UEFI's boot partition should already by there due to dual-boot with Windows
+
 2. Create partitions
-#+begin_src sh
+#+begin_src sh :eval no
 parted /dev/nvme0n1 -- mkpart primary 451GB 100%
 mkfs.ext4 -L nixos /dev/nvme0n1p5
 #+end_src
+
 3. Mount the partitions
-#+begin_src sh
+#+begin_src sh :eval no
 mount /dev/disk/by-label/nixos /mnt
-mount /dev/nvme0n1p5 /mnt/boot # Not sure if we can label the partition without formatting
+mount /dev/nvme0n1p5 /mnt/boot # existing EFI partition from Windows
 #+end_src
 
-** Prepare the initial NixOS configuration
-#+begin_src sh
-nixos-generate-config --root /mnt
-vi /etc/nixos/configuration.nix
-vi /etc/nixos/hardware-configuration.nix
-nixos-install
-reboot
-#+end_src

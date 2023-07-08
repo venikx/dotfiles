@@ -12,30 +12,34 @@
 | UEFI            | yes                           |
 
 * Installation
-** Verifying internet connection
-~ping www.google.com~
+** Verifying the internet connection
+Skip the following if an ethernet cable is already plugged in
+
+#+begin_src shell :eval no
+sudo -i
+systemctl start wpa_supplicant
+
+wpa_cli
+> add_network
+> set_network 0 ssid "myssid"
+> set_network 0 psk "mypassword"
+> set_network 0 key_mgmt WPA-PSK
+> enable_network 0
+#+end_src
+
+Test the internet connection with ~ping www.google.com~
 
 ** Setting up the partitions
 1. UEFI's boot partition should already by there due to dual-boot with Windows
-2. Create partitions
-   #+begin_src sh
-parted /dev/sdb -- mkpart primary XXXGiB 100%
-parted /dev/sda -- mkpart primary XXXGiB 100%
-mkfs.ext4 -L nixos /dev/sdb3
-mkfs.ext4 -L home /dev/sda5
-   #+end_src
-3. Mount the partitions
-   #+begin_src sh
-mount /dev/disk/by-label/nixos /mnt
-mount /dev/sdb1 /mnt/boot # Not sure if we can label the partition without formatting
-mount /dev/disk/by-label/home /mnt/home
-   #+end_src
 
-** Prepare the initial NixOS configuration
-#+begin_src sh
-nixos-generate-config --root /mnt
-vi /etc/nixos/configuration.nix
-vi /etc/nixos/hardware-configuration.nix
-nixos-install
-reboot
+2. Create partitions
+#+begin_src shell :eval no
+parted /dev/nvme0n1 -- mkpart primary 647GB 1004GB
+mkfs.ext4 -L nixos /dev/nvme0n1p5
+#+end_src
+
+3. Mount the partitions
+#+begin_src shell :eval no
+mount /dev/disk/by-label/nixos /mnt
+mount /dev/nvme0n1p1 /mnt/boot # existing EFI partition from Windows
 #+end_src
