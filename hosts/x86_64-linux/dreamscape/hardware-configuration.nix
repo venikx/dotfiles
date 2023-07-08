@@ -20,7 +20,6 @@
     bluetooth.enable = true;
     bluetooth.audio.enable = true;
     nvidia.enable = true;
-    monitors.home.enable = true;
   };
 
   # Are these really needed? Seems so atm.

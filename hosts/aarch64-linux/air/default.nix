@@ -26,9 +26,6 @@
   };
 
   modules = {
-    hardware = {
-      monitors.home.enable = true;
-    };
     desktop = {
       bspwm.enable = true;
       dmenu.enable = true;

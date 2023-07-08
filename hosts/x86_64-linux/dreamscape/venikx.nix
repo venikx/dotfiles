@@ -6,20 +6,18 @@
     profiles = {
       "default" = {
         fingerprint = {
-          None-1 = "*";
+          DP-4 = "*";
         };
         config = {
-          None-1 = {
+          DP-4 = {
             enable = true;
             primary = true;
-            rate = "60.00";
-            mode = "2560x1600";
-            dpi = 150;
+            rate = "144.00";
+            mode = "2560x1440";
+            dpi = 100;
           };
         };
       };
     };
   };
-
-  home.stateVersion = "23.05";
 }
