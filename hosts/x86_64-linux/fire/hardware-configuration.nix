@@ -25,7 +25,7 @@
   };
 
   # CPU
-  hardware.cpu.amd.updateMicrocode = true;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   # Power Management
   environment.systemPackages = [ pkgs.acpi ];
   powerManagement.powertop.enable = true;
@@ -38,24 +38,17 @@
   # SSD
   services.fstrim.enable = lib.mkDefault true;
 
-  fileSystems = {
-    "/" =
-      { device = "/dev/disk/by-uuid/da357781-e455-4df0-b3fe-ecafb3077280";
-        fsType = "ext4";
-      };
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/d49b4d57-2271-47d3-bb50-2c866c26093d";
+      fsType = "ext4";
+    };
 
-    "/boot" =
-      { device = "/dev/disk/by-uuid/2CE1-F5B3";
-        fsType = "vfat";
-      };
-  };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/2CE1-F5B3";
+      fsType = "vfat";
+    };
+
   swapDevices = [ ];
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.09"; # Did you read the comment?
+  system.stateVersion = "23.05"; # Did you read the comment?
 }

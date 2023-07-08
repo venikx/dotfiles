@@ -19,5 +19,5 @@
     #};
   };
 
-  home.stateVersion = "20.09";
+  home.stateVersion = "23.05";
 }
