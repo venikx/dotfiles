@@ -17,7 +17,6 @@ in {
       xclip
       lightdm
       dunst
-      libnotify
     ];
 
     services = {
@@ -27,6 +26,7 @@ in {
         enable = true;
         dpi = 100;
         libinput.enable = true;
+        libinput.touchpad.disableWhileTyping = true;
         displayManager = {
           defaultSession = "none+bspwm";
           lightdm.enable = true;
