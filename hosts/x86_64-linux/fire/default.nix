@@ -49,6 +49,7 @@
     };
     services = {
       docker.enable = true;
+      tailscale.enable = true;
     };
     theme.active = "doom";
   };
@@ -61,4 +62,6 @@
     loader.grub.efiSupport = true;
     loader.grub.useOSProber = true;
   };
+
+  system.stateVersion = "23.05";
 }
