@@ -1,9 +1,17 @@
 { config, lib, pkgs, ... }:
 
-{
+let
+  gtd-sync-script = (pkgs.writeShellScript "gtd-sync" ''
+    ${pkgs.rclone}/bin/rclone sync -u ./org/gtd 99-org:/gtd --timeout 10s --contimeout 5s;
+    ${pkgs.rclone}/bin/rclone sync -u 99-org:/gtd ./org/gtd  --timeout 10s --contimeout 5s
+  '');
+  in {
   # NOTE(Kevin): The rclone configuration wizard still needs to be run when the device is
   # is setup for the first time though.
-  home.packages = [ pkgs.rclone ];
+  home.packages = [
+    pkgs.rclone
+  ];
+
   systemd.user.timers."gtd-sync" = {
     Timer = {
       OnCalendar = "*:0/1";
@@ -16,7 +24,7 @@
     Install.WantedBy = [ "default.target" ];
     Service = {
       Type = "oneshot";
-      ExecStart = "${pkgs.rclone}/bin/rclone sync ./org/gtd 99-org:/gtd --timeout 10s --contimeout 5s";
+      ExecStart = "${gtd-sync-script}";
     };
   };
 }
