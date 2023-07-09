@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     emacs-overlay = {
       url  = "github:nix-community/emacs-overlay/master";
@@ -20,7 +21,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, darwin, emacs-overlay }:
+  outputs = { self, nixpkgs, nixos-hardware, home-manager, darwin, emacs-overlay }:
     let
       lib = nixpkgs.lib;
     in {
@@ -50,6 +51,7 @@
           modules = [
             ./hosts/${system}/fire
             ./modules/nixos
+            nixos-hardware.nixosModules.asus-zephyrus-ga401
 
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;

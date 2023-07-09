@@ -21,22 +21,16 @@
     audio.enable = true;
     bluetooth.enable = true;
     bluetooth.audio.enable = true;
-    amd.enable = true;
   };
 
-  # CPU
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   # Power Management
   environment.systemPackages = [ pkgs.acpi ];
   powerManagement.powertop.enable = true;
-  services.tlp.enable = true;
   # Monitor backlight control
   programs.light.enable = true;
   users.users.venikx = {
     extraGroups = [ "video" ];
   };
-  # SSD
-  services.fstrim.enable = lib.mkDefault true;
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/d49b4d57-2271-47d3-bb50-2c866c26093d";
