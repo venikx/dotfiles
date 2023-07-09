@@ -17,7 +17,6 @@
     extraGroups = [ "wheel" ];
     initialPassword = "v3nikx";
   };
-
   time.timeZone = "Europe/Brussels";
 
   networking = {

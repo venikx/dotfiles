@@ -17,6 +17,9 @@
     # kernelParams = [ "nomodeset" ];
   };
 
+  hardware.nvidia.modesetting.enable = lib.mkForce true;
+  services.xserver.videoDrivers = lib.mkForce [ "nvidia" ];
+
   modules.hardware = {
     audio.enable = true;
     bluetooth.enable = true;
