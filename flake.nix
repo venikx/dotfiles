@@ -32,6 +32,9 @@
           modules = [
             ./hosts/${system}/dreamscape
             ./modules/nixos
+            nixos-hardware.nixosModules.common-pc
+            nixos-hardware.nixosModules.common-pc-ssd
+            nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
 
             home-manager.nixosModules.home-manager {
               home-manager.useGlobalPkgs = true;

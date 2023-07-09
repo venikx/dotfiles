@@ -19,13 +19,10 @@
     audio.enable = true;
     bluetooth.enable = true;
     bluetooth.audio.enable = true;
-    nvidia.enable = true;
   };
 
   # Are these really needed? Seems so atm.
   hardware.enableRedistributableFirmware = true;
-  # CPU
-  hardware.cpu.amd.updateMicrocode = true;
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/4df3f4a4-fac6-471c-a8e1-11c03c2c093c";
