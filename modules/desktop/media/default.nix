@@ -7,7 +7,6 @@ with lib;
       ./music-production.nix
       ./readers.nix
       ./spotify.nix
-      ./streaming.nix
       ./video.nix
     ];
 }

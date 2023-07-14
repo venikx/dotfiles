@@ -21,5 +21,11 @@
     };
   };
 
+  modules = {
+    desktop = {
+      obs.enable = true;
+    };
+  };
+
   home.stateVersion = "23.05";
 }

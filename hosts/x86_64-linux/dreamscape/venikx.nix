@@ -20,4 +20,10 @@
       };
     };
   };
+
+  modules = {
+    desktop = {
+      obs.enable = true;
+    };
+  };
 }

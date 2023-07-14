@@ -28,7 +28,6 @@
       dmenu.enable = true;
       media = {
         spotify.enable = true;
-        streaming.enable = true;
         readers = {
           pdf.enable = true;
           ebook.enable = true;
