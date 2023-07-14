@@ -41,8 +41,6 @@
     };
     dev = {
       cc.enable = true;
-      node.enable = true;
-      node.binaries.enable = false;
       rust.enable = true;
       rust.binaries.enable = false;
       shell.enable = true;

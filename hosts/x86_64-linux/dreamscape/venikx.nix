@@ -25,5 +25,8 @@
     desktop = {
       obs.enable = true;
     };
+    dev = {
+      nodejs.xdg.enable = true;
+    }
   };
 }

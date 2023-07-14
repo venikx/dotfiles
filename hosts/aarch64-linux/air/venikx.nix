@@ -25,6 +25,9 @@
     desktop = {
       obs.enable = true;
     };
+    dev = {
+      nodejs.xdg.enable = true;
+    };
   };
 
   home.stateVersion = "23.05";

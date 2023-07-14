@@ -51,8 +51,6 @@
       cc.enable = true;
       clojure.enable = true;
       clojure.binaries.enable = false;
-      node.enable = true;
-      node.binaries.enable = false;
       rust.enable = true;
       rust.binaries.enable = false;
       shell.enable = true;

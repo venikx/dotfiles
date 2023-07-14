@@ -7,5 +7,6 @@
     ./services
     ./cli
     ./editors
+    ./dev
   ];
 }
