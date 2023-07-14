@@ -25,6 +25,9 @@
   };
 
   modules = {
+    audio = {
+      pipewire.enable = true;
+    };
     desktop = {
       bspwm.enable = true;
       dmenu.enable = true;

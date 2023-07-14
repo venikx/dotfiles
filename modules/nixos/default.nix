@@ -5,7 +5,8 @@
       ./gnupg.nix
 
       ../options.nix
-      ../common.nix
+      ../options.nix
+      ../audio
       ../desktop
       ../dev
       ../editors
