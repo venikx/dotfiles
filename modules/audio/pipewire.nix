@@ -4,7 +4,7 @@ let
   inherit (lib) mkIf mkEnableOption mkForce;
   cfg = config.modules.audio.pipewire;
 in {
-  options.modules.audio.pipewire = with types; {
+  options.modules.audio.pipewire = {
     enable = mkEnableOption "Enable sound, via pipewire";
   };
 
