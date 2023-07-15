@@ -14,7 +14,7 @@ let
 
   systemd.user.timers."gtd-sync" = {
     Timer = {
-      OnCalendar = "*:0/1";
+      OnCalendar = "*:0/15";
       Persistent = true;
     };
     Install.WantedBy = [ "timers.target" ];
