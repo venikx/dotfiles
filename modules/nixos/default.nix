@@ -5,7 +5,7 @@
       ./gnupg.nix
 
       ../options.nix
-      ../options.nix
+      ../common.nix
       ../audio
       ../desktop
       ../dev
