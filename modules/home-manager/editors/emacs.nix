@@ -1,29 +1,34 @@
 { config, lib, pkgs, options, emacs-overlay, ... }:
 
-let
-  inherit (lib) mkIf;
+let inherit (lib) mkIf;
 in {
-  nixpkgs.overlays = [ emacs-overlay.overlay ];
-  programs.emacs.enable = true;
-  services.emacs = {
-    enable = true;
-    package = pkgs.emacs29;
-  };
+  #programs.emacs.enable = true;
+  #services.emacs = { enable = true; };
 
   home.packages = with pkgs; [
-    #emacs
+    #emacs-unstable
+    ((emacsPackagesFor emacs).emacsWithPackages
+      (epkgs: [ epkgs.vterm epkgs.pdf-tools epkgs.all-the-icons ]))
 
     ## Doom dependencies
     git
-    (ripgrep.override {withPCRE2 = true;})
-    gnutls  # for TLS connectivity
+    (ripgrep.override { withPCRE2 = true; })
+    gnutls # for TLS connectivity
 
     ## Optional dependencies
-    fd                  # faster projectile indexing
-    imagemagick         # for image-dired
-    zstd                # for undo-fu-session/undo-tree compression
+    fd # faster projectile indexing
+    imagemagick # for image-dired
+    zstd # for undo-fu-session/undo-tree compression
     fd
     #(mkIf (config.programs.gnupg.agent.enable) pinentry-emacs)
+
+    ## Vterm
+    cmake
+    gnumake
+
+    ## TreeSitter
+    #tree-sitter
+    #tree-sitter.allGrammars
 
     ## Module dependencies
     # :checkers spell
@@ -35,25 +40,45 @@ in {
     # :tools lookup & :lang org +roam
     sqlite
     epdfview
-    # :lang cc
+    # lsp
+    nodejs
+    # cc
     ccls
-    # :lang json
+    glslang
+    # markdown
+    python311Packages.grip
+    # nix
+    nixfmt
+    # sh
+    shfmt
+    # javascript
     nodePackages.vscode-json-languageserver-bin
-    # :lang javascript
     nodePackages.typescript-language-server
     nodePackages.typescript # NOTE(Kevin): Eglot can't resolve the globally installed package when typescript packages doesn't exist in root of project
-    # :lang web
+    # web
     nodePackages.vscode-css-languageserver-bin
     nodePackages.vscode-html-languageserver-bin
-    # :lang rust
+    nodePackages.stylelint
+    nodePackages.js-beautify
+    html-tidy
+    # go
+    gomodifytags
+    gopls
+    gotests
+    gore
+    gotools
+    # rust
+    rust-analyzer
     rustfmt
-    # :lang org +roam2 & org-roam-ui
+    rustc
+    cargo
+    # org +roam2 & org-roam-ui
     graphviz
-    # :lang org +pandoc
     pandoc
-    # :lang yaml
+    scrot
+    # yaml
     nodePackages.yaml-language-server
-    # :tools docker
+    # docker
     nodePackages.dockerfile-language-server-nodejs
   ];
 
@@ -69,16 +94,20 @@ in {
     e = "emacsclient -n";
     ediff = ''e --eval "(ediff-files \"$1\" \"$2\")"''; # used to be a function
   };
-  programs.git.ignores = [ "*~" "*.*~" "\#*" ".\#*"];
+  programs.git.ignores = [ "*~" "*.*~" "#*" ".#*" ];
   xsession.windowManager.bspwm.rules = {
-    "Emacs" = {
-      state = "tiled";
-    };
-    "Emacs:org*" = {
-      state = "floating";
-    };
-    "Emacs:scratch" = {
-      state = "floating";
-    };
+    "Emacs" = { state = "tiled"; };
+    "Emacs:org*" = { state = "floating"; };
+    "Emacs:scratch" = { state = "floating"; };
   };
 }
+
+#   fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
+# TODO(Kevin): Install doom emacs as an emacs-overlay
+#system.activationScripts = mkIf cfg.doom.enable {
+#  installDoomEmacs = ''
+#    if [ ! -d "$XDG_CONFIG_HOME/emacs" ]; then
+#       git clone --depth=1 --single-branch https://github.com/doomemacs/doomemacs "$XDG_CONFIG_HOME/emacs"
+#    fi
+#  '';
+#};

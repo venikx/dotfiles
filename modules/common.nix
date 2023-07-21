@@ -1,17 +1,17 @@
-{ pkgs, ... }:
+{ pkgs, emacs-overlay, ... }:
 
 {
   programs.zsh.enable = true;
 
+  nixpkgs.overlays = [ emacs-overlay.overlay ];
   environment = {
-
     variables = {
       # TODO(Kevin): I think this is sometimes not setting up correctly?
       # race condition perhaps?
-      XDG_CACHE_HOME  = "$HOME/.cache";
+      XDG_CACHE_HOME = "$HOME/.cache";
       XDG_CONFIG_HOME = "$HOME/.config";
-      XDG_DATA_HOME   = "$HOME/.local/share";
-      XDG_BIN_HOME    = "$HOME/.local/bin";
+      XDG_DATA_HOME = "$HOME/.local/share";
+      XDG_BIN_HOME = "$HOME/.local/bin";
     };
 
     systemPackages = with pkgs; [
