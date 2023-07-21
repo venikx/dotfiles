@@ -9,7 +9,6 @@
       ../audio
       ../desktop
       ../dev
-      ../editors
       ../hardware
       ../services
       ../themes

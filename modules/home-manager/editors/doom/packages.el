@@ -60,3 +60,4 @@
 
 ;; Publishing Websites
 (package! esxml)
+(package! ob-html :recipe (:host github :repo "misohena/ob-html"))

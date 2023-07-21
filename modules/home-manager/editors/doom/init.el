@@ -29,7 +29,7 @@
        :ui
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
-       doom-dashboard    ; a nifty splash screen for Emacs
+       ;;doom-dashboard    ; a nifty splash screen for Emacs
        doom-quit         ; DOOM quit-message prompts when you quit Emacs
        (emoji +github +unicode)
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
@@ -75,8 +75,8 @@
        :term
        ;;eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
-       term              ; basic terminal emulator for Emacs
-       ;;vterm             ; the best terminal emulation in Emacs
+       ;;term              ; basic terminal emulator for Emacs
+       vterm             ; the best terminal emulation in Emacs
 
        :checkers
        ;;syntax              ; tasing you for every semicolon you forget
@@ -85,8 +85,8 @@
 
        :tools
        ;;ansible
-       biblio            ; Writes a PhD for you (citation needed)
-       ;;(debugger +lsp)          ; FIXME stepping through code, to help you add bugs
+       ;;biblio            ; Writes a PhD for you (citation needed)
+       debugger            ; FIXME stepping through code, to help you add bugs
        direnv
        (docker +lsp)
        editorconfig      ; let someone else argue about tabs vs spaces
@@ -104,7 +104,7 @@
        ;;taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
-       ;;tree-sitter       ; syntax and parsing, sitting in a tree...
+       tree-sitter       ; syntax and parsing, sitting in a tree...
        ;;upload            ; map local to remote projects via ssh/ftp
 
        :os
@@ -113,10 +113,10 @@
 
        :lang
        ;;agda              ; types of types of types of types...
-       (beancount +lsp)         ; mind the GAAP
-       (cc +lsp)           ; C/C++/Obj-C madness
+       ;;(beancount +lsp)         ; mind the GAAP
+       (cc +lsp +tree-sitter)           ; C/C++/Obj-C madness
        ;;clojure           ; java with a lisp
-       common-lisp       ; if you've seen one lisp, you've seen them all
+       ;;common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
@@ -134,23 +134,23 @@
        ;;fortran           ; in FORTRAN, GOD is REAL (unless declared INTEGER)
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
-       (go +lsp)         ; the hipster dialect
+       (go +lsp +tree-sitter)         ; the hipster dialect
        (graphql +lsp)    ; Give queries a REST
        ;;(haskell +lsp)    ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
-       (json +lsp)              ; At least it ain't XML
+       (json +lsp +tree-sitter)              ; At least it ain't XML
        ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
-       (javascript +lsp)   ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript +lsp +tree-sitter)   ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
-       latex             ; writing papers in Emacs has never been so fun
+       ;;latex             ; writing papers in Emacs has never been so fun
        ;;lean              ; for folks with too much to prove
        ;;ledger            ; be audit you can be
-       (lua +lsp)               ; one-based indices? one-based indices
-       markdown          ; writing docs for people to ignore
+       (lua +lsp +tree-sitter)               ; one-based indices? one-based indices
+       (markdown +grip)          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
-       (nix)               ; I hereby declare "nix geht mehr!"
+       (nix +tree-sitter)               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org
         +pandoc
@@ -170,16 +170,16 @@
        ;;rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
-       rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       (rust +lsp +tree-sitter)              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        ;;(scheme +guile)   ; a fully conniving family of lisps
-       (sh)                ; she sells {ba,z,fi}sh shells on the C xor
+       (sh +lsp +tree-sitter)                ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
-       (web +lsp)          ; the tubes
-       (yaml +lsp)              ; JSON, but readable
+       (web +lsp +tree-sitter)          ; the tubes
+       (yaml +lsp +tree-sitter)              ; JSON, but readable
        ;;zig               ; C, but simpler
 
        :email

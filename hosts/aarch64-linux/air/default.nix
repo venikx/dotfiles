@@ -36,9 +36,6 @@
         st.enable = true;
       };
     };
-    editors = {
-      emacs.enable = true;
-    };
     dev = {
       cc.enable = true;
       clojure.enable = true;

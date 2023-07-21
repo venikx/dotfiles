@@ -6,6 +6,8 @@
   environment = {
 
     variables = {
+      # TODO(Kevin): I think this is sometimes not setting up correctly?
+      # race condition perhaps?
       XDG_CACHE_HOME  = "$HOME/.cache";
       XDG_CONFIG_HOME = "$HOME/.config";
       XDG_DATA_HOME   = "$HOME/.local/share";

@@ -10,7 +10,7 @@ with lib;
       (mkIf pkgs.stdenv.isLinux {
         userDirs.enable = true;
         userDirs.download = "$HOME/dl";
-        userDirs.documents = "$HOME/dl/docs";
+        userDirs.documents = "$HOME/docs";
         userDirs.pictures = "$HOME/media/pics";
         userDirs.music = "$HOME/media/music";
         userDirs.videos = "$HOME/media/videos";
