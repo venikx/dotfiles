@@ -10,7 +10,7 @@
             if ($app.source -ne $null) {
                 winget install --exact --silent $app.name --source $app.source
             } else {
-                winget install --exact --silent $app.name 
+                winget install --exact --silent $app.name --source winget
             }
         } else {
             Write-host "Skipping Install of " $app.name
@@ -21,6 +21,7 @@
 $dev = @(
     @{name = "Git.Git" }, 
     @{name = "Microsoft.VisualStudioCode" }
+    @{name = "Neovim.Neovim" }
     
 );
 
@@ -35,16 +36,23 @@ $communication = @(
 );
 
 $browsers = @(
-    @{name = "BraveSoftware.BraveBrowser" },
-    @{name = "Mozilla.Firefox.DeveloperEdition" }
+    @{name = "eloston.ungoogled-chromium" },
+    @{name = "Mozilla.Firefox" }
 );
 
 $security = @(
     @{name = "AgileBits.1Password" }
 );
 
+$office = @(
+    @{name = "TheDocumentFoundation.LibreOffice" }
+);
+
 Write-Output "Installing development packages..."
 Install-My-Apps $dev
+
+Write-Output "Installing office packages..."
+Install-My-Apps $office
 
 Write-Output "Installing gaming packages..."
 Install-My-Apps $gaming
