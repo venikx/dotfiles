@@ -61,7 +61,7 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 #+end_src
 ** Org-Mode
 #+begin_src elisp
-(setq org-agenda-files '("~/org/gtd")
+(setq org-agenda-files '("~/org/gtd" "~/org/collections")
       org-contacts-files '("~/org/gtd/contacts.org"))
 
 (after! org
@@ -112,7 +112,7 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 
 (after! org-roam
   (setq org-roam-completion-everywhere nil
-        org-roam-file-exclude-regexp (rx (or ".attach/" "index.org"))
+        org-roam-file-exclude-regexp (rx (or ".attach/" "index.org" "gtd/"))
         org-roam-db-node-include-function
         (lambda ()
           (not (member '("ATTACH" "ARCHIVE") (org-get-tags)))))

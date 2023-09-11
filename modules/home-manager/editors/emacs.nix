@@ -80,6 +80,8 @@ in {
     nodePackages.yaml-language-server
     # docker
     nodePackages.dockerfile-language-server-nodejs
+    # racket
+    racket
   ];
 
   # Setting up Doom Emacs
