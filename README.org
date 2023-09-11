@@ -15,7 +15,7 @@
 ** Workstations
 Based on [[https://avatar.fandom.com/wiki/Avatar:_The_Last_Airbender][Avatar: The Last Airbender]] 🙃
 
-- [[file:hosts/x86_64-linux/dreamscape/README.org][earth]]: brick of desktop computer, solid as a rock, stable, fast, bliss
+- [[file:hosts/x86_64-linux/earth/README.org][earth]]: brick of desktop computer, solid as a rock, stable, fast, bliss
 - [[file:hosts/x86_64-linux/fire/README.org][fire]]: gaming laptop, that's always running steaming hot
 - [[file:hosts/aarch64-linux/air/README.org][air]]: simply, because it's installed on my MacBook Air
 - water: possible nix-darwin, but that kinda sucks, so maybe not => unused
@@ -37,7 +37,6 @@ tree -d -I 'apple-silicon-support|firmware'
 |-- bin
 |-- config
 |   |-- dmenu
-|   |-- doom
 |   `-- higan
 |-- hosts
 |   |-- aarch64-darwin
@@ -45,23 +44,26 @@ tree -d -I 'apple-silicon-support|firmware'
 |   |-- aarch64-linux
 |   |   `-- air
 |   |-- x86_64-linux
-|   |   |-- dreamscape
+|   |   |-- earth
 |   |   `-- fire
 |   `-- x86_64-windows
 |       `-- nightmare
 `-- modules
+    |-- audio
     |-- darwin
     |-- desktop
     |   |-- gaming
     |   |-- media
     |   `-- terminal
     |-- dev
-    |-- editors
     |-- hardware
     |-- home-manager
     |   |-- cli
     |   |-- desktop
+    |   |-- dev
     |   |-- editors
+    |   |   |-- doom
+    |   |   `-- nvim
     |   |-- nixos
     |   `-- services
     |-- nixos
@@ -71,7 +73,7 @@ tree -d -I 'apple-silicon-support|firmware'
             `-- config
                 `-- zsh
 
-37 directories
+38 directories
 #+end_example
 
 * Installation

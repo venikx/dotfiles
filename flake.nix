@@ -26,11 +26,11 @@
       lib = nixpkgs.lib;
     in {
       nixosConfigurations = {
-        dreamscape = lib.nixosSystem rec { #desktop
+        earth = lib.nixosSystem rec { #desktop
           system = "x86_64-linux";
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
-            ./hosts/${system}/dreamscape
+            ./hosts/${system}/earth
             ./modules/nixos
             nixos-hardware.nixosModules.common-pc
             nixos-hardware.nixosModules.common-pc-ssd
@@ -42,7 +42,7 @@
               home-manager.users.venikx = lib.mkMerge [
                 (import ./modules/home-manager)
                 (import ./modules/home-manager/nixos)
-                (import ./hosts/${system}/dreamscape/venikx.nix)
+                (import ./hosts/${system}/earth/venikx.nix)
               ];
             }
           ];

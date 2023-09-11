@@ -7,9 +7,9 @@
 
   home.packages = with pkgs; [
     # communication
-    #discord
-    #slack
-    #teams
+    discord
+    slack
+    teams
     # learning
     anki
   ];

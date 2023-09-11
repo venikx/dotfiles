@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -17,12 +17,15 @@
   };
 
   networking = {
-    hostName = "dreamscape";
+    hostName = "earth";
     useDHCP = false;
     interfaces.eno1.useDHCP = true; # ethernet
   };
 
   modules = {
+    audio = {
+      pipewire.enable = true;
+    };
     desktop = {
       bspwm.enable = true;
       dmenu.enable = true;
@@ -44,9 +47,6 @@
         epic.enable = true;
       };
     };
-    editors = {
-      emacs.enable = true;
-    };
     dev = {
       cc.enable = true;
       clojure.enable = true;
@@ -65,5 +65,7 @@
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
   };
+
+  system.stateVersion = "22.05";
 }
 

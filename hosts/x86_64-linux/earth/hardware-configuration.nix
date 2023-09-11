@@ -15,12 +15,6 @@
     loader.grub.configurationLimit = 3;
   };
 
-  modules.hardware = {
-    audio.enable = true;
-    bluetooth.enable = true;
-    bluetooth.audio.enable = true;
-  };
-
   # Are these really needed? Seems so atm.
   hardware.enableRedistributableFirmware = true;
 
@@ -36,6 +30,4 @@
 
   swapDevices = [ ];
 
-  home-manager.users.venikx.home.stateVersion = "22.05";
-  system.stateVersion = "22.05"; # Did you read the comment?
 }
