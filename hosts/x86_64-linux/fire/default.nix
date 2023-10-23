@@ -1,9 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   programs.zsh.enable = true;
   users.users.venikx = {
@@ -32,13 +30,9 @@
         st.enable = true;
       };
 
-      gaming = {
-        steam.enable = true;
-      };
+      gaming = { steam.enable = true; };
     };
-    editors = {
-      emacs.enable = true;
-    };
+    editors = { emacs.enable = true; };
     dev = {
       cc.enable = true;
       rust.enable = true;
@@ -48,6 +42,7 @@
     services = {
       docker.enable = true;
       tailscale.enable = true;
+      syncthing.enable = true;
     };
     theme.active = "doom";
   };
@@ -56,7 +51,7 @@
     loader.efi.canTouchEfiVariables = true;
     loader.efi.efiSysMountPoint = "/boot";
     loader.grub.enable = true;
-    loader.grub.devices = ["nodev"];
+    loader.grub.devices = [ "nodev" ];
     loader.grub.efiSupport = true;
     loader.grub.useOSProber = true;
   };

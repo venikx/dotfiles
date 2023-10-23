@@ -1,11 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports =
-    [
-     ./hardware-configuration.nix
-     ./apple-silicon-support
-    ];
+  imports = [ ./hardware-configuration.nix ./apple-silicon-support ];
 
   programs.zsh.enable = true;
   users.users.venikx = {
@@ -25,9 +21,7 @@
   };
 
   modules = {
-    audio = {
-      pipewire.enable = true;
-    };
+    audio = { pipewire.enable = true; };
     desktop = {
       bspwm.enable = true;
       dmenu.enable = true;
@@ -47,6 +41,7 @@
     services = {
       docker.enable = true;
       tailscale.enable = true;
+      syncthing.enable = true;
     };
     theme.active = "doom";
   };

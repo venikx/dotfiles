@@ -1,9 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   programs.zsh.enable = true;
   users.users.venikx = {
@@ -23,9 +21,7 @@
   };
 
   modules = {
-    audio = {
-      pipewire.enable = true;
-    };
+    audio = { pipewire.enable = true; };
     desktop = {
       bspwm.enable = true;
       dmenu.enable = true;
@@ -57,6 +53,7 @@
     };
     services = {
       docker.enable = true;
+      syncthing.enable = true;
     };
     theme.active = "doom";
   };
