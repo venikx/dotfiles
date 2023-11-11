@@ -40,7 +40,7 @@
       };
       gaming = {
         steam.enable = true;
-        epic.enable = true;
+        epic.enable = false;
       };
     };
     dev = {
