@@ -12,16 +12,19 @@
       configDir = "/home/venikx/docs/syncthing/.config";
       overrideDevices = true;
       overrideFolders = true;
-      devices = {
-        "kevin-iphone" = {
-          id =
-            "ELIRVGI-W7IUR4D-HRK25JP-HML6LPG-QEH76SY-BTAL4Q6-YO66RTD-SOP37AL";
+      settings = {
+        devices = {
+          "kevin-iphone" = {
+            id =
+              "ELIRVGI-W7IUR4D-HRK25JP-HML6LPG-QEH76SY-BTAL4Q6-YO66RTD-SOP37AL";
+          };
         };
-      };
-      folders = {
-        "org" = { # Name of folder in Syncthing, also the folder ID
-          path = "/home/venikx/org/gtd"; # Which folder to add to Syncthing
-          devices = [ "kevin-iphone" ]; # Which devices to share the folder with
+        folders = {
+          "org" = { # Name of folder in Syncthing, also the folder ID
+            path = "/home/venikx/org/gtd"; # Which folder to add to Syncthing
+            devices =
+              [ "kevin-iphone" ]; # Which devices to share the folder with
+          };
         };
       };
     };

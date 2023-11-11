@@ -1,8 +1,7 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-let
-  cfg = config.modules.theme;
+let cfg = config.modules.theme;
 in {
   config = mkIf (cfg.active == "doom") (mkMerge [
     # Desktop-agnostic configuration
@@ -21,14 +20,12 @@ in {
       home-manager.users.venikx.programs.zsh.initExtraBeforeCompInit = ''
         source ${./config/zsh/prompt.zsh}
       '';
-      }
+    }
 
     # Desktop (X11) theming
     (mkIf config.services.xserver.enable {
       home-manager.users.venikx = {
-        home.packages = with pkgs; [
-          dracula-theme
-        ];
+        home.packages = with pkgs; [ dracula-theme ];
 
         xsession.windowManager.bspwm.settings = {
           "borderless_monocle" = true;
@@ -42,20 +39,21 @@ in {
         };
 
         # Other dotfiles
-        xdg.configFile = with config.modules; mkMerge [
-          {
-            # Sourced from sessionCommands in modules/themes/default.nix
-            "xtheme/doom".source = ./config/Xresources;
-          }
-          (mkIf desktop.bspwm.enable {
-            "dunst/dunstrc".source = ./config/dunstrc;
-          })
-        ];
+        xdg.configFile = with config.modules;
+          mkMerge [
+            {
+              # Sourced from sessionCommands in modules/themes/default.nix
+              "xtheme/doom".source = ./config/Xresources;
+            }
+            (mkIf desktop.bspwm.enable {
+              "dunst/dunstrc".source = ./config/dunstrc;
+            })
+          ];
 
       };
 
       fonts = {
-        fonts = with pkgs; [
+        packages = with pkgs; [
           barlow
           fira-code
           fira-code-symbols
@@ -64,8 +62,8 @@ in {
           font-awesome
         ];
         fontconfig.defaultFonts = {
-          sansSerif = ["Fira Sans"];
-          monospace = ["Fira Code"];
+          sansSerif = [ "Fira Sans" ];
+          monospace = [ "Fira Code" ];
         };
       };
 
@@ -73,7 +71,7 @@ in {
       services.picom = {
         fade = true;
         fadeDelta = 1;
-        fadeSteps = [ 0.01 0.012 ];
+        fadeSteps = [ 1.0e-2 1.2e-2 ];
         shadow = true;
         shadowOffsets = [ (-10) (-10) ];
         shadowOpacity = 0.22;

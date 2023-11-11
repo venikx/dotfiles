@@ -2,22 +2,18 @@
 
 {
   home.sessionVariables = {
-    ZDOTDIR     = "$XDG_CONFIG_HOME/zsh";
-    ZSH_CACHE   = "$XDG_CACHE_HOME/zsh";
+    ZDOTDIR = "$XDG_CONFIG_HOME/zsh";
+    ZSH_CACHE = "$XDG_CACHE_HOME/zsh";
   };
 
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
-    syntaxHighlighting = {
-      enable = true;
-    };
+    syntaxHighlighting = { enable = true; };
     enableVteIntegration = true;
     autocd = true;
-    cdpath = [
-      "~/code"
-    ];
+    cdpath = [ "~/code" ];
     defaultKeymap = "viins";
     #dirHashes = {};
     dotDir = ".config/zsh";
@@ -67,14 +63,10 @@
     changeDirWidgetCommand = "fd --type d . $HOME";
   };
 
-  programs.exa = {
+  programs.eza = {
     enable = true;
     enableAliases = true;
   };
 
-  home.packages = with pkgs; [
-    bat
-    fd
-    tldr
-  ];
+  home.packages = with pkgs; [ bat fd tldr ];
 }
