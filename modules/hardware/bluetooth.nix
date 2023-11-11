@@ -18,8 +18,22 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      hardware.bluetooth.enable = true;
-      services.blueman.enable = true;
+      hardware.bluetooth = {
+        enable = true;
+        powerOnBoot = true;
+        package = pkgs.bluezFull;
+        settings = {
+          General = {
+            ControllerMode = "dual";
+            MultiProfile = "multiple";
+            Experimental = true;
+          };
+          Policy = {
+            AutoEnable = true;
+          };
+        };
+      };
+      #services.blueman.enable = true;
     }
 
     (mkIf cfg.audio.enable {
