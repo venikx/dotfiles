@@ -13,16 +13,12 @@ in {
   config = mkIf cfg.enable {
     hardware = {
       opengl.enable = true;
-      opengl.driSupport32Bit  = true;
+      opengl.driSupport32Bit = true;
       pulseaudio.support32Bit = config.hardware.pulseaudio.enable;
     };
 
     home-manager.users.venikx = {
-      home.packages = with pkgs; [
-        lutris
-        legendary-gl
-        heroic
-      ];
+      home.packages = with pkgs; [ lutris legendary-gl heroic ];
     };
   };
 }
