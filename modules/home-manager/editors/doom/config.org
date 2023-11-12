@@ -28,7 +28,7 @@ Allegedly makes Emacs go fast, vrooooom!
  standard-indent 2
  calendar-week-start-day 1 ;; Start on Monday
  projectile-project-search-path '("~/code/" "/etc/nixos/")
- browse-url-browser-function 'browse-url-firefox)
+ browse-url-browser-function 'browse-url-chrome)
 #+end_src
 
 * Package Configuration
