@@ -16,10 +16,6 @@ in {
           };
         };
       };
-
-      home-manager.users.venikx.programs.zsh.initExtraBeforeCompInit = ''
-        source ${./config/zsh/prompt.zsh}
-      '';
     }
 
     # Desktop (X11) theming

@@ -1,23 +1,5 @@
-# Loosely based off Pure <https://github.com/sindresorhus/pure>
-
-_strlen() { echo ${#${(S%%)1//$~%([BSUbfksu]|([FB]|){*})/}}; }
-
-# fastest possible way to check if repo is dirty
-prompt_git_dirty() {
-  command -v git >/dev/null || return
-
-  # check if we're in a git repo
-  [[ "$(command git rev-parse --is-inside-work-tree 2>/dev/null)" == "true" ]] || return
-  # check if it's dirty
-  command test -n "$(git status --porcelain --ignore-submodules -unormal)" || return
-
-  local r=$(command git rev-list --right-only --count HEAD...@'{u}' 2>/dev/null)
-  local l=$(command git rev-list --left-only --count HEAD...@'{u}' 2>/dev/null)
-
-  (( ${r:-0} > 0 )) && echo -n " %F{red}${r}-"
-  (( ${l:-0} > 0 )) && echo -n " %F{green}${l}+"
-  echo -n '%f'
-}
+setopt prompt_subst
+autoload -U colors && colors
 
 ## Hooks ###############################
 prompt_hook_precmd() {
@@ -53,18 +35,22 @@ prompt_init() {
   zstyle ':vcs_info:*' enable git
   zstyle ':vcs_info:*' use-simple true
   zstyle ':vcs_info:*' max-exports 2
-  zstyle ':vcs_info:git*' formats ' %b'
-  zstyle ':vcs_info:git*' actionformats ' %b (%a)'
+  zstyle ':vcs_info:*' check-for-changes true
+  zstyle ':vcs_info:*' unstagedstr '%F{yellow}●%f'
+  zstyle ':vcs_info:*' stagedstr '%F{green}●%f'
+  zstyle ':vcs_info:git*' formats ' %u%c %b'
+  zstyle ':vcs_info:git*' actionformats ' %u%c %b(%a)'
 
   # show username@host if logged in through SSH
   if [[ -n $SSH_CONNECTION ]]; then
     prompt_username='%m '
-    if [[ $(whoami) != hlissner ]]; then
+    if [[ $(whoami) != venikx ]]; then
       prompt_username="%n.$prompt_username"
     fi
   fi
 
-  RPROMPT='%F{blue}%~%F{magenta}${vcs_info_msg_0_}$(prompt_git_dirty)%f'
+
+  RPROMPT='%F{blue}%~%F{magenta}${vcs_info_msg_0_}%f'
   PROMPT='%F{magenta}${prompt_username}%f${PROMPT_SYMBOL:-$ }%f'
 }
 
