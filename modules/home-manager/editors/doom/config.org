@@ -59,6 +59,21 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
   (elfeed-feeds    '(("ttrss+http://admin@192.168.1.244:8002"
 		      :password "gyw7vgu@JEA5ybr1ebh"))))
 #+end_src
+** OpenStreetMap (OSM)
+#+begin_src elisp
+(use-package! osm
+  ;;:bind ("C-c m" . osm-prefix-map) ;; Alternatives: `osm-home' or `osm'
+  :custom
+  ;; Take a look at the customization group `osm' for more options.
+  (osm-server 'default) ;; Configure the tile server
+  (osm-copyright t)     ;; Display the copyright information
+)
+
+;;(map! :after osm
+;;      :map smartparens-mode-map
+;;      [C-right] nil
+;;      [C-left] nil)
+#+end_src
 ** Org-Mode
 #+begin_src elisp
 (setq org-agenda-files '("~/org/gtd" "~/org/collections")

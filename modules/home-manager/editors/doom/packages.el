@@ -57,6 +57,7 @@
 (package! websocket)
 (package! org-roam-ui :recipe (:host github :repo "org-roam/org-roam-ui" :files ("*.el" "out")))
 (package! elfeed-protocol)
+(package! osm)
 
 ;; Publishing Websites
 (package! esxml)
