@@ -19,6 +19,7 @@
     hostName = "air";
     useDHCP = lib.mkDefault true;
   };
+  systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
 
   services.syncthing.settings = {
     devices = {
