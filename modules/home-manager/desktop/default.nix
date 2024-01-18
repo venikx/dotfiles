@@ -1,15 +1,10 @@
-{ pkgs, ... }:
-{
-  imports = [
-    ./terminal.nix
-    ./obs.nix
-  ];
+{ pkgs, ... }: {
+  imports = [ ./terminal.nix ./obs.nix ];
 
   home.packages = with pkgs; [
     # communication
-    discord
-    #slack
-    #teams
+    (if pkgs.system == "x86_64-linux" then discord else armcord)
+    (lib.mkIf (pkgs.system == "x86_64-linux") slack)
     # learning
     anki
   ];
