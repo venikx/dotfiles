@@ -1,12 +1,5 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./gaming
-      ./media
-      ./terminal
-      ./bspwm.nix
-      ./dmenu.nix
-    ];
+  imports = [ ./gaming ./terminal ./bspwm.nix ./dmenu.nix ];
 }

@@ -45,14 +45,6 @@
     desktop = {
       bspwm.enable = true;
       dmenu.enable = true;
-      media = {
-        readers = {
-          pdf.enable = true;
-          ebook.enable = true;
-        };
-        music-production.enable = true;
-        video.enable = true;
-      };
       terminal = {
         default = "xst";
         st.enable = true;

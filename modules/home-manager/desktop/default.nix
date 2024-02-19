@@ -1,5 +1,7 @@
 { pkgs, ... }: {
-  imports = [ ./terminal.nix ./obs.nix ];
+  imports = [ ./music-production.nix ./obs.nix ];
+
+  programs = { alacritty = { enable = true; }; };
 
   home.packages = with pkgs; [
     # communication
@@ -9,5 +11,9 @@
     anki
     # media
     youtube-music
+    evince
+    calibre
+    mpv-unwrapped
+    vlc # in case mpv doesn't work
   ];
 }
