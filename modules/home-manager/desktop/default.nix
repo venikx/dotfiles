@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  imports = [ ./music-production.nix ./obs.nix ];
+  imports = [ ./emulators.nix ./music-production.nix ./obs.nix ];
 
   programs = { alacritty = { enable = true; }; };
 

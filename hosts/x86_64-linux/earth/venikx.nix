@@ -5,9 +5,7 @@
     enable = true;
     profiles = {
       "default" = {
-        fingerprint = {
-          DP-4 = "*";
-        };
+        fingerprint = { DP-4 = "*"; };
         config = {
           DP-4 = {
             enable = true;
@@ -24,10 +22,9 @@
   modules = {
     desktop = {
       obs.enable = true;
+      emulators.enable = true;
     };
-    dev = {
-      nodejs.xdg.enable = true;
-    };
+    dev = { nodejs.xdg.enable = true; };
   };
 
   home.stateVersion = "22.05";
