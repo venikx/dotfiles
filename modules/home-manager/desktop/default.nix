@@ -7,5 +7,7 @@
     (lib.mkIf (pkgs.system == "x86_64-linux") slack)
     # learning
     anki
+    # media
+    youtube-music
   ];
 }

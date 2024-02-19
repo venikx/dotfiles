@@ -46,7 +46,6 @@
       bspwm.enable = true;
       dmenu.enable = true;
       media = {
-        spotify.enable = true;
         readers = {
           pdf.enable = true;
           ebook.enable = true;

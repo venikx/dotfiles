@@ -1,12 +1,5 @@
 { options, config, lib, pkgs, ... }:
 
-with lib;
-{
-  imports =
-    [
-      ./music-production.nix
-      ./readers.nix
-      ./spotify.nix
-      ./video.nix
-    ];
+with lib; {
+  imports = [ ./music-production.nix ./readers.nix ./video.nix ];
 }
