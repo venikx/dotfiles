@@ -4,9 +4,9 @@
   xsession.windowManager.bspwm = {
     enable = true;
     monitors = {
-      DP-4 = ["1" "2" "3" "4" "5" "6" "7" "8" "9" "10"];
-      None-1 = ["1" "2" "3" "4" "5" "6" "7" "8" "9" "10"]; #macbook
-      eDP = ["1" "2" "3" "4" "5" "6" "7" "8" "9" "10"]; #macbook
+      DP-4 = [ "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" ];
+      None-1 = [ "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" ]; # macbook
+      eDP = [ "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" ]; # macbook
     };
     settings = {
       "remove_disabled_monitors" = true;
@@ -44,7 +44,8 @@
       "super + {h,j,k,l}" = "bspc node -f {west,south,north,east}";
       "super + shift + {h,j,k,l}" = "bspc node -s {west,south,north,east}";
       "super + {_,ctrl + }f" = "bspc node -t ~{fullscreen,floating}";
-      "super + space" = "bspc node -s biggest.local || bspc node -s next.local"; # swap windows
+      "super + space" =
+        "bspc node -s biggest.local || bspc node -s next.local"; # swap windows
 
       # TODO(Kevin): Media Keys
       "Print" = "scrcap";
@@ -58,4 +59,13 @@
       "XF86AudioPrev" = "spt-send prev";
     };
   };
+
+  home.packages = with pkgs;
+    [
+      dmenu
+      # Currently dmenu.xresources patch can be applied, but breaks dmenu :(
+      #
+      # (dmenu.overrideAttrs
+      #   (oldAttrs: rec { patches = [ ./dmenu/dmenu-xresources-4.9.diff ]; }))
+    ];
 }

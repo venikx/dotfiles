@@ -24,7 +24,6 @@
   modules = {
     desktop = {
       bspwm.enable = true;
-      dmenu.enable = true;
       terminal = {
         default = "xst";
         st.enable = true;
