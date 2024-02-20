@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ./apple-silicon-support ];
+  imports = [ ./hardware-configuration.nix ];
 
   programs.zsh.enable = true;
   users.users.venikx = {

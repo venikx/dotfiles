@@ -4,9 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-apple-silicon.url = "github:tpwrules/nixos-apple-silicon";
 
     emacs-overlay = {
-      url  = "github:nix-community/emacs-overlay/master";
+      url = "github:nix-community/emacs-overlay/master";
       #inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -21,12 +22,12 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, home-manager, darwin, emacs-overlay }:
-    let
-      lib = nixpkgs.lib;
+  outputs = { self, nixpkgs, nixos-hardware, nixos-apple-silicon, home-manager
+    , darwin, emacs-overlay }:
+    let lib = nixpkgs.lib;
     in {
       nixosConfigurations = {
-        earth = lib.nixosSystem rec { #desktop
+        earth = lib.nixosSystem rec { # desktop
           system = "x86_64-linux";
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
@@ -37,7 +38,8 @@
             nixos-hardware.nixosModules.common-cpu-amd
             nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
 
-            home-manager.nixosModules.home-manager {
+            home-manager.nixosModules.home-manager
+            {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [
@@ -49,7 +51,7 @@
           ];
         };
 
-        fire = lib.nixosSystem rec { #laptop
+        fire = lib.nixosSystem rec { # laptop
           system = "x86_64-linux";
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
@@ -57,7 +59,8 @@
             ./modules/nixos
             nixos-hardware.nixosModules.asus-zephyrus-ga401
 
-            home-manager.nixosModules.home-manager {
+            home-manager.nixosModules.home-manager
+            {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [
@@ -75,8 +78,10 @@
           modules = [
             ./hosts/${system}/air
             ./modules/nixos
+            nixos-apple-silicon.nixosModules.apple-silicon-support
 
-            home-manager.nixosModules.home-manager {
+            home-manager.nixosModules.home-manager
+            {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [
@@ -89,7 +94,7 @@
         };
       };
 
-      darwinConfigurations =  {
+      darwinConfigurations = {
         lucid = darwin.lib.darwinSystem rec {
           system = "aarch64-darwin";
           specialArgs = { inherit home-manager emacs-overlay; };
@@ -97,7 +102,8 @@
             ./hosts/${system}/lucid
             ./modules/darwin
 
-            home-manager.darwinModules.home-manager {
+            home-manager.darwinModules.home-manager
+            {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [

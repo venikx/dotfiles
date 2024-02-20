@@ -38,6 +38,7 @@
       mkdir = "mkdir -p";
       wget = "wget -c";
       gurl = "curl --compressed";
+      lsd = "eza";
     };
   };
 
@@ -50,10 +51,7 @@
     changeDirWidgetCommand = "fd --type d . $HOME";
   };
 
-  programs.eza = {
-    enable = true;
-    enableAliases = true;
-  };
+  programs.eza = { enable = true; };
 
   home.packages = with pkgs; [ bat fd tldr ];
 }
