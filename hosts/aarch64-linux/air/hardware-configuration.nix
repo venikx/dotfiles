@@ -11,7 +11,7 @@
   boot.loader.efi.canTouchEfiVariables = false;
 
   hardware.asahi = {
-    extractPeripheralFirmware = false;
+    peripheralFirmwareDirectory = ./firmware;
     #use4KPages = false;
     withRust = true;
     addEdgeKernelConfig = true;
