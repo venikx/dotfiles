@@ -35,9 +35,6 @@ tree -d -I 'apple-silicon-support|firmware'
 #+begin_example
 .
 |-- bin
-|-- config
-|   |-- dmenu
-|   `-- higan
 |-- hosts
 |   |-- aarch64-darwin
 |   |   `-- lucid
@@ -53,18 +50,19 @@ tree -d -I 'apple-silicon-support|firmware'
     |-- darwin
     |-- desktop
     |   |-- gaming
-    |   |-- media
     |   `-- terminal
     |-- dev
     |-- hardware
     |-- home-manager
     |   |-- cli
     |   |-- desktop
+    |   |   `-- higan
     |   |-- dev
     |   |-- editors
     |   |   |-- doom
     |   |   `-- nvim
     |   |-- nixos
+    |   |   `-- dmenu
     |   `-- services
     |-- nixos
     |-- services
@@ -73,7 +71,7 @@ tree -d -I 'apple-silicon-support|firmware'
             `-- config
                 `-- zsh
 
-38 directories
+36 directories
 #+end_example
 
 * Installation
