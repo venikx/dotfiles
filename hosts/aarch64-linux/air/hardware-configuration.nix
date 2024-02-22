@@ -11,6 +11,7 @@
   boot.loader.efi.canTouchEfiVariables = false;
 
   hardware.asahi = {
+    extractPeripheralFirmware = true;
     peripheralFirmwareDirectory = ./firmware;
     #use4KPages = false;
     withRust = true;
