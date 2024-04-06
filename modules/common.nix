@@ -1,4 +1,4 @@
-{ pkgs, emacs-overlay, my-handmade-hero ... }:
+{ pkgs, emacs-overlay, my-handmade-hero, ... }:
 
 {
   programs.zsh.enable = true;
@@ -32,7 +32,7 @@
       curl
       git
 
-      my-handmade-hero
+      my-handmade-hero.packages.${pkgs.system}.default
     ];
 
     shells = with pkgs; [ bash zsh ];
