@@ -1,4 +1,4 @@
-{ pkgs, emacs-overlay, ... }:
+{ pkgs, emacs-overlay, my-handmade-hero ... }:
 
 {
   programs.zsh.enable = true;
@@ -31,6 +31,8 @@
       wget
       curl
       git
+
+      my-handmade-hero
     ];
 
     shells = with pkgs; [ bash zsh ];

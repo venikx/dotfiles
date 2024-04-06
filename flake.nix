@@ -20,16 +20,23 @@
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    my-handmade-hero = {
+      url = "github:venikx/my-handmade-hero";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixos-hardware, nixos-apple-silicon, home-manager
-    , darwin, emacs-overlay }:
+    , my-handmade-hero, darwin, emacs-overlay }:
     let lib = nixpkgs.lib;
     in {
       nixosConfigurations = {
         earth = lib.nixosSystem rec { # desktop
           system = "x86_64-linux";
-          specialArgs = { inherit home-manager emacs-overlay; };
+          specialArgs = {
+            inherit home-manager emacs-overlay my-handmade-hero;
+          };
           modules = [
             ./hosts/${system}/earth
             ./modules/nixos
