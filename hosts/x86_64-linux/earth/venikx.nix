@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, nix-colors, ... }:
 
 {
   programs.autorandr = {
@@ -26,6 +26,8 @@
     };
     dev = { nodejs.xdg.enable = true; };
   };
+
+  colorScheme = nix-colors.colorSchemes.tokyo-city-terminal-dark;
 
   home.stateVersion = "22.05";
 }

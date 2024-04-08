@@ -21,9 +21,6 @@ Allegedly makes Emacs go fast, vrooooom!
 
 (setq
  doom-theme 'doom-tokyo-night
- ;;doom-theme 'doom-laserwave
- ;;doom-theme 'doom-outrun-electric
- ;;doom-theme 'doom-dracula
  display-line-numbers-type t
  standard-indent 2
  calendar-week-start-day 1 ;; Start on Monday

@@ -5,6 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixos-apple-silicon.url = "github:tpwrules/nixos-apple-silicon";
+    nix-colors.url = "github:misterio77/nix-colors";
 
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay/master";
@@ -23,7 +24,7 @@
   };
 
   outputs = { self, nixpkgs, nixos-hardware, nixos-apple-silicon, home-manager
-    , darwin, emacs-overlay }:
+    , darwin, emacs-overlay, nix-colors }:
     let lib = nixpkgs.lib;
     in {
       nixosConfigurations = {
@@ -46,7 +47,9 @@
                 (import ./modules/home-manager)
                 (import ./modules/home-manager/nixos)
                 (import ./hosts/${system}/earth/venikx.nix)
+                nix-colors.homeManagerModules.default
               ];
+              home-manager.extraSpecialArgs = { inherit nix-colors; };
             }
           ];
         };
@@ -67,7 +70,9 @@
                 (import ./modules/home-manager)
                 (import ./modules/home-manager/nixos)
                 (import ./hosts/${system}/fire/venikx.nix)
+                nix-colors.homeManagerModules.default
               ];
+              home-manager.extraSpecialArgs = { inherit nix-colors; };
             }
           ];
         };
@@ -88,7 +93,9 @@
                 (import ./modules/home-manager)
                 (import ./modules/home-manager/nixos)
                 (import ./hosts/${system}/air/venikx.nix)
+                nix-colors.homeManagerModules.default
               ];
+              home-manager.extraSpecialArgs = { inherit nix-colors; };
             }
           ];
         };

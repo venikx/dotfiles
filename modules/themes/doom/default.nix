@@ -37,10 +37,6 @@ in {
         # Other dotfiles
         xdg.configFile = with config.modules;
           mkMerge [
-            {
-              # Sourced from sessionCommands in modules/themes/default.nix
-              "xtheme/doom".source = ./config/Xresources;
-            }
             (mkIf desktop.bspwm.enable {
               "dunst/dunstrc".source = ./config/dunstrc;
             })
