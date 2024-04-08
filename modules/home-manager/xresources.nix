@@ -24,13 +24,13 @@
     "*.color15" = "#${config.colorScheme.palette.base0F}";
 
     "scratch.font" = "Fira Code:pixelsize=16";
-    "st.font" = "Fira Code:pixelsize=12";
+    "st.font" = "Fira Code:pixelsize=16";
     "URxvt*depth" = 32;
     "URxvt*.background" = "#${config.colorScheme.palette.base00}";
     "URxvt*.borderless" = 1;
     "URxvt*.buffered" = true;
     "URxvt*.cursorBlink" = true;
-    "URxvt*.font" = "xft:Fira Code:pixelsize=12";
+    "URxvt*.font" = "xft:Fira Code:pixelsize=16";
     "URxvt*.internalBorder" = 10;
     "URxvt*.letterSpace" = 0;
     "URxvt*.lineSpace" = 0;
@@ -45,10 +45,10 @@
     "URxvt.iso14755_52" = false;
     "URxvt.perl-ext-common" = "default,matcher";
 
-    "dmenu.font" = "xft:Fira Code:pixelsize=12";
+    "dmenu.font" = "xft:Fira Code:pixelsize=16";
     "dmenu.background" = "#${config.colorScheme.palette.base00}";
     "dmenu.foreground" = "#${config.colorScheme.palette.base07}";
-    "dmenu.selbackground" = "#${config.colorScheme.palette.base00}";
+    "dmenu.selbackground" = "#${config.colorScheme.palette.base0E}";
     "dmenu.selforeground" = "#${config.colorScheme.palette.base07}";
   };
 }

@@ -62,9 +62,7 @@
 
   home.packages = with pkgs;
     [
-      dmenu
-      # Currently dmenu.xresources patch can be applied, but breaks dmenu :(
-      # (dmenu.overrideAttrs
-      #   (oldAttrs: rec { patches = [ ./dmenu/dmenu-xresources-4.9.diff ]; }))
+      (dmenu.overrideAttrs
+        (oldAttrs: rec { patches = [ ./dmenu/dmenu-xresources-4.9.diff ]; }))
     ];
 }
