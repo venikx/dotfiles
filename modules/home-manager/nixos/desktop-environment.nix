@@ -5,8 +5,8 @@
     enable = true;
     monitors = {
       DP-4 = [ "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" ];
-      None-1 = [ "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" ]; # macbook
-      eDP = [ "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" ]; # macbook
+      eDP-1 = [ "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" ]; # macbook
+      eDP = [ "1" "2" "3" "4" "5" "6" "7" "8" "9" "10" ]; # thrash laptop
     };
     settings = {
       "remove_disabled_monitors" = true;

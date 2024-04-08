@@ -5,9 +5,9 @@
     enable = true;
     profiles = {
       "default" = {
-        fingerprint = { None-1 = "*"; };
+        fingerprint = { eDP-1 = "*"; };
         config = {
-          None-1 = {
+          eDP-1 = {
             enable = true;
             primary = true;
             rate = "60.00";
