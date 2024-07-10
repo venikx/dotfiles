@@ -45,7 +45,6 @@
       syncthing.enable = true;
       bluetooth.enable = true;
     };
-    theme.active = "doom";
   };
 
   boot = {

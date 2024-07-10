@@ -8,7 +8,6 @@
     ../desktop
     ../dev
     ../services
-    ../themes
   ];
 
   time.timeZone = lib.mkDefault "Europe/Helsinki";

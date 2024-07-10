@@ -55,22 +55,19 @@ tree -d -I 'apple-silicon-support|firmware'
     |-- home-manager
     |   |-- cli
     |   |-- desktop
+    |   |   |-- backgrounds
+    |   |   |-- dmenu
+    |   |   |-- dunst
     |   |   `-- higan
     |   |-- dev
     |   |-- editors
     |   |   |-- doom
     |   |   `-- nvim
-    |   |-- nixos
-    |   |   `-- dmenu
     |   `-- services
     |-- nixos
-    |-- services
-    `-- themes
-        `-- doom
-            `-- config
-                `-- zsh
+    `-- services
 
-35 directories
+32 directories
 #+end_example
 
 * Installation

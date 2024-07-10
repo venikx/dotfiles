@@ -8,7 +8,7 @@
 
   programs.zsh = {
     enable = true;
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
     syntaxHighlighting = { enable = true; };
     enableVteIntegration = true;
@@ -53,5 +53,5 @@
 
   programs.eza = { enable = true; };
 
-  home.packages = with pkgs; [ bat fd tldr ];
+  home.packages = with pkgs; [ bat fd tldr fzf ripgrep unzip zip ranger ];
 }

@@ -54,7 +54,6 @@
       docker.enable = true;
       syncthing.enable = true;
     };
-    theme.active = "doom";
   };
 
   boot = {

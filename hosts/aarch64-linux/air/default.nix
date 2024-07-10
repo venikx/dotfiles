@@ -30,6 +30,11 @@
     folders = { "org" = { devices = [ "earth-nixos" ]; }; };
   };
 
+  services.libinput = {
+    enable = true;
+    touchpad.disableWhileTyping = true;
+  };
+
   modules = {
     audio = { pipewire.enable = true; };
     desktop = {
@@ -52,7 +57,6 @@
       tailscale.enable = true;
       syncthing.enable = true;
     };
-    theme.active = "doom";
   };
 
   system.stateVersion = "23.11";

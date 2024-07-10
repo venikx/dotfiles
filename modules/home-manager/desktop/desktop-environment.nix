@@ -13,6 +13,14 @@
       "remove_unplugged_monitors" = true;
       "focus_follows_pointer" = true;
       "split_ratio" = 0.52;
+      "borderless_monocle" = true;
+      "gapless_monocle" = true;
+      "border_width" = 1;
+      "window_gap" = 0;
+      "normal_border_color" = "#181a23";
+      "active_border_color" = "#181a23";
+      "focused_border_color" = "#bd93f9";
+      "presel_feedback_color" = "#bd93f9";
     };
     rules = {
       "steam_app_1284210" = { # Guild Wars 2 - Launcher
@@ -63,9 +71,41 @@
     };
   };
 
-  home.packages = with pkgs;
-    [
-      (dmenu.overrideAttrs
-        (oldAttrs: rec { patches = [ ./dmenu/dmenu-xresources-4.9.diff ]; }))
-    ];
+  home.packages = with pkgs; [
+    (dmenu.overrideAttrs
+      (oldAttrs: rec { patches = [ ./dmenu/dmenu-xresources-4.9.diff ]; }))
+    xclip
+  ];
+
+  home.file.backgrounds = { source = ./backgrounds; };
+
+  services = {
+    random-background = {
+      enable = true;
+      imageDirectory = "%h/backgrounds";
+    };
+
+    picom = {
+      enable = true;
+      fade = true;
+      fadeDelta = 1;
+      fadeSteps = [ 1.0e-2 1.2e-2 ];
+      shadow = true;
+      shadowOffsets = [ (-10) (-10) ];
+      shadowOpacity = 0.22;
+      settings = {
+        shadow-radius = 12;
+        blur-kern = "7x7box";
+        blur-strength = 320;
+      };
+    };
+
+    redshift = {
+      enable = true;
+      dawnTime = "07:00-09:00";
+      duskTime = "19:00-21:00";
+    };
+    dunst.enable = true;
+    dunst.configFile = ./dunst/dunstrc;
+  };
 }

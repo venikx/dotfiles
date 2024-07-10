@@ -1,5 +1,11 @@
 { pkgs, config, ... }: {
-  imports = [ ./emulators.nix ./music-production.nix ./obs.nix ];
+  imports = [
+    ./browsers.nix
+    ./desktop-environment.nix
+    ./emulators.nix
+    ./music-production.nix
+    ./obs.nix
+  ];
 
   programs = {
     alacritty = {
@@ -40,4 +46,5 @@
     mpv-unwrapped
     vlc # in case mpv doesn't work
   ];
+
 }

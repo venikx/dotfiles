@@ -45,7 +45,6 @@
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [
                 (import ./modules/home-manager)
-                (import ./modules/home-manager/nixos)
                 (import ./hosts/${system}/earth/venikx.nix)
                 nix-colors.homeManagerModules.default
               ];
@@ -68,7 +67,6 @@
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [
                 (import ./modules/home-manager)
-                (import ./modules/home-manager/nixos)
                 (import ./hosts/${system}/fire/venikx.nix)
                 nix-colors.homeManagerModules.default
               ];
@@ -91,7 +89,6 @@
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [
                 (import ./modules/home-manager)
-                (import ./modules/home-manager/nixos)
                 (import ./hosts/${system}/air/venikx.nix)
                 nix-colors.homeManagerModules.default
               ];

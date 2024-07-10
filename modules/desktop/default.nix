@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./gaming ./terminal ./bspwm.nix ];
+  imports = [ ./gaming ./terminal ./display-manager.nix ];
 
   hardware = {
     graphics.enable = true;

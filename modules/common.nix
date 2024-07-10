@@ -14,25 +14,7 @@
       XDG_BIN_HOME = "$HOME/.local/bin";
     };
 
-    systemPackages = with pkgs; [
-      # usefull shell stuff
-      bat
-      fzf
-      ripgrep
-
-      # extracting file and dirs
-      unzip
-      zip
-      ranger
-
-      # standard toolset
-      vim
-      coreutils-full
-      wget
-      curl
-      git
-    ];
-
+    systemPackages = with pkgs; [ vim coreutils wget curl git ];
     shells = with pkgs; [ bash zsh ];
   };
 

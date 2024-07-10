@@ -1,6 +1,14 @@
 { ... }:
 
 {
-  imports =
-    [ ./xdg.nix ./xresources.nix ./desktop ./services ./cli ./editors ./dev ];
+  imports = [
+    ./fonts.nix
+    ./xdg.nix
+    ./xresources.nix
+    ./desktop
+    ./services
+    ./cli
+    ./editors
+    ./dev
+  ];
 }
