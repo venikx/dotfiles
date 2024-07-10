@@ -24,7 +24,6 @@
       obs.enable = true;
       emulators.enable = true;
     };
-    dev = { nodejs.xdg.enable = true; };
   };
 
   colorScheme = nix-colors.colorSchemes.tokyo-city-terminal-dark;

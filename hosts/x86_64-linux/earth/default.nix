@@ -42,14 +42,6 @@
         epic.enable = false;
       };
     };
-    dev = {
-      cc.enable = true;
-      clojure.enable = true;
-      clojure.binaries.enable = false;
-      rust.enable = true;
-      rust.binaries.enable = false;
-      shell.enable = true;
-    };
     services = {
       docker.enable = true;
       syncthing.enable = true;

@@ -1,7 +1,5 @@
 { ... }:
 
 {
-  imports = [
-    ./nodejs.nix
-  ];
+  imports = [ ./cc.nix ./nodejs.nix ./rust.nix ];
 }

@@ -19,7 +19,6 @@
     };
   };
 
-  modules = { dev = { nodejs.xdg.enable = true; }; };
   colorScheme = nix-colors.colorSchemes.tokyo-city-terminal-dark;
 
   home.stateVersion = "23.05";

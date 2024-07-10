@@ -6,7 +6,6 @@
     ../common.nix
     ../audio
     ../desktop
-    ../dev
     ../services
   ];
 
