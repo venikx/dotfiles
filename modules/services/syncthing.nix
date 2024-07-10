@@ -5,6 +5,7 @@
   config = lib.mkIf config.modules.services.syncthing.enable {
     environment.systemPackages = [ pkgs.syncthing ];
 
+    # TODO(Kevin): Move to home-manager
     services.syncthing = {
       enable = true;
       user = "venikx";

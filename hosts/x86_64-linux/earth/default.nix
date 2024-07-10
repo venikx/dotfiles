@@ -32,11 +32,7 @@
   modules = {
     audio = { pipewire.enable = true; };
     desktop = {
-      bspwm.enable = true;
-      terminal = {
-        default = "xst";
-        st.enable = true;
-      };
+      display-manager.enable = true;
       gaming = {
         steam.enable = true;
         epic.enable = false;

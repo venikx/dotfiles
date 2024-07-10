@@ -11,18 +11,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    env.DOCKER_CONFIG = "$XDG_CONFIG_HOME/docker";
-    env.MACHINE_STORAGE_PATH = "$XDG_DATA_HOME/docker/machine";
-
-    home-manager.users.venikx = {
-      home.packages = with pkgs; [
-        docker
-        docker-compose
-      ];
-    };
-    users.users.venikx = {
-      extraGroups = [ "docker" ];
-    };
+    users.users.venikx = { extraGroups = [ "docker" ]; };
 
     virtualisation = {
       docker = {

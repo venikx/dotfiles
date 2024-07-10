@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.modules.desktop.bspwm;
+  cfg = config.modules.desktop.display-manager;
   configDir = config.dotfiles.configDir;
 in {
-  options.modules.desktop.bspwm = with types; {
+  options.modules.desktop.display-manager = with types; {
     enable = mkOption {
       type = bool;
       default = false;
