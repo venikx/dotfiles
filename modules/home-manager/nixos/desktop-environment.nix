@@ -23,13 +23,16 @@
     startupPrograms = [ "sxhkd" "autorandr -c" ];
   };
 
-  services.sxhkd = {
+  services.sxhkd = let
+    ask = pkgs.writeShellScript "ask"
+      ''[ "$(printf "No\\nYes" | dmenu -i -p "$1"  )" = "Yes" ] && $2'';
+  in {
     enable = true;
     keybindings = {
       # Shutting down the system
-      "super + shift + x" = ''prompt "Shuwdown computer?" "shutdown -h now"'';
-      "super + shift + BackSpace" = ''prompt "Reboot computer?" "reboot"'';
-      "super + shift + Escape" = ''prompt "Leave Xorg?" "killall Xorg"'';
+      "super + shift + x" = ''${ask} "Shuwdown computer?" "shutdown -h now"'';
+      "super + shift + BackSpace" = ''${ask} "Reboot computer?" "reboot"'';
+      "super + shift + Escape" = ''${ask} "Leave Xorg?" "killall Xorg"'';
       # Restarts bspwm (most when testing out configurations)
       "super + shift + r" = "bspc wm -r";
       "super + {_,shift + }q" = "bspc node -{c,k}";
