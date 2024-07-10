@@ -23,10 +23,7 @@
 
   modules = {
     audio = { pipewire.enable = true; };
-    desktop = {
-      display-manager.enable = true;
-      gaming = { steam.enable = true; };
-    };
+    desktop = { display-manager.enable = true; };
     editors = { emacs.enable = true; };
     dev = {
       cc.enable = true;
