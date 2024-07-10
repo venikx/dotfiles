@@ -52,12 +52,10 @@ in {
     # sh
     shfmt
     # javascript
-    nodePackages.vscode-json-languageserver-bin
     nodePackages.typescript-language-server
     nodePackages.typescript # NOTE(Kevin): Eglot can't resolve the globally installed package when typescript packages doesn't exist in root of project
     # web
-    nodePackages.vscode-css-languageserver-bin
-    nodePackages.vscode-html-languageserver-bin
+    nodePackages.vscode-langservers-extracted
     nodePackages.stylelint
     nodePackages.js-beautify
     html-tidy
