@@ -2,7 +2,6 @@
   imports = [
     ./gnupg.nix
 
-    ../options.nix
     ../common.nix
     ../audio
     ../desktop

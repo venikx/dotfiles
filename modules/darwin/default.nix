@@ -1,12 +1,5 @@
-{ ... }:
-{
-  imports =
-    [
-      ./gnupg.nix
-      ./homebrew.nix
-      ../common.nix
-      ../options.nix
-    ];
+{ ... }: {
+  imports = [ ./gnupg.nix ./homebrew.nix ../common.nix ];
 
   services.nix-daemon.enable = true;
 }

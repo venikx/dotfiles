@@ -1,9 +1,7 @@
 { options, config, lib, pkgs, ... }:
 
 with lib;
-let
-  cfg = config.modules.desktop.display-manager;
-  configDir = config.dotfiles.configDir;
+let cfg = config.modules.desktop.display-manager;
 in {
   options.modules.desktop.display-manager = with types; {
     enable = mkOption {

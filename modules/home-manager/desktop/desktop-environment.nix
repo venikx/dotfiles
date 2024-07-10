@@ -32,8 +32,8 @@
   };
 
   services.sxhkd = let
-    ask = pkgs.writeShellScript "ask"
-      ''[ "$(printf "No\\nYes" | dmenu -i -p "$1"  )" = "Yes" ] && $2'';
+    ask = pkgs.writeShellScript "ask" ''
+      [ "$(printf "No\\nYes" | ${pkgs.dmenu}/bin/dmenu -i -p "$1"  )" = "Yes" ] && $2'';
   in {
     enable = true;
     keybindings = {

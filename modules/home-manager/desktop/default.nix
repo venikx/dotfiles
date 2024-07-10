@@ -45,6 +45,9 @@
     calibre
     mpv-unwrapped
     vlc # in case mpv doesn't work
+    (pkgs.writeShellScriptBin "scrcap" ''
+      ${pkgs.maim}/bin/maim -s | ${pkgs.xclip}/bin/xclip -selection clipboard -t image/png
+    '') # screenshots
   ];
 
 }
