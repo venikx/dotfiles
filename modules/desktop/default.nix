@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./gaming ./display-manager.nix ];
+  imports = [ ./gaming.nix ./display-manager.nix ];
 
   hardware = {
     graphics.enable = true;
