@@ -9,7 +9,7 @@
 | *Editor*   | Doom Emacs    |
 | *Terminal* | st            |
 | *Launcher* | dmenu         |
-| *Browser*  | google-chrome |
+| *Browser*  | firefox       |
 
 * Naming Scheme
 ** Workstations
@@ -52,7 +52,6 @@ tree -d -I 'apple-silicon-support|firmware'
     |   |-- gaming
     |   `-- terminal
     |-- dev
-    |-- hardware
     |-- home-manager
     |   |-- cli
     |   |-- desktop
@@ -71,7 +70,7 @@ tree -d -I 'apple-silicon-support|firmware'
             `-- config
                 `-- zsh
 
-36 directories
+35 directories
 #+end_example
 
 * Installation

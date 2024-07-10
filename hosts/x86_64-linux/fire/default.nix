@@ -22,6 +22,7 @@
   };
 
   modules = {
+    audio = { pipewire.enable = true; };
     desktop = {
       bspwm.enable = true;
       terminal = {
@@ -42,6 +43,7 @@
       docker.enable = true;
       tailscale.enable = true;
       syncthing.enable = true;
+      bluetooth.enable = true;
     };
     theme.active = "doom";
   };

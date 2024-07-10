@@ -1,5 +1,11 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./docker.nix ./tailscale.nix ./syncthing.nix ];
+  imports = [
+    ./bluetooth.nix
+    ./docker.nix
+    ./networking.nix
+    ./tailscale.nix
+    ./syncthing.nix
+  ];
 }

@@ -1,18 +1,15 @@
-{ pkgs, lib, ... }:
-{
-  imports =
-    [
-      ./gnupg.nix
+{ pkgs, lib, ... }: {
+  imports = [
+    ./gnupg.nix
 
-      ../options.nix
-      ../common.nix
-      ../audio
-      ../desktop
-      ../dev
-      ../hardware
-      ../services
-      ../themes
-    ];
+    ../options.nix
+    ../common.nix
+    ../audio
+    ../desktop
+    ../dev
+    ../services
+    ../themes
+  ];
 
   time.timeZone = lib.mkDefault "Europe/Helsinki";
   i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
@@ -25,12 +22,10 @@
 
   # Move ~/.Xauthority out of $HOME (setting XAUTHORITY early isn't enough)
   environment.extraInit = ''
-     export XAUTHORITY=/tmp/Xauthority
-     [ -e ~/.Xauthority ] && mv -f ~/.Xauthority "$XAUTHORITY"
+    export XAUTHORITY=/tmp/Xauthority
+    [ -e ~/.Xauthority ] && mv -f ~/.Xauthority "$XAUTHORITY"
   '';
 
   hardware.keyboard.zsa.enable = true;
-  environment.systemPackages = with pkgs; [
-    wally-cli
-  ];
+  environment.systemPackages = with pkgs; [ wally-cli ];
 }
