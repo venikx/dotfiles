@@ -23,6 +23,7 @@
     desktop = {
       obs.enable = true;
       emulators.enable = true;
+      game-engines.enable = true;
     };
   };
 

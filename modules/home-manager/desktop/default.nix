@@ -5,6 +5,7 @@
     ./emulators.nix
     ./music-production.nix
     ./obs.nix
+    ./game-engines.nix
   ];
 
   programs = {
