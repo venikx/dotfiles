@@ -22,7 +22,7 @@
           };
           "nas" = {
             id =
-              "HX7UEBN-V4VVYXA-MAKBV6I-GKWUN4B-LA5HKEB-2WIHSFL-UYVCLTW-7LVYMQF";
+              "LB25OUA-6JKS2YO-IN5JNTH-HF5AEVJ-DIOJAFT-PRGQP5K-ZO2KOJH-AQ3KAQV";
           };
         };
         folders = {
