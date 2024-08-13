@@ -77,11 +77,12 @@
 
         air = lib.nixosSystem rec { # asahi macbook
           system = "aarch64-linux";
-          specialArgs = { inherit home-manager emacs-overlay; };
+          specialArgs = {
+            inherit home-manager emacs-overlay nixos-apple-silicon;
+          };
           modules = [
             ./hosts/${system}/air
             ./modules/nixos
-            nixos-apple-silicon.nixosModules.apple-silicon-support
 
             home-manager.nixosModules.home-manager
             {

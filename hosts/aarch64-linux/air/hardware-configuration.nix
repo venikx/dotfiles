@@ -1,7 +1,10 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, modulesPath, nixos-apple-silicon, ... }:
 
 {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    nixos-apple-silicon.nixosModules.apple-silicon-support
+  ];
 
   boot.initrd.availableKernelModules = [ "usb_storage" ];
   boot.initrd.kernelModules = [ ];
@@ -10,13 +13,19 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = false;
 
+  #nixpkgs.overlays = [
+  #  nixos-apple-silicon.overlays.apple-silicon-overlay
+  #  (final: prev: { mesa = final.mesa-asahi-edge; })
+  #];
+
   hardware.asahi = {
-    extractPeripheralFirmware = true;
+    #extractPeripheralFirmware = true;
     peripheralFirmwareDirectory = ./firmware;
     #use4KPages = false;
     withRust = true;
-    addEdgeKernelConfig = true;
     #useExperimentalGPUDriver = true;
+    experimentalGPUInstallMode = "driver";
+    setupAsahiSound = true;
   };
 
   fileSystems."/" = {
