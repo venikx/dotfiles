@@ -76,6 +76,9 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 (setq org-agenda-files '("~/org/gtd" "~/org/collections")
       org-contacts-files '("~/org/gtd/contacts.org"))
 
+(after! org-download
+  (setq org-download-timestamp "%Y-%m-%d_%H-%M-%S_"))
+
 (after! org
   (add-to-list 'org-modules 'org-habit)
   (add-to-list 'org-modules 'org-checklist)
