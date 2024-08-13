@@ -9,7 +9,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    sound.enable = mkForce false;
     hardware.pulseaudio.enable = mkForce false;
 
     security.rtkit.enable = true;
@@ -21,8 +20,7 @@ in {
       wireplumber.enable = true;
     };
 
-    environment.systemPackages = builtins.attrValues {
-      inherit (pkgs) pavucontrol alsa-utils;
-    };
+    environment.systemPackages =
+      builtins.attrValues { inherit (pkgs) pavucontrol alsa-utils; };
   };
 }
