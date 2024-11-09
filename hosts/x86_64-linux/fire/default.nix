@@ -33,7 +33,6 @@
     };
     services = {
       docker.enable = true;
-      tailscale.enable = true;
       syncthing.enable = true;
       bluetooth.enable = true;
     };

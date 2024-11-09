@@ -34,7 +34,8 @@ tree -d -I 'apple-silicon-support|firmware'
 #+RESULTS:
 #+begin_example
 .
-|-- bin
+|-- home-manager
+|   `-- editors
 |-- hosts
 |   |-- aarch64-darwin
 |   |   `-- lucid
@@ -49,9 +50,6 @@ tree -d -I 'apple-silicon-support|firmware'
     |-- audio
     |-- darwin
     |-- desktop
-    |   |-- gaming
-    |   `-- terminal
-    |-- dev
     |-- home-manager
     |   |-- cli
     |   |-- desktop
@@ -67,7 +65,7 @@ tree -d -I 'apple-silicon-support|firmware'
     |-- nixos
     `-- services
 
-32 directories
+31 directories
 #+end_example
 
 * Installation

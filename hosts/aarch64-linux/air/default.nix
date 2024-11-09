@@ -18,6 +18,7 @@
   networking = {
     hostName = "air";
     useDHCP = lib.mkDefault true;
+    firewall.checkReversePath = false; # wireguard
   };
   systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
 
@@ -40,7 +41,6 @@
     desktop = { display-manager.enable = true; };
     services = {
       docker.enable = true;
-      tailscale.enable = true;
       syncthing.enable = true;
     };
   };

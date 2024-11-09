@@ -11,5 +11,4 @@
       packages = with pkgs; [ docker docker-compose ];
     };
   };
-
 }
