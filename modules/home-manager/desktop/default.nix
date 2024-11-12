@@ -49,6 +49,8 @@
     (pkgs.writeShellScriptBin "scrcap" ''
       ${pkgs.maim}/bin/maim -s | ${pkgs.xclip}/bin/xclip -selection clipboard -t image/png
     '')
+    # mikrotik
+    winbox
   ];
 
 }
