@@ -5,6 +5,6 @@
 
   hardware = {
     graphics.enable = true;
-    graphics.enable32Bit = true;
+    graphics.enable32Bit = pkgs.system == "x86_64-linux";
   };
 }
