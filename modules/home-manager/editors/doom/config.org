@@ -187,6 +187,20 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 
 (after! format-all (advice-add 'format-all-buffer :around #'envrc-propagate-environment))
 #+end_src
+
+*** Prisma
+#+begin_src elisp
+(use-package! prisma-ts-mode
+  :custom (add-to-list
+           'treesit-language-source-alist
+           '(prisma "https://github.com/victorhqc/tree-sitter-prisma")))
+#+end_src
+
+*** Eta Templates
+#+begin_src elisp
+(setq auto-mode-alist (append '((".*\\.eta\\'" . web-mode)) auto-mode-alist))
+#+end_src
+
 ** C/C++
 #+begin_src elisp
 (setq lsp-clients-clangd-args '("-j=3"

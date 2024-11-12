@@ -7,8 +7,12 @@ in {
 
   home.packages = with pkgs; [
     #emacs-unstable
-    ((emacsPackagesFor emacs).emacsWithPackages
-      (epkgs: [ epkgs.vterm epkgs.pdf-tools epkgs.all-the-icons ]))
+    ((emacsPackagesFor emacs).emacsWithPackages (epkgs: [
+      epkgs.vterm
+      epkgs.pdf-tools
+      epkgs.all-the-icons
+      epkgs.treesit-grammars.with-all-grammars
+    ]))
 
     ## Doom dependencies
     git
@@ -39,7 +43,7 @@ in {
     editorconfig-core-c
     # :tools lookup & :lang org +roam
     sqlite
-    epdfview
+    qpdfview
     # lsp
     nodejs
     # cc

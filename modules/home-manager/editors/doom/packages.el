@@ -51,6 +51,8 @@
                                         ;(unpin! t)
 
 (package! elcord)
+(package! prisma-ts-mode
+  :recipe (:host github :repo "nverno/prisma-ts-mode"))
 (package! nov
   :recipe (:type git :repo "https://depp.brause.cc/nov.el.git"))
 (unpin! envrc)
