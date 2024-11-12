@@ -4,12 +4,16 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    nixos-apple-silicon.url = "github:tpwrules/nixos-apple-silicon";
     nix-colors.url = "github:misterio77/nix-colors";
+
+    nixos-apple-silicon = {
+      url = "github:tpwrules/nixos-apple-silicon";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay/master";
-      #inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     home-manager = {

@@ -19,12 +19,12 @@
   #];
 
   hardware.asahi = {
+    enable = true;
+    withRust = true;
     #extractPeripheralFirmware = true;
     peripheralFirmwareDirectory = ./firmware;
-    #use4KPages = false;
-    withRust = true;
     #useExperimentalGPUDriver = true;
-    experimentalGPUInstallMode = "driver";
+    experimentalGPUInstallMode = "overlay";
     setupAsahiSound = true;
   };
 
