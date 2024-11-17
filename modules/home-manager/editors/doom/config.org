@@ -178,6 +178,13 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
   (setq org-agenda-use-time-grid nil
         org-agenda-start-on-weekday 1))
 #+end_src
+** LLM's
+#+begin_src elisp
+(use-package! gptel
+ :custom
+ (gptel-default-mode 'org-mode))
+#+end_src
+
 
 * Language Configuration
 ** Javascript
