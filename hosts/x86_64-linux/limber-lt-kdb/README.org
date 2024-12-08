@@ -1,6 +1,6 @@
-#+TITLE: Fire
+#+TITLE: limber-lt-kdb
 
-* Overview
+* TODO Overview
 [[https://rog.asus.com/laptops/rog-zephyrus/rog-zephyrus-g14-series][ROG Zephyrus G14 GA401]]
 
 ** Specs

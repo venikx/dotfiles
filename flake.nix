@@ -25,10 +25,15 @@
       url = "github:lnl7/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixos-hardware, nixos-apple-silicon, home-manager
-    , darwin, emacs-overlay, nix-colors }:
+    , darwin, emacs-overlay, nix-colors, disko }:
     let lib = nixpkgs.lib;
     in {
       nixosConfigurations = {
@@ -57,13 +62,14 @@
           ];
         };
 
-        fire = lib.nixosSystem rec { # laptop
+        limber-lt-kdb = lib.nixosSystem rec { # laptop
           system = "x86_64-linux";
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
-            ./hosts/${system}/fire
+            disko.nixosModules.disko
+            nixos-hardware.nixosModules.framework-intel-core-ultra-series1
+            ./hosts/${system}/limber-lt-kdb
             ./modules/nixos
-            nixos-hardware.nixosModules.asus-zephyrus-ga401
 
             home-manager.nixosModules.home-manager
             {
@@ -71,7 +77,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [
                 (import ./modules/home-manager)
-                (import ./hosts/${system}/fire/venikx.nix)
+                (import ./hosts/${system}/limber-lt-kdb/venikx.nix)
                 nix-colors.homeManagerModules.default
               ];
               home-manager.extraSpecialArgs = { inherit nix-colors; };

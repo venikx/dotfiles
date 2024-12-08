@@ -10,7 +10,7 @@
 
   time.timeZone = lib.mkDefault "Europe/Helsinki";
   i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
-  # Mainly for redshift
+
   location = {
     # Helsinki
     latitude = 60.192059;
