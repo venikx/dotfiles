@@ -27,14 +27,8 @@
     fsType = "vfat";
   };
 
-  fileSystems."/mnt/nas/documents" = {
-    device = "192.168.1.182:/mnt/tank/documents";
-    fsType = "nfs";
-    options = [ "x-systemd.automount" "noauto" ];
-  };
-
-  fileSystems."/mnt/nas/images" = {
-    device = "192.168.1.182:/mnt/tank/images";
+  fileSystems."/mnt/nas/entertainment" = {
+    device = "172.19.20.10:/mnt/tank/entertainment";
     fsType = "nfs";
     options = [ "x-systemd.automount" "noauto" ];
   };
