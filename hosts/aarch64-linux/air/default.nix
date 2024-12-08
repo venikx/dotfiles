@@ -3,7 +3,6 @@
 {
   imports = [ ./hardware-configuration.nix ];
 
-  programs.zsh.enable = true;
   users.users.venikx = {
     name = "venikx";
     description = "Kevin De Baerdemaeker";
@@ -13,7 +12,6 @@
     extraGroups = [ "wheel" ];
     initialPassword = "v3nikx";
   };
-  time.timeZone = "Europe/Brussels";
 
   networking = {
     hostName = "air";

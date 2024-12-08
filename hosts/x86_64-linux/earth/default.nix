@@ -2,16 +2,11 @@
 
 {
   imports = [ ./hardware-configuration.nix ];
+  system.stateVersion = "22.05";
 
-  programs.zsh.enable = true;
-  users.users.venikx = {
-    name = "venikx";
-    description = "Kevin De Baerdemaeker";
-    home = "/home/venikx";
-    shell = pkgs.zsh;
-    isNormalUser = true;
-    extraGroups = [ "wheel" ];
-    initialPassword = "v3nikx";
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
   };
 
   networking = {
@@ -20,13 +15,14 @@
     interfaces.eno1.useDHCP = true; # ethernet
   };
 
-  services.syncthing.settings = {
-    devices = {
-      "air-nixos" = {
-        id = "WK7RS2C-362VDSU-6AADX3Q-AFTADBL-PNY3KJO-ALQ6HYO-S6MQMOU-6MSYYAR";
-      };
-    };
-    folders = { "org" = { devices = [ "air-nixos" ]; }; };
+  users.users.venikx = {
+    name = "venikx";
+    description = "Kevin De Baerdemaeker";
+    home = "/home/venikx";
+    shell = pkgs.zsh;
+    isNormalUser = true;
+    extraGroups = [ "wheel" ];
+    initialPassword = "v3nikx";
   };
 
   modules = {
@@ -41,11 +37,12 @@
     };
   };
 
-  boot = {
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
+  services.syncthing.settings = {
+    devices = {
+      "air-nixos" = {
+        id = "WK7RS2C-362VDSU-6AADX3Q-AFTADBL-PNY3KJO-ALQ6HYO-S6MQMOU-6MSYYAR";
+      };
+    };
+    folders = { "org" = { devices = [ "air-nixos" ]; }; };
   };
-
-  system.stateVersion = "22.05";
 }
-
