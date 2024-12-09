@@ -13,7 +13,7 @@
   networking = {
     hostName = "limber-lt-kdb";
     useDHCP = false;
-    interfaces.wlp2s0.useDHCP = true;
+    interfaces.wlp1s0.useDHCP = true;
   };
 
   users.users.venikx = {

@@ -4,7 +4,7 @@
   disko.devices = {
     disk = {
       main = {
-        device = "/dev/sda"; # TODO(Monday): Check device
+        device = "/dev/nvme0n1";
         type = "disk";
         content = {
           type = "gpt";
