@@ -67,7 +67,7 @@
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
             disko.nixosModules.disko
-            nixos-hardware.nixosModules.framework-intel-core-ultra-series1
+            nixos-hardware.nixosModules.framework-13-7040-amd
             ./hosts/${system}/limber-lt-kdb
             ./modules/nixos
 
