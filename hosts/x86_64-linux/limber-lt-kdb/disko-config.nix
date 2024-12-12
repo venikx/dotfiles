@@ -35,11 +35,11 @@
         };
       };
     };
-    #nodev = {
-    #  "/tmp" = {
-    #    fsType = "tmpfs";
-    #    mountOptions = [ "size=500M" ];
-    #  };
-    #};
+    nodev = {
+      "/tmp" = {
+        fsType = "tmpfs";
+        mountOptions = [ "size=500M" ];
+      };
+    };
   };
 }
