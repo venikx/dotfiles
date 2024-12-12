@@ -5,12 +5,8 @@
   config = lib.mkIf config.modules.services.syncthing.enable {
     environment.systemPackages = [ pkgs.syncthing ];
 
-    # TODO(Kevin): Move to home-manager
     services.syncthing = {
       enable = true;
-      user = "venikx";
-      dataDir = "/home/venikx/docs/syncthing";
-      configDir = "/home/venikx/docs/syncthing/.config";
       overrideDevices = true;
       overrideFolders = true;
 
@@ -22,7 +18,7 @@
           };
           "nas" = {
             id =
-              "LB25OUA-6JKS2YO-IN5JNTH-HF5AEVJ-DIOJAFT-PRGQP5K-ZO2KOJH-AQ3KAQV";
+              "CEA6NZ3-DEAXTTD-X7VFJY6-K37376N-RJYWZG5-AT7TBIH-YQVDG6A-C3FUWA7";
           };
         };
         folders = {
