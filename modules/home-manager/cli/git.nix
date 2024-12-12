@@ -1,21 +1,22 @@
-{ ... }:
-{
+{ ... }: {
   programs.zsh.shellAliases = {
-    git  = ''noglob git'';
-    ga   = ''git add'';
-    gap  = ''git add --patch'';
-    gb   = ''git branch -av'';
-    gc   = ''git commit'';
-    gcm  = ''git commit -m'';
-    gca  = ''git commit --amend'';
-    gl   = ''git log --graph --pretty="format:%C(yellow)%h%Creset %C(red)%G?%Creset%C(green)%d%Creset %s %Cblue(%cr) %C(bold blue)<%aN>%Creset"'';
-    gll  = ''git log --pretty="format:%C(yellow)%h%Creset %C(red)%G?%Creset%C(green)%d%Creset %s %Cblue(%cr) %C(bold blue)<%aN>%Creset"'';
-    gL   = ''gl --stat'';
-    gss  = ''git status'';
-    gs   = ''git status --short .'';
-    gst  = ''git stash'';
-    gr   = ''git reset HEAD'';
-    grv  = ''git rev-parse'';
+    git = "noglob git";
+    ga = "git add";
+    gap = "git add --patch";
+    gb = "git branch -av";
+    gc = "git commit";
+    gcm = "git commit -m";
+    gca = "git commit --amend";
+    gl = ''
+      git log --graph --pretty="format:%C(yellow)%h%Creset %C(red)%G?%Creset%C(green)%d%Creset %s %Cblue(%cr) %C(bold blue)<%aN>%Creset"'';
+    gll = ''
+      git log --pretty="format:%C(yellow)%h%Creset %C(red)%G?%Creset%C(green)%d%Creset %s %Cblue(%cr) %C(bold blue)<%aN>%Creset"'';
+    gL = "gl --stat";
+    gss = "git status";
+    gs = "git status --short .";
+    gst = "git stash";
+    gr = "git reset HEAD";
+    grv = "git rev-parse";
   };
 
   programs.git = {
@@ -23,12 +24,13 @@
     delta.enable = true;
     lfs.enable = true;
     aliases = {
-      "lg" = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --";
+      "lg" =
+        "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --";
       "ls" = "ls-files";
       "undo-commit" = ''reset --soft "HEAD^"'';
     };
     userEmail = "code@venikx.com";
-    userName = "Kevin Rangel";
+    userName = "Kevin De Baerdemaeker";
     signing.key = "AA445668182C2AD4";
 
     extraConfig = {
