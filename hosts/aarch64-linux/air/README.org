@@ -1,9 +1,7 @@
-#+title: Air
+#+title: air
 
-* Overview
 [[https://www.apple.com/macbook-air-m1/][MacBook Air with M1]]
 
-** Specs
 | CPU              | Icestorm-M1 |
 | GPU              |             |
 | Storage          | 500GB NVMe  |

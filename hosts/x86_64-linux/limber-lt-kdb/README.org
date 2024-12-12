@@ -1,9 +1,7 @@
 #+TITLE: limber-lt-kdb
 
-* TODO Overview
-[[https://rog.asus.com/laptops/rog-zephyrus/rog-zephyrus-g14-series][ROG Zephyrus G14 GA401]]
+Framework 13 - AMD
 
-** Specs
 | CPU             | [[https://www.amd.com/en/products/apu/amd-ryzen-7-4800h][AMD Ryzen™ 7 4800H]]           |
 | GPU             | [[https://www.notebookcheck.net/NVIDIA-GeForce-RTX-2060-Max-Q-Graphics-Card.386286.0.html][NVIDIA GeForce RTX 2060 Max-Q]] |
 | Storage         | 1TB NVMe                      |
@@ -11,35 +9,3 @@
 | Network Adapter | wlp2s0                        |
 | UEFI            | yes                           |
 
-* Installation
-** Verifying the internet connection
-Skip the following if an ethernet cable is already plugged in
-
-#+begin_src shell :eval no
-sudo -i
-systemctl start wpa_supplicant
-
-wpa_cli
-> add_network
-> set_network 0 ssid "myssid"
-> set_network 0 psk "mypassword"
-> set_network 0 key_mgmt WPA-PSK
-> enable_network 0
-#+end_src
-
-Test the internet connection with ~ping www.google.com~
-
-** Setting up the partitions
-1. UEFI's boot partition should already by there due to dual-boot with Windows
-
-2. Create partitions
-#+begin_src shell :eval no
-parted /dev/nvme0n1 -- mkpart primary 647GB 1004GB
-mkfs.ext4 -L nixos /dev/nvme0n1p5
-#+end_src
-
-3. Mount the partitions
-#+begin_src shell :eval no
-mount /dev/disk/by-label/nixos /mnt
-mount /dev/nvme0n1p1 /mnt/boot # existing EFI partition from Windows
-#+end_src

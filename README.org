@@ -57,35 +57,70 @@ tree -d -I 'apple-silicon-support|firmware'
 #+end_example
 
 * Installation
-1. Yoink the latest stable build of [[https://nixos.org/][NixOS]]
-2. Boot into the installer, and follow the [[file:./hosts/][host]] specific steps
-3. Install the dotfiles
-   #+begin_src sh :eval no
-nix-shell -p git nixFlakes
+** 1. Launch the NixOS minimal ISO
+- Yoink the latest stable build of [[https://nixos.org/][NixOS]]
+- Boot into the installer
 
-git clone https://github.com/venikx/dotfiles.git /etc/dotfiles
-cd /etc/dotfiles
+** 2. Verify the internet connection
+Skip the following if an ethernet cable is already plugged in
 
-# Create a new host config in `hosts/`
-mkdir -p hosts/${system}/${hostName}
-nixos-generate-config --root /mnt --dir /etc/dotfiles/hosts/${system}/${hostName}
-# Update existing hosts based on the generated config for hardware
-vi hosts/${system}/${hostName}/configuration.nix
-vi hosts/${system}/${hostName}/hardware-configuration.nix
+#+begin_src shell :eval no
+sudo -i
+systemctl start wpa_supplicant
 
-# Add it to git
-git add  hosts/${system}/${hostName}
+wpa_cli
+> add_network
+> set_network 0 ssid "myssid"
+> set_network 0 psk "mypassword"
+> set_network 0 key_mgmt WPA-PSK
+> enable_network 0
+#+end_src
 
-# Install nixOS
-nixos-install --root /mnt --flake .#${hostName}
+Test the internet connection with ~ping www.google.com~
 
-# Move to the dotfiles to mounted drive
-mv /etc/dotfiles /mnt/etc/dotfiles
+** 3. Loading the NixOS config onto the new machine
+*** Use nixos-anywhere to install machine remotely (x86-64 only)
+The `nixos-anywhere` can be used to install the device via an ssh connection.
+This is not recommended if you are dual-booting.
 
-# Change ownership of the nixo folder of mounted drive
-chown -R venikx:users /mnt/etc/nixos
-   #+end_src
+If it's a new device you need to make sure the location of
+hardware-configuration is imported, but doesn't exist yet.
 
-4. Reboot!
-5. Change the passwords for the users, most likely only ~venikx~!
-6. [[https://media.giphy.com/media/yJFeycRK2DB4c/giphy.gif]]
+Please, make sure the drive of the disko-config is adjusted to the drive seen
+from running ~lsblk~.
+
+#+begin_src sh :eval no
+nix run github:nix-community/nixos-anywhere -- --generate-hardware-config \
+    nixos-generate-config \
+    ./hosts/<platform>/<hostname>/hardware-configuration.nix \
+    --flake .#hostname root@<ip address>
+#+end_src
+
+*** Use [[https://github.com/nix-community/disko/blob/master/docs/quickstart.md][disko]] to format the drives (for any other platforms)
+Copy the disk information to the installer. And adjust the drive of
+~disko-config.nix~ with drive from running ~lsblk~.
+
+#+begin_src sh :eval no
+cd /tmp
+curl https://raw.githubusercontent.com/nix-community/disko/master/example/hybrid.nix -o /tmp/disk-config.nix
+#+end_src
+
+Use disko to partition the drive.
+#+begin_src sh :eval no
+sudo nix --experimental-features "nix-command flakes" run \
+    github:nix-community/disko/latest -- --mode disko /tmp/disko-config.nix
+
+#+end_src
+
+Double-check the drives are properly mounted, and run the installer.
+#+begin_src sh :eval no
+mount | grep /mnt
+nixos-generate-config --no-filesystems --root /mnt
+mv /tmp/disko-config.nix /mnt/etc/nixos/hosts/<platform>/<hostname>/disko-config.nix
+nixos-install
+#+end_src
+
+** 4. Almost there!
+- run ~reboot~
+- change the passwords for the user(s)
+- [[https://media.giphy.com/media/yJFeycRK2DB4c/giphy.gif]]

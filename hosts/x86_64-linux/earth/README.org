@@ -1,4 +1,4 @@
-#+TITLE: Earth
+#+TITLE: earth
 
 * Overview
 ** Specs
@@ -10,9 +10,6 @@
 | UEFI        | yes                                |
 
 * Installation
-** Verifying the internet connection
-~ping www.google.com~
-
 ** Setting up the partitions
 1. The UEFI's boot partition should already by there due to dual-boot with Windows
 
