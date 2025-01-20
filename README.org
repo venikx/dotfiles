@@ -1,5 +1,5 @@
 #+title: So you want to see my dotfiles ehhh?
-#+author: Kevin Rangel
+#+author: Kevin De Baerdemaeker
 
 [[https://github.com/hlissner/doom-emacs][https://img.shields.io/badge/Made_with-Doom_Emacs-blueviolet.svg?style=flat-square&logo=GNU%20Emacs&logoColor=white]]
 [[https://nixos.org][https://img.shields.io/badge/NixOS-v23.05-blue.svg?style=flat-square&logo=NixOS&logoColor=white]]

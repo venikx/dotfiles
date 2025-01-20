@@ -19,6 +19,14 @@ in {
         dpi = 100;
         windowManager.bspwm.enable = true;
 
+        xautolock = {
+          enable = true;
+          nowlocker = "${pkgs.lightdm}/bin/dm-tool lock";
+          locker = "${pkgs.lightdm}/bin/dm-tool lock";
+          notifier =
+            "${pkgs.libnotify}/bin/notify-send 'Move boy! Locking in 10 seconds...'";
+        };
+
         displayManager = {
           lightdm = {
             enable = true;
