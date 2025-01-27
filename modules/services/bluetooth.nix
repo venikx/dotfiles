@@ -12,11 +12,11 @@ in {
     };
   };
 
-  config = mkIf cfg.enable (mkMerge [{
+  config = mkIf cfg.enable {
     hardware.bluetooth = {
       enable = true;
       powerOnBoot = true;
-      package = pkgs.bluezFull;
+      package = pkgs.bluez;
       settings = {
         General = {
           ControllerMode = "dual";
@@ -27,5 +27,5 @@ in {
       };
     };
     #services.blueman.enable = true;
-  }]);
+  };
 }

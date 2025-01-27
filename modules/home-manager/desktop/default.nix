@@ -36,7 +36,7 @@
 
   home.packages = with pkgs; [
     # communication
-    (if pkgs.system == "x86_64-linux" then discord else armcord)
+    (if pkgs.system == "x86_64-linux" then discord else legcord)
     (lib.mkIf (pkgs.system == "x86_64-linux") slack)
     # learning
     anki

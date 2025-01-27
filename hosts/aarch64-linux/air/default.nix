@@ -40,6 +40,7 @@
     services = {
       docker.enable = true;
       syncthing.enable = true;
+      bluetooth.enable = true;
     };
   };
 
