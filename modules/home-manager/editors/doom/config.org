@@ -25,7 +25,7 @@ Allegedly makes Emacs go fast, vrooooom!
  standard-indent 2
  calendar-week-start-day 1 ;; Start on Monday
  projectile-project-search-path '("~/code/" "/etc/nixos/")
- browse-url-browser-function 'browse-url-chrome)
+ browse-url-browser-function 'browse-url-firefox)
 #+end_src
 
 * Package Configuration
@@ -41,7 +41,6 @@ Associate ~.epub~ and ~.mobi~ files with the ~nov~ package, so they are found.
 
 #+begin_src elisp
 (use-package! nov
-  :hook (nov-mode . variable-pitch-mode)
   :mode ("\\.\\(epub\\|mobi\\)\\'" . nov-mode))
 #+end_src
 
