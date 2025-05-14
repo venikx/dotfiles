@@ -20,9 +20,9 @@ with lib;
       })
     ]);
 
-    home = rec {
-      username = "venikx";
-      homeDirectory = if pkgs.stdenv.isLinux then "/home/${username}" else "/Users/${username}";
+    home = {
+      username = lib.mkDefault "venikx";
+      homeDirectory = if pkgs.stdenv.isLinux then "/home/${config.home.username}" else "/Users/${config.home.username}";
       sessionPath = [ "$HOME/.local/bin" ];
 
       sessionVariables = {

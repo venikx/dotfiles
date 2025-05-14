@@ -19,6 +19,15 @@
     };
   };
 
+  services.syncthing.settings = {
+    devices = {
+      "air-nixos" = {
+        id = "WK7RS2C-362VDSU-6AADX3Q-AFTADBL-PNY3KJO-ALQ6HYO-S6MQMOU-6MSYYAR";
+      };
+    };
+    folders = { "org" = { devices = [ "air-nixos" ]; }; };
+  };
+
   modules = {
     desktop = {
       obs.enable = true;

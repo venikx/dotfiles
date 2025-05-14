@@ -9,8 +9,8 @@
       upgrade = true;
     };
 
-    casks = [
-      "firefox"
-    ];
+    brews = [ "xcodesorg/made/xcodes"];
+    casks = [];
+
   };
 }

@@ -31,7 +31,6 @@
     desktop = { display-manager.enable = true; };
     services = {
       docker.enable = true;
-      #syncthing.enable = true;
     };
   };
 }

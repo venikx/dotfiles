@@ -1,0 +1,10 @@
+#+title: MacBook 14 Pro
+
+* Overview
+** Specs
+| CPU         | M3 Max |
+| GPU         |        |
+| RAM         |        |
+| Motherboard |        |
+| Storage     |        |
+| UEFI        |        |

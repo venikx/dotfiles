@@ -19,6 +19,15 @@
     };
   };
 
+  services.syncthing.settings = {
+    devices = {
+      "earth-nixos" = {
+        id = "QUIA5TB-Q62NJOZ-NXNZPLY-6YXHXEJ-W5A6YMS-LTY2PXH-AZE5YHQ-22SHBQL";
+      };
+    };
+    folders = { "org" = { devices = [ "earth-nixos" ]; }; };
+  };
+
   colorScheme = nix-colors.colorSchemes.tokyo-city-terminal-dark;
 
   home.stateVersion = "23.05";

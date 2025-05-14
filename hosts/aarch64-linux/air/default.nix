@@ -20,15 +20,6 @@
   };
   systemd.services.NetworkManager-wait-online.enable = lib.mkForce false;
 
-  services.syncthing.settings = {
-    devices = {
-      "earth-nixos" = {
-        id = "QUIA5TB-Q62NJOZ-NXNZPLY-6YXHXEJ-W5A6YMS-LTY2PXH-AZE5YHQ-22SHBQL";
-      };
-    };
-    folders = { "org" = { devices = [ "earth-nixos" ]; }; };
-  };
-
   services.libinput = {
     enable = true;
     touchpad.disableWhileTyping = true;
@@ -39,7 +30,6 @@
     desktop = { display-manager.enable = true; };
     services = {
       docker.enable = true;
-      syncthing.enable = true;
       bluetooth.enable = true;
     };
   };

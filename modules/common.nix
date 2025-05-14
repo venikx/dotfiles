@@ -15,6 +15,7 @@
     };
 
     systemPackages = with pkgs; [ vim coreutils wget curl git ];
+
     shells = with pkgs; [ bash zsh ];
   };
 

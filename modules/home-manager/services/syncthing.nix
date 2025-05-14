@@ -1,10 +1,7 @@
-{ config, lib, pkgs, ... }: {
-  options.modules.services.syncthing.enable =
-    lib.mkEnableOption "Enable Syncthing";
+{ config, lib, pkgs, ... }:
 
-  config = lib.mkIf config.modules.services.syncthing.enable {
-    environment.systemPackages = [ pkgs.syncthing ];
-
+{
+  config = {
     services.syncthing = {
       enable = true;
       overrideDevices = true;
@@ -18,12 +15,12 @@
           };
           "nas" = {
             id =
-              "CEA6NZ3-DEAXTTD-X7VFJY6-K37376N-RJYWZG5-AT7TBIH-YQVDG6A-C3FUWA7";
+              "3DVU6L7-MF64HJB-5CNUSJ7-77WNJSK-GNCVXQA-BECVQCZ-ZZZCFQO-DV37GAG";
           };
         };
         folders = {
           "org" = {
-            path = "/home/venikx/org/gtd";
+            path = "${config.home.homeDirectory}/org/gtd";
             versioning = {
               type = "simple";
               params.keep = "10";

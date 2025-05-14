@@ -36,17 +36,7 @@
     };
     services = {
       docker.enable = true;
-      syncthing.enable = true;
     };
-  };
-
-  services.syncthing.settings = {
-    devices = {
-      "air-nixos" = {
-        id = "WK7RS2C-362VDSU-6AADX3Q-AFTADBL-PNY3KJO-ALQ6HYO-S6MQMOU-6MSYYAR";
-      };
-    };
-    folders = { "org" = { devices = [ "air-nixos" ]; }; };
   };
 
   fileSystems = let nasIP = "172.19.20.10";

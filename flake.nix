@@ -2,7 +2,7 @@
   description = "Flake to rule em all.";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-colors.url = "github:misterio77/nix-colors";
 
@@ -17,12 +17,12 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     darwin = {
-      url = "github:lnl7/nix-darwin/master";
+      url = "github:nix-darwin/nix-darwin/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -53,7 +53,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [
-                (import ./modules/home-manager)
+                (import ./modules/home-manager/nixos.nix)
                 (import ./hosts/${system}/earth/venikx.nix)
                 nix-colors.homeManagerModules.default
               ];
@@ -76,7 +76,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [
-                (import ./modules/home-manager)
+                (import ./modules/home-manager/nixos.nix)
                 (import ./hosts/${system}/limber-lt-kdb/venikx.nix)
                 nix-colors.homeManagerModules.default
               ];
@@ -99,7 +99,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.venikx = lib.mkMerge [
-                (import ./modules/home-manager)
+                (import ./modules/home-manager/nixos.nix)
                 (import ./hosts/${system}/air/venikx.nix)
                 nix-colors.homeManagerModules.default
               ];
@@ -110,21 +110,23 @@
       };
 
       darwinConfigurations = {
-        lucid = darwin.lib.darwinSystem rec {
+        "MacBook-Y026V" = darwin.lib.darwinSystem rec {
           system = "aarch64-darwin";
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
-            ./hosts/${system}/lucid
+            ./hosts/${system}/MacBook-Y026V
             ./modules/darwin
 
             home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.venikx = lib.mkMerge [
-                (import ./modules/home-manager)
-                (import ./hosts/${system}/lucid/venikx.nix)
+              home-manager.users.kdebaerdemaeker = lib.mkMerge [
+                (import ./modules/home-manager/darwin.nix)
+                (import ./hosts/${system}/MacBook-Y026V/venikx.nix)
+                nix-colors.homeManagerModules.default
               ];
+              home-manager.extraSpecialArgs = { inherit nix-colors; };
             }
           ];
         };

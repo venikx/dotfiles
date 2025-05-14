@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./bluetooth.nix ./docker.nix ./networking.nix ./syncthing.nix ];
+  imports = [ ./bluetooth.nix ./docker.nix ./networking.nix ];
 }

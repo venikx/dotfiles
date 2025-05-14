@@ -18,6 +18,7 @@ in {
     git
     (ripgrep.override { withPCRE2 = true; })
     gnutls # for TLS connectivity
+    gnuplot
 
     ## Optional dependencies
     fd # faster projectile indexing
@@ -29,11 +30,6 @@ in {
     ## Vterm
     cmake
     gnumake
-
-    ## TreeSitter
-    #tree-sitter
-    #tree-sitter.allGrammars
-
     ## Module dependencies
     # :checkers spell
     (aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
@@ -43,12 +39,14 @@ in {
     editorconfig-core-c
     # :tools lookup & :lang org +roam
     sqlite
-    qpdfview
     # lsp
     nodejs
     # cc
     ccls
     glslang
+    # c#
+    omnisharp-roslyn
+    csharpier
     # markdown
     python311Packages.grip
     # nix
@@ -77,11 +75,15 @@ in {
     # org +roam2 & org-roam-ui
     graphviz
     pandoc
-    scrot
     # yaml
     nodePackages.yaml-language-server
     # docker
     nodePackages.dockerfile-language-server-nodejs
+  ] ++ lib.optionals stdenv.isLinux [
+    # img capturing from emacs
+    scrot
+    # pdf
+    qpdfview
     # racket
     racket
   ];
