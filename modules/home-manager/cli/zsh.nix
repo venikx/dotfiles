@@ -16,7 +16,7 @@
     cdpath = [ "~/code" ];
     defaultKeymap = "viins";
     #dirHashes = {};
-    dotDir = ".config/zsh";
+    dotDir = "${config.xdg.configHome}/zsh";
     historySubstringSearch.enable = true;
     history = {
       expireDuplicatesFirst = true;

@@ -46,7 +46,6 @@ in {
     glslang
     # c#
     omnisharp-roslyn
-    csharpier
     # markdown
     python311Packages.grip
     # nix

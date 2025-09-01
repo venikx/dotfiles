@@ -8,6 +8,9 @@
     shell = pkgs.zsh;
   };
 
+  # Set primary user for homebrew and other user-specific options
+  system.primaryUser = "kdebaerdemaeker";
+
   environment.systemPath = [ 
     # "/opt/homebrew/bin" 
   ];

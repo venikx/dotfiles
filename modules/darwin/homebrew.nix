@@ -10,7 +10,5 @@
     };
 
     brews = [ "xcodesorg/made/xcodes"];
-    casks = [];
-
   };
 }
