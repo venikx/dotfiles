@@ -3,7 +3,15 @@
 {
   home.stateVersion = "24.11";
   home.username = lib.mkForce "kdebaerdemaeker";
-  programs.git.userEmail = lib.mkForce "kdebaerdemaeker@netflix.com";
+  programs.git = {
+    userEmail = lib.mkForce "kdebaerdemaeker@netflix.com";
+    extraConfig = {
+      url."git@github-work:nxtgms".insteadOf = [
+        "https://github.com/nxtgms"
+        "git@github.com:nxtgms"
+      ];
+    };
+  };
 
   services.syncthing.settings = {
     devices = {
@@ -15,6 +23,34 @@
       };
     };
     folders = { "org" = { devices = [ "earth-nixos" "air-nixos" ]; }; };
+  };
+
+  programs.ssh = {
+    matchBlocks = {
+      "*" = {
+        # Default configuration for all hosts
+      };
+      "github-work" = {
+        hostname = "github.com";
+        user = "git";
+        identityFile = "~/.ssh/work_yubi";
+        identitiesOnly = true;
+        addKeysToAgent = "yes";
+      };
+    };
+    
+    extraConfig = ''
+      # Ignore unknown SSH options (for compatibility)
+      IgnoreUnknown Include
+      
+      ##### BEGIN METATRON AUTOCONFIG
+      # Do not remove the above line. The metatron CLI uses it to update this file.
+      # The Include directive was added in 7.3. IgnoreUnknown was added in 6.3. This helps prevent breaking old SSH clients that don't need nflx SSH configuration
+      Match exec "test -z $NFSSH_DISABLED"
+          Include ~/.ssh/nflx_ssh.config
+      # Do not remove the below line. The metatron CLI uses it to update this file.
+      ##### END METATRON AUTOCONFIG
+    '';
   };
 
   home.sessionVariables = {

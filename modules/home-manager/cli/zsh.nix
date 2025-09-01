@@ -25,7 +25,7 @@
       path = "${config.xdg.dataHome}/zsh/zsh_history";
     };
 
-    initExtraBeforeCompInit = ''
+    initContent = lib.mkOrder 550 ''
       bindkey -M viins '^[[Z' reverse-menu-complete
 
       zman() {
