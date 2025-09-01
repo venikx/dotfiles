@@ -88,11 +88,14 @@ in {
   ];
 
   # Setting up Doom Emacs
-  xdg.configFile."doom" = {
-    source = ./doom;
-    recursive = true;
+  #xdg.configFile."doom" = {
+  #  source = ./doom;
+  #  recursive = true;
+  #};
+  xdg.configFile."emacs/config.org" = {
+    source = ./emacs/config.org;
   };
-  home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
+  #home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
 
   # Emacs Utils
   programs.zsh.shellAliases = {
