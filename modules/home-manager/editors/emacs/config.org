@@ -298,6 +298,12 @@ Configure =use-package= to always the reproducible package manager.
   :hook ((prog-mode . display-line-numbers-mode)
          (text-mode . display-line-numbers-mode)))
 #+end_src
+
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package ansi-color
+  :straight nil
+  :hook (compilation-filter . ansi-color-compilation-filter))
+#+end_src
 * 5. Languages
 ** 5.1 Language Server Protocol (LSP) with =Eglot=
 #+begin_src emacs-lisp :tangle "init.el"
