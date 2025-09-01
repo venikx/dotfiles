@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ./docker.nix ./syncthing.nix ];
+  imports = [ ./docker.nix ./syncthing.nix ./yubikey.nix ];
 }

@@ -1,12 +1,5 @@
 { pkgs, lib, ... }: {
-  imports = [
-    ./gnupg.nix
-
-    ../common.nix
-    ../audio
-    ../desktop
-    ../services
-  ];
+  imports = [ ../common.nix ../audio ../desktop ../services ];
 
   time.timeZone = lib.mkDefault "Europe/Helsinki";
   i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";

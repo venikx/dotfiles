@@ -9,8 +9,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    hardware.pulseaudio.enable = mkForce false;
-
     security.rtkit.enable = true;
     services.pipewire = {
       enable = true;

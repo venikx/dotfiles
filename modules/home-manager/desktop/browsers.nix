@@ -1,7 +1,11 @@
 { config, pkgs, ... }:
 
 {
-  home = { sessionVariables = { BROWSER = "firefox"; }; };
+  home = {
+    sessionVariables = {
+      BROWSER = "firefox";
+    };
+  };
   programs = {
     chromium.enable = true;
     firefox = {
@@ -9,10 +13,8 @@
       profiles.venikx = {
         settings = {
           "devtools.theme" = "dark";
-          "browser.download.dir" =
-            "${config.home.homeDirectory}/dl"; # Stop creating ~/Downloads!
-          "signon.rememberSignons" =
-            false; # Don't use the built-in password manager
+          "browser.download.dir" = "${config.home.homeDirectory}/dl"; # Stop creating ~/Downloads!
+          "signon.rememberSignons" = false; # Don't use the built-in password manager
           "browser.shell.checkDefaultBrowser" = false;
           "media.videocontrols.picture-in-picture.video-toggle.enabled" = false;
           # Enable ETP for decent security (makes firefox containers and many
@@ -84,60 +86,66 @@
           # Disable crash reports
           "breakpad.reportURL" = "";
           "browser.tabs.crashReporting.sendReport" = false;
-          "browser.crashReports.unsubmittedCheck.autoSubmit2" =
-            false; # don't submit backlogged reports
+          "browser.crashReports.unsubmittedCheck.autoSubmit2" = false; # don't submit backlogged reports
         };
         search = {
-          default = "DuckDuckGo";
+          default = "ddg";
           force = true;
-          order = [ "DuckDuckGo" "Google" ];
+          order = [
+            "ddg"
+            "google"
+          ];
           engines = {
-            "Bing".metaData.hidden = true;
-            "Google".metaData.alias = "@g";
+            "bing".metaData.hidden = true;
+            "google".metaData.alias = "@g";
             "NixOS Wiki" = {
-              urls = [{
-                template = "https://nixos.wiki/index.php?search={searchTerms}";
-              }];
-              iconUpdateURL = "https://nixos.wiki/favicon.png";
+              urls = [
+                {
+                  template = "https://nixos.wiki/index.php?search={searchTerms}";
+                }
+              ];
+              icon = "https://nixos.wiki/favicon.png";
               updateInterval = 24 * 60 * 60 * 1000; # every day
               definedAliases = [ "@nw" ];
             };
             "Nix Packages" = {
-              urls = [{
-                template = "https://search.nixos.org/packages";
-                params = [
-                  {
-                    name = "type";
-                    value = "packages";
-                  }
-                  {
-                    name = "query";
-                    value = "{searchTerms}";
-                  }
-                ];
-              }];
+              urls = [
+                {
+                  template = "https://search.nixos.org/packages";
+                  params = [
+                    {
+                      name = "type";
+                      value = "packages";
+                    }
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
 
-              icon =
-                "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@np" ];
             };
             "NixOS Options" = {
-              urls = [{
-                template = "https://search.nixos.org/options";
-                params = [
-                  {
-                    name = "type";
-                    value = "options";
-                  }
-                  {
-                    name = "query";
-                    value = "{searchTerms}";
-                  }
-                ];
-              }];
+              urls = [
+                {
+                  template = "https://search.nixos.org/options";
+                  params = [
+                    {
+                      name = "type";
+                      value = "options";
+                    }
+                    {
+                      name = "query";
+                      value = "{searchTerms}";
+                    }
+                  ];
+                }
+              ];
 
-              icon =
-                "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
               definedAliases = [ "@no" ];
             };
           };
