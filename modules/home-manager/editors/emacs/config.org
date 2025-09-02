@@ -50,6 +50,7 @@ I use [[https://github.com/radian-software/straight.el][straight]] instead.
 
 #+begin_src emacs-lisp :tangle "early-init.el"
 (setq package-enable-at-startup nil)
+(setq use-package-always-ensure nil)
 #+end_src
 
 ** 2.3 Disable built-in org-mode package
@@ -75,10 +76,10 @@ config reproducible.
 (setq custom-file (make-temp-file "emacs-custom.el"))
 #+end_src
 
-** 3.3 Reproducible package management with =straight=
+** 3.3 Reproducible package management with =straight= (deprecated for NixOS)
 Install =straight=.
 
-#+begin_src emacs-lisp :tangle "init.el"
+#+begin_src emacs-lisp :tangle no
 (setq straight-repository-branch "develop")
 
 (defvar bootstrap-version)
@@ -97,7 +98,7 @@ Install =straight=.
 
 Configure =use-package= to always the reproducible package manager.
 
-#+begin_src emacs-lisp :tangle "init.el"
+#+begin_src emacs-lisp :tangle no
 (setq straight-defaults '(:depth 1))
 
 (use-package straight
@@ -108,7 +109,7 @@ Configure =use-package= to always the reproducible package manager.
 ** 3.4 Personal Details
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package emacs
-  :straight nil
+  :ensure nil
   :custom
   (user-full-name "Kevin De Baerdemaeker"))
 #+end_src
@@ -117,7 +118,7 @@ Configure =use-package= to always the reproducible package manager.
 ** 4.1 Display hints when pressing keys with =which-key=
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package which-key
-  :straight nil
+  :ensure nil
   :hook (after-init . which-key-mode))
 #+end_src
 
@@ -197,7 +198,7 @@ Configure =use-package= to always the reproducible package manager.
         ("C-k"   . #'vertico-previous)
         ("C-M-k" . #'vertico-previous-group))
   :custom (evil-collection-setup-minibuffer nil)
-  :init (evil-collection-init))
+  :config (evil-collection-init))
 
 (use-package evil-goggles
   :after evil
@@ -215,15 +216,12 @@ Configure =use-package= to always the reproducible package manager.
   :config
   (setq doom-themes-enable-bold t    
         doom-themes-enable-italic t)
-  (load-theme 'doom-tokyo-night t)
-
-  (doom-themes-visual-bell-config)
-  (doom-themes-org-config))
+  (load-theme 'doom-tokyo-night t))
 #+end_src
 ** 4.5 Automatically refresh externally updated files with =autorevert= 
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package autorevert
-  :straight nil
+  :ensure nil
   :hook (after-init . global-auto-revert-mode)
   :custom
   (auto-revert-verbose t))
@@ -256,11 +254,11 @@ Configure =use-package= to always the reproducible package manager.
   (corfu-auto t)
   (corfu-auto-delay 0.2)
   (corfu-auto-prefix 2)
-  :init
+  :config
   (global-corfu-mode))
 
 (use-package emacs
-  :straight nil
+  :ensure nil
   :custom
   (electric-pair-mode 1)
   (tab-always-indent 'complete)
@@ -271,6 +269,10 @@ Configure =use-package= to always the reproducible package manager.
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package magit
   :commands (magit-status magit-blame))
+
+(use-package magit-todos
+  :after magit
+  :config (magit-todos-mode 1))
 #+end_src
 ** 4.8 Configuring the path with =envrc= and =load-shell=
 #+begin_src emacs-lisp :tangle "init.el"
@@ -287,28 +289,27 @@ Configure =use-package= to always the reproducible package manager.
   (apheleia-formatters-respect-indent-level nil))
 
 (use-package editorconfig
-  :ensure t
   :config
   (editorconfig-mode 1))
 #+end_src
 ** 4.10 Misc
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package display-line-numbers
-  :straight nil
+  :ensure nil
   :hook ((prog-mode . display-line-numbers-mode)
          (text-mode . display-line-numbers-mode)))
 #+end_src
 
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package ansi-color
-  :straight nil
+  :ensure nil
   :hook (compilation-filter . ansi-color-compilation-filter))
 #+end_src
 * 5. Languages
 ** 5.1 Language Server Protocol (LSP) with =Eglot=
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package eglot
-  :straight nil
+  :ensure nil
   :hook ((json-ts-mode . eglot-ensure)
          (go-ts-mode . eglot-ensure)
          (csharp-ts-mode . eglot-ensure)
@@ -336,6 +337,7 @@ Configure =use-package= to always the reproducible package manager.
 ** 5.2 Enable syntax highlighting with =treesitter=
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package emacs
+  :ensure nil
   :init
   (setq major-mode-remap-alist
         '((js-json-mode . json-ts-mode)
@@ -348,8 +350,6 @@ Configure =use-package= to always the reproducible package manager.
 ** 5.3 Org
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package org
-  :straight (:type git :host github :repo "emacs-straight/org-mode"
-                   :files (:defaults "lisp/*.el" "contrib/lisp/*.el"))
   :config
   (require 'org-capture)
   (require 'org-habit)
@@ -432,6 +432,8 @@ Configure =use-package= to always the reproducible package manager.
 
 *** 5.3.2 Nutrition 
 #+begin_src emacs-lisp :tangle "init.el"
+(use-package org-ql)
+
 (use-package org
   :config
   (when (file-exists-p "~/org/collections/nutrition.org")
@@ -442,11 +444,11 @@ Configure =use-package= to always the reproducible package manager.
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package org-contrib)
 
-(use-package org-contacts
-  :after org
-  :requires org-contrib
-  :init
-  (setq org-contacts-files '("~/org/gtd/contacts.org")))
+;(use-package org-contacts
+;  :after org
+;  :requires org-contrib
+;  :init
+;  (setq org-contacts-files '("~/org/gtd/contacts.org")))
 
 (use-package org-checklist
   :after org
@@ -464,15 +466,15 @@ Anything Typescript, Javascript related
 
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package javascript-mode
-  :straight nil
+  :ensure nil
   :mode (("\\.mjs\\'" . javascript-mode)))
 
 (use-package typescript-ts-mode
-  :straight nil
+  :ensure nil
   :mode (("\\.ts\\'" . typescript-ts-mode)))
 
 (use-package tsx-ts-mode
-  :straight nil
+  :ensure nil
   :mode (("\\.jsx\\'" . tsx-ts-mode)
          ("\\.tsx\\'" . tsx-ts-mode)))
 #+end_src
@@ -481,7 +483,8 @@ Allow ~.eta~ templating engine to use web-mode.
 
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package web-mode
-  :mode (("\\.eta\\'" . web-mode)))
+  :mode (("\\.eta\\'" . web-mode)
+	 ("\\.astro\\'" . web-mode)))
 #+end_src
 
 ** 5.5 Golang
@@ -503,7 +506,8 @@ For now all configuration sits under eglot.
 
 ** 5.8 Nix
 #+begin_src emacs-lisp :tangle "init.el"
-(use-package nix-ts-mode :mode "\\.nix\\'")
+(use-package nix-ts-mode
+  :mode "\\.nix\\'")
 #+end_src
 
 ** 5.9 Markdown
@@ -530,14 +534,13 @@ For now all configuration sits under eglot.
 ** 6.3 Reading ebooks with =nov=
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package nov
+  :defer t
   :mode ("\\.\\(epub\\|mobi\\)\\'" . nov-mode))
 #+end_src
 
 ** 6.4 TODO LLM's
 #+begin_src emacs-lisp
 (use-package copilot
-  :ensure t
-  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
               ("<tab>" . 'copilot-accept-completion)

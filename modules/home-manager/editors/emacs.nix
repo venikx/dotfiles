@@ -8,10 +8,49 @@ in {
   home.packages = with pkgs; [
     #emacs-unstable
     ((emacsPackagesFor emacs).emacsWithPackages (epkgs: [
-      epkgs.vterm
-      epkgs.pdf-tools
-      epkgs.all-the-icons
+      # vim bindings
+      epkgs.evil
+      epkgs.evil-surround
+      epkgs.evil-collection
+      epkgs.evil-goggles
+      epkgs.evil-commentary
+      # themes
+      epkgs.doom-themes
+      epkgs.all-the-icons # TODO
+      # completion engine
+      epkgs.vertico
+      epkgs.marginalia
+      epkgs.orderless
+      epkgs.consult
+      epkgs.corfu
+      # git
+      epkgs.magit
+      epkgs.magit-todos
+      # shells
+      epkgs.vterm # TODO
+      epkgs.envrc
+      # formatting
+      epkgs.apheleia
+      epkgs.editorconfig
+      # org
+      epkgs.org-contrib
+      # epkgs.org-contacts #TODO link was removed from github
+      epkgs.org-roam
+      epkgs.org-download
+      epkgs.org-ql
+      # languages
       epkgs.treesit-grammars.with-all-grammars
+      epkgs.web-mode
+      epkgs.nix-ts-mode
+      epkgs.markdown-mode
+      # LLM
+      epkgs.copilot # TODO
+      # tools
+      epkgs.osm
+      epkgs.pdf-tools # TODO
+      epkgs.elcord
+      epkgs.nov
+      epkgs.gnuplot
     ]))
 
     ## Doom dependencies
