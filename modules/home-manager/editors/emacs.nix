@@ -1,160 +1,175 @@
-{ config, lib, pkgs, options, emacs-overlay, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  options,
+  emacs-overlay,
+  ...
+}:
 
-let inherit (lib) mkIf;
-in {
+let
+  inherit (lib) mkIf;
+  emacsPackageList = epkgs: [
+    # vim bindings
+    epkgs.evil
+    epkgs.evil-surround
+    epkgs.evil-collection
+    epkgs.evil-goggles
+    epkgs.evil-commentary
+    # themes
+    epkgs.doom-themes
+    epkgs.all-the-icons # TODO
+    # completion engine
+    epkgs.vertico
+    epkgs.marginalia
+    epkgs.orderless
+    epkgs.consult
+    epkgs.corfu
+    # git
+    epkgs.magit
+    epkgs.magit-todos
+    # shells
+    epkgs.vterm # TODO
+    epkgs.envrc
+    # formatting
+    epkgs.apheleia
+    epkgs.editorconfig
+    # org
+    epkgs.org-contrib
+    # epkgs.org-contacts #TODO link was removed from github
+    epkgs.org-roam
+    epkgs.org-download
+    epkgs.org-ql
+    # languages
+    epkgs.treesit-grammars.with-all-grammars
+    epkgs.web-mode
+    epkgs.nix-ts-mode
+    epkgs.markdown-mode
+    # LLM
+    epkgs.copilot # TODO
+    # tools
+    epkgs.osm
+    epkgs.pdf-tools # TODO
+    epkgs.elcord
+    epkgs.nov
+    epkgs.gnuplot
+  ];
+
+  emacsExtraPackages = with pkgs; [
+    #### basic ####
+    gnutls
+    git
+    zstd
+    # required: consult
+    (ripgrep.override { withPCRE2 = true; })
+    fd
+    # required: vterm
+    cmake
+    gnumake
+
+    #### org-mode ####
+    sqlite
+    gnuplot # nutrition.el
+    pandoc
+    graphviz
+
+    #### languages ####
+    editorconfig-core-c
+    nodePackages.typescript-language-server
+    nodePackages.typescript
+    nodePackages.vscode-langservers-extracted
+    nodePackages.stylelint # TODO
+    nodePackages.yaml-language-server
+    nodePackages.dockerfile-language-server-nodejs
+    nixfmt
+    shfmt
+  ];
+
+  emacsWithAdditionalPackages = pkgs.symlinkJoin {
+    name = "emacs-with-additional-packages";
+    paths = [
+      ((pkgs.emacsPackagesFor pkgs.emacs).emacsWithPackages emacsPackageList)
+    ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      for prog in emacs emacsclient; do
+        if [ -f "$out/bin/$prog" ]; then
+          wrapProgram "$out/bin/$prog" --prefix PATH : ${pkgs.lib.makeBinPath emacsExtraPackages}
+        fi
+      done
+    '';
+  };
+in
+{
   #programs.emacs.enable = true;
   #services.emacs = { enable = true; };
 
-  home.packages = with pkgs; [
-    #emacs-unstable
-    ((emacsPackagesFor emacs).emacsWithPackages (epkgs: [
-      # vim bindings
-      epkgs.evil
-      epkgs.evil-surround
-      epkgs.evil-collection
-      epkgs.evil-goggles
-      epkgs.evil-commentary
-      # themes
-      epkgs.doom-themes
-      epkgs.all-the-icons # TODO
-      # completion engine
-      epkgs.vertico
-      epkgs.marginalia
-      epkgs.orderless
-      epkgs.consult
-      epkgs.corfu
-      # git
-      epkgs.magit
-      epkgs.magit-todos
-      # shells
-      epkgs.vterm # TODO
-      epkgs.envrc
-      # formatting
-      epkgs.apheleia
-      epkgs.editorconfig
-      # org
-      epkgs.org-contrib
-      # epkgs.org-contacts #TODO link was removed from github
-      epkgs.org-roam
-      epkgs.org-download
-      epkgs.org-ql
-      # languages
-      epkgs.treesit-grammars.with-all-grammars
-      epkgs.web-mode
-      epkgs.nix-ts-mode
-      epkgs.markdown-mode
-      # LLM
-      epkgs.copilot # TODO
-      # tools
-      epkgs.osm
-      epkgs.pdf-tools # TODO
-      epkgs.elcord
-      epkgs.nov
-      epkgs.gnuplot
-    ]))
+  home.packages =
+    with pkgs;
+    [
+      emacsWithAdditionalPackages
+      ### Optional dependencies
+      #imagemagick # for image-dired
+      ##(mkIf (config.programs.gnupg.agent.enable) pinentry-emacs)
 
-    ## Doom dependencies
-    git
-    (ripgrep.override { withPCRE2 = true; })
-    gnutls # for TLS connectivity
-    gnuplot
+      ### Module dependencies
+      ## :checkers spell
+      #(aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
+      ## :checkers grammar
+      #languagetool
+      ## :tools editorconfig
+      ## lsp
+      #nodejs
+      ## cc
+      #ccls
+      #glslang
+      ## c#
+      #omnisharp-roslyn
+      ## go
+      #gomodifytags
+      #gopls
+      #gotests
+      #gore
+      #gotools
+      ## rust
+      #rust-analyzer
+      #rustfmt
+      #rustc
+      #cargo
+    ]
+    ++ lib.optionals stdenv.isLinux [
+      ## img capturing from emacs
+      #scrot
+      ## pdf
+      #qpdfview
+      ## racket
+      #racket
+    ];
 
-    ## Optional dependencies
-    fd # faster projectile indexing
-    imagemagick # for image-dired
-    zstd # for undo-fu-session/undo-tree compression
-    fd
-    #(mkIf (config.programs.gnupg.agent.enable) pinentry-emacs)
-
-    ## Vterm
-    cmake
-    gnumake
-    ## Module dependencies
-    # :checkers spell
-    (aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
-    # :checkers grammar
-    languagetool
-    # :tools editorconfig
-    editorconfig-core-c
-    # :tools lookup & :lang org +roam
-    sqlite
-    # lsp
-    nodejs
-    # cc
-    ccls
-    glslang
-    # c#
-    omnisharp-roslyn
-    # markdown
-    python311Packages.grip
-    # nix
-    nixfmt
-    # sh
-    shfmt
-    # javascript
-    nodePackages.typescript-language-server
-    nodePackages.typescript # NOTE(Kevin): Eglot can't resolve the globally installed package when typescript packages doesn't exist in root of project
-    # web
-    nodePackages.vscode-langservers-extracted
-    nodePackages.stylelint
-    nodePackages.js-beautify
-    html-tidy
-    # go
-    gomodifytags
-    gopls
-    gotests
-    gore
-    gotools
-    # rust
-    rust-analyzer
-    rustfmt
-    rustc
-    cargo
-    # org +roam2 & org-roam-ui
-    graphviz
-    pandoc
-    # yaml
-    nodePackages.yaml-language-server
-    # docker
-    nodePackages.dockerfile-language-server-nodejs
-  ] ++ lib.optionals stdenv.isLinux [
-    # img capturing from emacs
-    scrot
-    # pdf
-    qpdfview
-    # racket
-    racket
-  ];
-
-  # Setting up Doom Emacs
-  #xdg.configFile."doom" = {
-  #  source = ./doom;
-  #  recursive = true;
-  #};
   xdg.configFile."emacs/config.org" = {
     source = ./emacs/config.org;
   };
-  #home.sessionPath = [ "${config.xdg.configHome}/emacs/bin" ];
 
   # Emacs Utils
   programs.zsh.shellAliases = {
     e = "emacsclient -n";
     ediff = ''e --eval "(ediff-files \"$1\" \"$2\")"''; # used to be a function
   };
-  programs.git.ignores = [ "*~" "*.*~" "#*" ".#*" ];
+  programs.git.ignores = [
+    "*~"
+    "*.*~"
+    "#*"
+    ".#*"
+  ];
   xsession.windowManager.bspwm.rules = {
-    "Emacs" = { state = "tiled"; };
-    "Emacs:org*" = { state = "floating"; };
-    "Emacs:scratch" = { state = "floating"; };
+    "Emacs" = {
+      state = "tiled";
+    };
+    "Emacs:org*" = {
+      state = "floating";
+    };
+    "Emacs:scratch" = {
+      state = "floating";
+    };
   };
 }
-
-#   fonts.fonts = [ pkgs.emacs-all-the-icons-fonts ];
-# TODO(Kevin): Install doom emacs as an emacs-overlay
-#system.activationScripts = mkIf cfg.doom.enable {
-#  installDoomEmacs = ''
-#    if [ ! -d "$XDG_CONFIG_HOME/emacs" ]; then
-#       git clone --depth=1 --single-branch https://github.com/doomemacs/doomemacs "$XDG_CONFIG_HOME/emacs"
-#    fi
-#  '';
-#};

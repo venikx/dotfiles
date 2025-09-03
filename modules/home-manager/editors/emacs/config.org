@@ -284,8 +284,13 @@ Configure =use-package= to always the reproducible package manager.
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package apheleia
   :hook ((javascript-mode . apheleia-mode)
+	 (web-mode . apheleia-mode)
          (tsx-ts-mode . apheleia-mode)
-	 (typescript-ts-mode . apheleia-mode))
+	 (typescript-ts-mode . apheleia-mode)
+	 (html-ts-mode . apheleia-mode)
+	 (css-ts-mode . apheleia-mode)
+	 (bash-ts-mode . apheleia-mode)
+	 (nix-ts-mode . apheleia-mode))
   :custom
   (apheleia-formatters-respect-indent-level nil))
 
@@ -306,6 +311,11 @@ Configure =use-package= to always the reproducible package manager.
   :ensure nil
   :hook (compilation-filter . ansi-color-compilation-filter))
 #+end_src
+
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package vterm
+  :commands vterm)
+#+end_src
 * 5. Languages
 ** 5.1 Language Server Protocol (LSP) with =Eglot=
 #+begin_src emacs-lisp :tangle "init.el"
@@ -321,7 +331,7 @@ Configure =use-package= to always the reproducible package manager.
 	 (html-ts-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs
-               '(json-ts-mode . ("vscode-json-languageserver" "--stdio")))
+               '(json-ts-mode . ("vscode-json-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
                '(go-ts-mode . ("gopls")))
   (add-to-list 'eglot-server-programs
@@ -491,7 +501,7 @@ Allow ~.eta~ templating engine to use web-mode.
 ** 5.5 Golang
 For now all configuration sits under eglot.
 
-** 5.6 C#
+** TODO 5.6 C#
 For now all configuration sits under eglot.
 
 ** TODO 5.7 C/C++
