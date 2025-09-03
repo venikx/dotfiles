@@ -157,6 +157,7 @@ Configure =use-package= to always the reproducible package manager.
 
 *** 4.2.5 Search
 #+begin_src emacs-lisp :tangle "init.el"
+(autoload 'consult-ripgrep "consult" t)
 (defvar-keymap my-search-map
   "r" (cons "rg" #'consult-ripgrep)
   "t" (cons "dictionary" #'dictionary-search))
