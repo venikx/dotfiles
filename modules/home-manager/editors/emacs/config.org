@@ -323,6 +323,9 @@ Configure =use-package= to always the reproducible package manager.
   :ensure nil
   :hook ((json-ts-mode . eglot-ensure)
          (go-ts-mode . eglot-ensure)
+         (c-ts-mode . eglot-ensure)
+         (c++-ts-mode . eglot-ensure)
+         (c-or-c++-ts-mode . eglot-ensure)
          (csharp-ts-mode . eglot-ensure)
 	 (typescript-ts-mode . eglot-ensure)
 	 (tsx-ts-mode . eglot-ensure)
@@ -352,6 +355,9 @@ Configure =use-package= to always the reproducible package manager.
   :init
   (setq major-mode-remap-alist
         '((js-json-mode . json-ts-mode)
+          (c-mode     . c-ts-mode)
+          (c++-mode     . c++-ts-mode)
+          (c-or-c++-mode-hook . c-or-c++-ts-mode)
           (go-mode     . go-ts-mode)
           (csharp-mode     . csharp-ts-mode)
           (javascript-mode . js-ts-mode)
@@ -469,6 +475,7 @@ Configure =use-package= to always the reproducible package manager.
   :after org
   :requires org-contrib
   :custom
+  (org-download-screenshot-method "scrot -s %s")
   (org-download-timestamp "%Y%m%d-"))
 #+end_src
 

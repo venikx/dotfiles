@@ -55,35 +55,66 @@ let
     epkgs.gnuplot
   ];
 
-  emacsExtraPackages = with pkgs; [
-    #### basic ####
-    gnutls
-    git
-    zstd
-    # required: consult
-    (ripgrep.override { withPCRE2 = true; })
-    fd
-    # required: vterm
-    cmake
-    gnumake
+  emacsExtraPackages =
+    with pkgs;
+    [
+      #### basic ####
+      gnutls
+      git
+      zstd
+      # required: consult
+      (ripgrep.override { withPCRE2 = true; })
+      fd
+      # required: vterm
+      cmake
+      gnumake
 
-    #### org-mode ####
-    sqlite
-    gnuplot # nutrition.el
-    pandoc
-    graphviz
+      #### org-mode ####
+      sqlite
+      gnuplot # nutrition.el
+      pandoc
+      graphviz
 
-    #### languages ####
-    editorconfig-core-c
-    nodePackages.typescript-language-server
-    nodePackages.typescript
-    nodePackages.vscode-langservers-extracted
-    nodePackages.stylelint # TODO
-    nodePackages.yaml-language-server
-    nodePackages.dockerfile-language-server-nodejs
-    nixfmt
-    shfmt
-  ];
+      ### natural languages ###
+      languagetool
+      (aspellWithDicts (
+        ds: with ds; [
+          en
+          en-computers
+          en-science
+        ]
+      ))
+
+      #### languages ####
+      editorconfig-core-c
+      nodePackages.typescript-language-server
+      nodePackages.typescript
+      nodePackages.vscode-langservers-extracted
+      nodePackages.stylelint # TODO
+      nodePackages.yaml-language-server
+      nodePackages.dockerfile-language-server-nodejs
+      nixfmt
+      shfmt
+      ccls
+      glslang
+      omnisharp-roslyn
+      gomodifytags
+      gopls
+      gotests
+      gore
+      gotools
+      rust-analyzer
+      rustfmt
+      rustc
+      cargo
+    ]
+    ++ lib.optionals stdenv.isLinux [
+      scrot # org-download
+      ## pdf
+      #qpdfview
+      ## racket
+      #racket
+    ];
 
   emacsWithAdditionalPackages = pkgs.symlinkJoin {
     name = "emacs-with-additional-packages";
@@ -101,50 +132,9 @@ let
   };
 in
 {
-  #programs.emacs.enable = true;
-  #services.emacs = { enable = true; };
-
-  home.packages =
-    with pkgs;
-    [
-      emacsWithAdditionalPackages
-      ### Optional dependencies
-      #imagemagick # for image-dired
-      ##(mkIf (config.programs.gnupg.agent.enable) pinentry-emacs)
-
-      ### Module dependencies
-      ## :checkers spell
-      #(aspellWithDicts (ds: with ds; [ en en-computers en-science ]))
-      ## :checkers grammar
-      #languagetool
-      ## :tools editorconfig
-      ## lsp
-      #nodejs
-      ## cc
-      #ccls
-      #glslang
-      ## c#
-      #omnisharp-roslyn
-      ## go
-      #gomodifytags
-      #gopls
-      #gotests
-      #gore
-      #gotools
-      ## rust
-      #rust-analyzer
-      #rustfmt
-      #rustc
-      #cargo
-    ]
-    ++ lib.optionals stdenv.isLinux [
-      ## img capturing from emacs
-      #scrot
-      ## pdf
-      #qpdfview
-      ## racket
-      #racket
-    ];
+  home.packages = with pkgs; [
+    emacsWithAdditionalPackages
+  ];
 
   xdg.configFile."emacs/config.org" = {
     source = ./emacs/config.org;
