@@ -114,6 +114,7 @@ Configure =use-package= to always the reproducible package manager.
   (user-full-name "Kevin De Baerdemaeker"))
 #+end_src
 
+
 * 4. Essentials
 ** 4.1 Display hints when pressing keys with =which-key=
 #+begin_src emacs-lisp :tangle "init.el"
@@ -218,6 +219,15 @@ Configure =use-package= to always the reproducible package manager.
   (setq doom-themes-enable-bold t    
         doom-themes-enable-italic t)
   (load-theme 'doom-tokyo-night t))
+#+end_src
+
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package emacs
+  :ensure nil
+  :config
+  (let ((font-name "Iosevka-12"))
+    (set-frame-font font-name t t)
+    (set-face-attribute 'default nil :family "Iosevka" :height 120)))
 #+end_src
 ** 4.5 Automatically refresh externally updated files with =autorevert= 
 #+begin_src emacs-lisp :tangle "init.el"

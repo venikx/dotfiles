@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   xresources.properties = {
@@ -23,14 +28,14 @@
     "*.color14" = "#${config.colorScheme.palette.base0E}";
     "*.color15" = "#${config.colorScheme.palette.base0F}";
 
-    "scratch.font" = "Fira Code:pixelsize=16";
-    "st.font" = "Fira Code:pixelsize=16";
+    "scratch.font" = "Iosevka:pixelsize=16";
+    "st.font" = "Iosevka:pixelsize=16";
     "URxvt*depth" = 32;
     "URxvt*.background" = "#${config.colorScheme.palette.base00}";
     "URxvt*.borderless" = 1;
     "URxvt*.buffered" = true;
     "URxvt*.cursorBlink" = true;
-    "URxvt*.font" = "xft:Fira Code:pixelsize=16";
+    "URxvt*.font" = "xft:Iosevka:pixelsize=16";
     "URxvt*.internalBorder" = 10;
     "URxvt*.letterSpace" = 0;
     "URxvt*.lineSpace" = 0;
@@ -45,7 +50,7 @@
     "URxvt.iso14755_52" = false;
     "URxvt.perl-ext-common" = "default,matcher";
 
-    "dmenu.font" = "xft:Fira Code:pixelsize=16";
+    "dmenu.font" = "xft:Iosevka:pixelsize=16";
     "dmenu.background" = "#${config.colorScheme.palette.base00}";
     "dmenu.foreground" = "#${config.colorScheme.palette.base07}";
     "dmenu.selbackground" = "#${config.colorScheme.palette.base0E}";

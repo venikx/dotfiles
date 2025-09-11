@@ -1,20 +1,24 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
-      sansSerif = [ "Fira Sans" ];
-      monospace = [ "Fira Code" ];
+      monospace = [ "Iosevka" ];
+      sansSerif = [ "Iosevka" ];
+      serif = [ "Iosevka" ];
     };
   };
 
   home.packages = with pkgs; [
+    iosevka
     fira-code
     fira-code-symbols
-    siji
-    barlow
-    jetbrains-mono
-    font-awesome
+    emacs-all-the-icons-fonts
   ];
 }
