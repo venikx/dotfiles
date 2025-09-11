@@ -48,6 +48,7 @@ let
     # LLM
     epkgs.copilot # TODO
     # tools
+    epkgs.exec-path-from-shell
     epkgs.osm
     epkgs.pdf-tools # TODO
     epkgs.elcord

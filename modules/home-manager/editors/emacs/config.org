@@ -114,6 +114,13 @@ Configure =use-package= to always the reproducible package manager.
   (user-full-name "Kevin De Baerdemaeker"))
 #+end_src
 
+** 3.5 Setting up the path =exec-path-from-shell=
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns x))  ;; GUI Emacs only
+  :config
+  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
+#+end_src
 
 * 4. Essentials
 ** 4.1 Display hints when pressing keys with =which-key=
