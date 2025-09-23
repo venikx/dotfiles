@@ -36,6 +36,12 @@ let
     epkgs.editorconfig
     # org
     epkgs.org-contrib
+    epkgs.ob-http
+    epkgs.ob-graphql
+    epkgs.ob-mermaid
+    epkgs.ob-nix
+    epkgs.ob-typescript
+    epkgs.ob-go
     # epkgs.org-contacts #TODO link was removed from github
     epkgs.org-roam
     epkgs.org-download
