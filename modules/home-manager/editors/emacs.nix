@@ -102,6 +102,8 @@ let
       nixfmt
       shfmt
       ccls
+      gcc
+      clang
       glslang
       omnisharp-roslyn
       gomodifytags

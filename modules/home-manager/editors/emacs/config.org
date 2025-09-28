@@ -398,9 +398,12 @@ Configure =use-package= to always the reproducible package manager.
   (org-log-reschedule 'time)
   (org-log-refile 'time)
   (org-agenda-show-habits t)
+  (org-babel-temporary-directory "~/.cache/emacs/babel-tmp/")
   
   :hook (before-save-hook . time-stamp)
   :config
+  (unless (file-exists-p org-babel-temporary-directory)
+    (make-directory org-babel-temporary-directory t))
   (defun my/org-mode-setup-time-stamp ()
     "Enable time-stamp only in Org mode."
     (setq-local time-stamp-active t
