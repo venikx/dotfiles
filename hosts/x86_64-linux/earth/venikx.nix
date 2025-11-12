@@ -1,13 +1,21 @@
-{ config, lib, pkgs, nix-colors, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  nix-colors,
+  ...
+}:
 
 {
   programs.autorandr = {
     enable = true;
     profiles = {
       "default" = {
-        fingerprint = { DP-4 = "*"; };
+        fingerprint = {
+          DP-0 = "*";
+        };
         config = {
-          DP-4 = {
+          DP-0 = {
             enable = true;
             primary = true;
             rate = "144.00";
@@ -25,7 +33,11 @@
         id = "WK7RS2C-362VDSU-6AADX3Q-AFTADBL-PNY3KJO-ALQ6HYO-S6MQMOU-6MSYYAR";
       };
     };
-    folders = { "org" = { devices = [ "air-nixos" ]; }; };
+    folders = {
+      "org" = {
+        devices = [ "air-nixos" ];
+      };
+    };
   };
 
   modules = {
