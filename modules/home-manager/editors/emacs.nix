@@ -138,14 +138,32 @@ let
       done
     '';
   };
+
+  emacsConfig =
+    pkgs.runCommand "emacs-config"
+      {
+        buildInputs = [
+          emacsWithAdditionalPackages
+          pkgs.git
+        ];
+      }
+      ''
+        mkdir -p $out
+        cp ${./emacs/config.org} $out/config.org
+        # Tangle the config.org file to generate init.el, etc.
+        ${emacsWithAdditionalPackages}/bin/emacs --batch -Q --load=ob-tangle \
+          --eval "(require 'org)" \
+          --eval "(org-babel-tangle-file \"$out/config.org\")"
+      '';
 in
 {
   home.packages = with pkgs; [
     emacsWithAdditionalPackages
   ];
 
-  xdg.configFile."emacs/config.org" = {
-    source = ./emacs/config.org;
+  home.file.".config/emacs" = {
+    source = emacsConfig;
+    recursive = true;
   };
 
   # Emacs Utils
