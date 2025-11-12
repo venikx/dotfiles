@@ -621,5 +621,15 @@ For now all configuration sits under eglot.
 (use-package gnuplot
   :ensure t)
 #+end_src
-
-
+** 6.6 Snippets
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package yasnippet
+  :hook
+  ((prog-mode . yas-minor-mode)
+   (text-mode . yas-minor-mode))
+  :init
+  (setq yas-snippet-dirs
+        '("~/.config/emacs/snippets"))
+  :config
+  (yas-reload-all))
+#+end_src

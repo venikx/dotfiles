@@ -59,6 +59,7 @@ let
     epkgs.elcord
     epkgs.nov
     epkgs.gnuplot
+    epkgs.yasnippet
   ];
 
   emacsExtraPackages =
@@ -163,6 +164,11 @@ in
 
   home.file.".config/emacs" = {
     source = emacsConfig;
+    recursive = true;
+  };
+
+  home.file.".config/emacs/snippets" = {
+    source = ./emacs/snippets;
     recursive = true;
   };
 
