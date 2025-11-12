@@ -1,12 +1,24 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 {
   imports = [ ./hardware-configuration.nix ];
   system.stateVersion = "22.05";
 
+  environment.systemPackages = [
+    pkgs.sbctl
+  ];
+
   boot = {
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
+    loader.systemd-boot.enable = lib.mkForce false;
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
+    };
   };
 
   hardware.nvidia.open = false;

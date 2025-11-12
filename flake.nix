@@ -30,17 +30,38 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.3";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, nixos-apple-silicon, home-manager
-    , darwin, emacs-overlay, nix-colors, disko }:
-    let lib = nixpkgs.lib;
-    in {
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixos-hardware,
+      nixos-apple-silicon,
+      home-manager,
+      darwin,
+      emacs-overlay,
+      nix-colors,
+      disko,
+      lanzaboote,
+    }:
+    let
+      lib = nixpkgs.lib;
+    in
+    {
       nixosConfigurations = {
-        earth = lib.nixosSystem rec { # desktop
+        earth = lib.nixosSystem rec {
+          # desktop
           system = "x86_64-linux";
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
+            lanzaboote.nixosModules.lanzaboote
+
             ./hosts/${system}/earth
             ./modules/nixos
             nixos-hardware.nixosModules.common-pc
@@ -62,7 +83,8 @@
           ];
         };
 
-        limber-lt-kdb = lib.nixosSystem rec { # laptop
+        limber-lt-kdb = lib.nixosSystem rec {
+          # laptop
           system = "x86_64-linux";
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
@@ -85,7 +107,8 @@
           ];
         };
 
-        air = lib.nixosSystem rec { # asahi macbook
+        air = lib.nixosSystem rec {
+          # asahi macbook
           system = "aarch64-linux";
           specialArgs = {
             inherit home-manager emacs-overlay nixos-apple-silicon;
