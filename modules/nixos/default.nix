@@ -1,5 +1,11 @@
-{ pkgs, lib, ... }: {
-  imports = [ ../common.nix ../audio ../desktop ../services ];
+{ pkgs, lib, ... }:
+{
+  imports = [
+    ../common.nix
+    ../audio
+    ../desktop
+    ../services
+  ];
 
   time.timeZone = lib.mkDefault "Europe/Helsinki";
   i18n.defaultLocale = lib.mkDefault "en_US.UTF-8";
@@ -17,5 +23,13 @@
   '';
 
   hardware.keyboard.zsa.enable = true;
-  environment.systemPackages = with pkgs; [ wally-cli ];
+  environment.systemPackages = with pkgs; [
+    wally-cli
+    winbox4
+  ];
+
+  programs.winbox = {
+    enable = true;
+    openFirewall = true;
+  };
 }
