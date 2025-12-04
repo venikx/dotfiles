@@ -44,6 +44,7 @@ let
     epkgs.ob-go
     # epkgs.org-contacts #TODO link was removed from github
     epkgs.org-roam
+    epkgs.denote
     epkgs.org-download
     epkgs.org-ql
     # languages
@@ -51,6 +52,7 @@ let
     epkgs.web-mode
     epkgs.nix-ts-mode
     epkgs.markdown-mode
+    epkgs.glsl-mode
     # LLM
     epkgs.copilot # TODO
     # tools

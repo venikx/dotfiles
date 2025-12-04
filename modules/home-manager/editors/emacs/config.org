@@ -243,7 +243,6 @@ Configure =use-package= to always the reproducible package manager.
   :custom
   (auto-revert-verbose t))
 #+end_src
-
 ** 4.6 Bits and bops related to completion of various things
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package vertico
@@ -388,7 +387,6 @@ Configure =use-package= to always the reproducible package manager.
   (require 'org-habit)
   (add-to-list 'org-modules 'org-habit)
   :custom
-  (org-confirm-babel-evaluate nil)
   (org-edit-src-content-indentation 0)
   (org-agenda-files '("~/org/gtd" "~/org/collections"))
   (org-startup-folded 'content)
@@ -399,7 +397,11 @@ Configure =use-package= to always the reproducible package manager.
   (org-log-refile 'time)
   (org-agenda-show-habits t)
   (org-babel-temporary-directory "~/.cache/emacs/babel-tmp/")
-  
+  (org-attach-method-type 'id)
+  (org-attach-use-inheritance t)
+  (org-attach-id-to-path-function-list
+        '(org-attach-id-uuid-folder-format))
+  (org-attach-method-type 'id)
   :hook (before-save-hook . time-stamp)
   :config
   (unless (file-exists-p org-babel-temporary-directory)
@@ -458,7 +460,7 @@ Configure =use-package= to always the reproducible package manager.
   (org-roam-directory "~/org")
   (org-roam-dailies-directory nil)
   (org-roam-completion-everywhere nil)
-  (org-roam-file-exclude-regexp (rx (or ".attach/" "index.org" "gtd/")))
+  (org-roam-file-exclude-regexp (rx (or "data/" "index.org" "gtd/")))
   (org-roam-db-node-include-function
    (lambda ()
      (not (seq-intersection '("ATTACH" "ARCHIVE") (org-get-tags)))))
@@ -495,6 +497,25 @@ Configure =use-package= to always the reproducible package manager.
 
 
 #+begin_src emacs-lisp :tangle "init.el"
+(use-package denote
+  :ensure t
+  :hook (dired-mode . denote-dired-mode)
+  :bind
+  (("C-c n n" . denote)
+   ("C-c n r" . denote-rename-file)
+   ("C-c n l" . denote-link)
+   ("C-c n b" . denote-backlinks)
+   ("C-c n d" . denote-dired)
+   ("C-c n g" . denote-grep))
+  :config
+  (setq denote-directory (expand-file-name "~/org/"))
+  (setq denote-known-keywords '("programming" "emacs"))
+
+  ;; Automatically rename Denote buffers when opening them so that
+  ;; instead of their long file name they have, for example, a literal
+  ;; "[D]" followed by the file's title.  Read the doc string of
+  ;; `denote-rename-buffer-format' for how to modify this.
+  (denote-rename-buffer-mode 1))
 #+end_src
 
 *** 5.3.2 Nutrition 
@@ -525,7 +546,8 @@ Configure =use-package= to always the reproducible package manager.
   :after org
   :requires org-contrib
   :custom
-  (org-download-screenshot-method "scrot -s %s")
+  (org-download-screenshot-method "scrcap")
+  (org-download-method 'attach)
   (org-download-timestamp "%Y%m%d-"))
 #+end_src
 
@@ -584,6 +606,11 @@ For now all configuration sits under eglot.
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)))
 #+end_src
+** 5.10 GLSL
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package glsl-mode) 
+#+end_src
+
 * 6 Extra's
 ** 6.1 View coordinates on OpenStreetMap with =osm=
 #+begin_src emacs-lisp :tangle "init.el"
