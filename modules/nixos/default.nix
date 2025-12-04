@@ -32,4 +32,6 @@
     enable = true;
     openFirewall = true;
   };
+
+  services.pcscd.enable = true;
 }
