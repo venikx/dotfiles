@@ -126,6 +126,7 @@ Configure =use-package= to always the reproducible package manager.
 ** 4.2 Keymap defintions
 *** 4.2.1 Buffers
 #+begin_src emacs-lisp :tangle "init.el"
+(autoload 'consult-buffer "consult" t)
 (defvar-keymap my-buffer-map
   "b" (cons "switch buffer" #'consult-buffer)
   "k" (cons "kill buffer" #'kill-current-buffer)
