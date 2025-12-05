@@ -400,7 +400,7 @@ Configure =use-package= to always the reproducible package manager.
   (org-attach-method-type 'id)
   (org-attach-use-inheritance t)
   (org-attach-id-to-path-function-list
-        '(org-attach-id-uuid-folder-format))
+   '(org-attach-id-uuid-folder-format))
   (org-attach-method-type 'id)
   :hook (before-save-hook . time-stamp)
   :config
@@ -417,6 +417,12 @@ Configure =use-package= to always the reproducible package manager.
   (add-hook 'org-mode-hook #'my/org-mode-setup-time-stamp)
 
   (keymap-set my-notes-map "c" (cons "capture" #'org-capture))
+
+  (defvar-keymap my-org-leader-map
+    "i" (cons "create id"     #'org-id-get-create))
+  (evil-define-key '(normal visual motion) org-mode-map
+    (kbd "SPC m") my-org-leader-map)
+
   (setq org-capture-templates
 	(append org-capture-templates
                 '(("t" "todo" entry
@@ -452,65 +458,58 @@ Configure =use-package= to always the reproducible package manager.
 (use-package ob-go         :after org) 
 #+end_src
 
-*** 5.3.1 Notes
+*** 5.3.1 TODO Notes
 #+begin_src emacs-lisp :tangle "init.el"
-(use-package org-roam
-  :after (org evil)
-  :custom
-  (org-roam-directory "~/org")
-  (org-roam-dailies-directory nil)
-  (org-roam-completion-everywhere nil)
-  (org-roam-file-exclude-regexp (rx (or "data/" "index.org" "gtd/")))
-  (org-roam-db-node-include-function
-   (lambda ()
-     (not (seq-intersection '("ATTACH" "ARCHIVE") (org-get-tags)))))
-
-  (org-roam-capture-templates
-   '(("n" "Note" plain (file "~/org/templates/default-note.org")
-      :target (file "%<%Y%m%d%H%M%S>.org")
-      :unnarrowed t)
-     ("w" "Work" plain (file "~/org/templates/default-note.org")
-      :target (file "work/%<%Y%m%d%H%M%S>.org")
-      :unnarrowed t)
-     ("s" "Source" plain (file "~/org/templates/source-note.org")
-      :target (file "%<%Y%m%d%H%M%S>.org")
-      :unnarrowed t)
-     ("b" "Book" entry (file "~/org/templates/book-entry.org")
-      :target (file "collections/books.org")
-      :prepend t
-      :unnarrowed t)))
-  :config
-  (org-roam-setup)
-
-  (defvar-keymap my-org-leader-map
-    "i" (cons "insert node"   #'org-roam-node-insert)
-    "o" (cons "create id"     #'org-id-get-create)
-    "t" (cons "add tag"       #'org-roam-tag-add)
-    "a" (cons "add alias"     #'org-roam-alias-add)
-    "l" (cons "toggle buffer" #'org-roam-buffer-toggle))
-  (evil-define-key '(normal visual motion) org-mode-map
-    (kbd "SPC m") my-org-leader-map)
-
-  (keymap-set my-notes-map "f" (cons "find note" #'org-roam-node-find))
-  (keymap-set my-notes-map "r" (cons "random note" #'org-roam-node-random)))
+;;(use-package org-roam
+;;  :after (org evil)
+;;  :custom
+;;  (org-roam-directory "~/org")
+;;  (org-roam-dailies-directory nil)
+;;  (org-roam-completion-everywhere nil)
+;;  (org-roam-file-exclude-regexp (rx (or "data/" "index.org" "gtd/")))
+;;  (org-roam-db-node-include-function
+;;   (lambda ()
+;;     (not (seq-intersection '("ATTACH" "ARCHIVE") (org-get-tags)))))
+;;
+;;  (org-roam-capture-templates
+;;   '(("n" "Note" plain (file "~/org/templates/default-note.org")
+;;      :target (file "%<%Y%m%d%H%M%S>.org")
+;;      :unnarrowed t)
+;;     ("w" "Work" plain (file "~/org/templates/default-note.org")
+;;      :target (file "work/%<%Y%m%d%H%M%S>.org")
+;;      :unnarrowed t)
+;;     ("s" "Source" plain (file "~/org/templates/source-note.org")
+;;      :target (file "%<%Y%m%d%H%M%S>.org")
+;;      :unnarrowed t)
+;;     ("b" "Book" entry (file "~/org/templates/book-entry.org")
+;;      :target (file "collections/books.org")
+;;      :prepend t
+;;      :unnarrowed t)))
 #+end_src
-
 
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package denote
-  :ensure t
+  :demand t
+  :after (org evil)
   :hook (dired-mode . denote-dired-mode)
-  :bind
-  (("C-c n n" . denote)
-   ("C-c n r" . denote-rename-file)
-   ("C-c n l" . denote-link)
-   ("C-c n b" . denote-backlinks)
-   ("C-c n d" . denote-dired)
-   ("C-c n g" . denote-grep))
   :config
   (setq denote-directory (expand-file-name "~/org/"))
   (setq denote-known-keywords '("programming" "emacs"))
+  (setq denote-templates
+        '((note . "~/org/templates/default-note.org")))
+  (setq denote-org-front-matter "#+title:      %s
+,#+date:       %s
+,#+filetags:   %s
+,#+identifier: %s
+,#+signature:  %s
+")
 
+  (keymap-set my-notes-map "f" (cons "find note" #'denote-open-or-create))
+  (keymap-set my-notes-map "i" (cons "insert note" #'denote-link-or-create))
+  (keymap-set my-notes-map "n" (cons "open note" #'denote-link-open-at-point))
+  (keymap-set my-notes-map "r" (cons "rename note" #'denote-rename-file))
+  (keymap-set my-notes-map "d" (cons "query note" #'denote-dired))
+  (keymap-set my-notes-map "b" (cons "backlinks" #'denote-backlink))
   ;; Automatically rename Denote buffers when opening them so that
   ;; instead of their long file name they have, for example, a literal
   ;; "[D]" followed by the file's title.  Read the doc string of
