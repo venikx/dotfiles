@@ -420,6 +420,7 @@ Configure =use-package= to always the reproducible package manager.
   (keymap-set my-notes-map "c" (cons "capture" #'org-capture))
 
   (defvar-keymap my-org-leader-map
+    "o" (cons "open link"     #'org-open-at-point)
     "i" (cons "create id"     #'org-id-get-create))
   (evil-define-key '(normal visual motion) org-mode-map
     (kbd "SPC m") my-org-leader-map)
@@ -459,35 +460,7 @@ Configure =use-package= to always the reproducible package manager.
 (use-package ob-go         :after org) 
 #+end_src
 
-*** 5.3.1 TODO Notes
-#+begin_src emacs-lisp :tangle "init.el"
-;;(use-package org-roam
-;;  :after (org evil)
-;;  :custom
-;;  (org-roam-directory "~/org")
-;;  (org-roam-dailies-directory nil)
-;;  (org-roam-completion-everywhere nil)
-;;  (org-roam-file-exclude-regexp (rx (or "data/" "index.org" "gtd/")))
-;;  (org-roam-db-node-include-function
-;;   (lambda ()
-;;     (not (seq-intersection '("ATTACH" "ARCHIVE") (org-get-tags)))))
-;;
-;;  (org-roam-capture-templates
-;;   '(("n" "Note" plain (file "~/org/templates/default-note.org")
-;;      :target (file "%<%Y%m%d%H%M%S>.org")
-;;      :unnarrowed t)
-;;     ("w" "Work" plain (file "~/org/templates/default-note.org")
-;;      :target (file "work/%<%Y%m%d%H%M%S>.org")
-;;      :unnarrowed t)
-;;     ("s" "Source" plain (file "~/org/templates/source-note.org")
-;;      :target (file "%<%Y%m%d%H%M%S>.org")
-;;      :unnarrowed t)
-;;     ("b" "Book" entry (file "~/org/templates/book-entry.org")
-;;      :target (file "collections/books.org")
-;;      :prepend t
-;;      :unnarrowed t)))
-#+end_src
-
+*** 5.3.1 Notes
 #+begin_src emacs-lisp :tangle "init.el"
 (use-package denote
   :demand t
@@ -496,14 +469,50 @@ Configure =use-package= to always the reproducible package manager.
   :config
   (setq denote-directory (expand-file-name "~/org/"))
   (setq denote-known-keywords '("programming" "emacs"))
+  (setq denote-prompts '(title keywords template))
   (setq denote-templates
-        '((note . "~/org/templates/default-note.org")))
+	;; TODO: replace this with interactie hidden org-capture templates
+        '((note . "#+modified:   %U\n\n\n* References")))
   (setq denote-org-front-matter "#+title:      %s
 ,#+date:       %s
 ,#+filetags:   %s
 ,#+identifier: %s
 ,#+signature:  %s
 ")
+
+  (setq org-capture-templates
+        (append org-capture-templates
+                '(("d" "denote")
+		  ("dn" "denote (plain)" plain
+		   (file denote-last-path)
+                   (function
+                    (lambda ()
+                      (let ((denote-use-template "#+modified:   %U\n\n%?\n\n* References")
+			    (denote-org-capture-specifiers nil))
+			(denote-org-capture-with-prompts :title :keywords))))
+                   :unnarrowed t)
+		  ("dw" "denote (work)" plain
+		   (file denote-last-path)
+                   (function
+                    (lambda ()
+                      (let ((denote-use-template "#+modified:   %U\n\n%?\n\n* References")
+                            (denote-use-directory (expand-file-name "work" (denote-directory)))
+			    (denote-org-capture-specifiers nil))
+			(denote-org-capture-with-prompts :title :keywords))))
+                   :unnarrowed t)
+		  ("ds" "denote (source)" plain
+		   (file denote-last-path)
+                   (function
+                    (lambda ()
+                      (let ((denote-use-template "#+modified:   %U\n\n%?\n\n* Metadata
+- Creator(s) :: %^{Creator(s)}
+- [[%^{Link to Source}][Source]]
+- Recommended By :: %^{Recommended By}
+- Reason :: %^{Reason}")
+                            (denote-use-directory (expand-file-name "references" (denote-directory)))
+                            (denote-org-capture-specifiers nil))
+			(denote-org-capture-with-prompts :title :keywords))))
+                   :unnarrowed t))))
 
   (keymap-set my-notes-map "f" (cons "find note" #'denote-open-or-create))
   (keymap-set my-notes-map "i" (cons "insert note" #'denote-link-or-create))
