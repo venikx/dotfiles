@@ -1,181 +1,93 @@
-#+title: GNU Emacs Configuration
-#+author: Kevin De Baerdemaeker
-#+email: code@venikx.com.com
-#+language: en
-#+startup: content indent
+;; init.el --- Kevin De Baerdemaeker init -*- lexical-binding: t; -*-
 
-Felt like trying out Emacs 30, and see if I can get away with a bare
-minimum configuration. Written from scratch.
+;;; Commentary:
+;;; Felt like trying out Emacs 30, and see if I can get
+;;; away with a bare minimum configuration. Written from scratch.
+;;; Kevin De Baerdemaeker's Emacs configuration.
+;;;
+;;; Requirements:
+;;; 1. evil mode: neovim is still good tho
+;;; 2. org-mode: only reason I'm not using neovim
+;;; 3. minimal: keep maintance burden small
 
-My personal requirements:
-- evil mode :: love vim motions
-- org-mode :: the only reason why I don't use neovim
-- minimal :: to keep maintenance burden small
-  
-* 1. How can I use this?
-I prefer managing my configuration completely in org-mode, which is I
-tangle the code snippets into their respecitve ~*.el~ files. If you
-evaluate the following code block, org-mode will generate two file:
-~early-init.el~ and ~init.el~.
+;;; Code 
+;;; Bootstrapping
+(setq use-package-always-ensure nil) ; I only use pkgs defined in nix config
+(use-package diminish)
 
-#+begin_src emacs-lisp :tangle no :results none
-(org-babel-tangle)
-#+end_src
-
-* 2. The early initialisation of Emacs
-Emacs reads the ~early-init.el~ when it starts up, but before
-rendering the initial frame (AKA window).
-
-** 2.1 Disable annoying UI ding dongs
-#+begin_src emacs-lisp :tangle "early-init.el"
-(setq frame-resize-pixelwise t
-      frame-inhibit-implied-resize t
-      frame-title-format '("%b")
-      ring-bell-function 'ignore
-      use-dialog-box t
-      use-file-dialog nil
-      use-short-answers t
-      inhibit-splash-screen t
-      inhibit-startup-screen t
-      inhibit-x-resources t
-      inhibit-startup-buffer-menu t)
-
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(tooltip-mode -1)
-#+end_src
-
-** 2.2 Disable default package manager
-I use [[https://github.com/radian-software/straight.el][straight]] instead.
-
-#+begin_src emacs-lisp :tangle "early-init.el"
-(setq package-enable-at-startup nil)
-(setq use-package-always-ensure nil)
-#+end_src
-
-** 2.3 Disable built-in org-mode package
-#+begin_src emacs-lisp :tangle "early-init.el"
-(setq org-modules nil) 
-#+end_src
-
-* 3. Preparing the main configuration
-** 3.1 Disable backups
-Live dangerously!
-
-#+begin_src emacs-lisp :tangle "init.el"
-(setq make-backup-files nil)
-(setq backup-inhibited nil)
-(setq create-lockfiles nil)
-#+end_src
-
-** 3.2 Disable custom variables
-If I need to perist a variable, I'll make a config change. Make the
-config reproducible.
-
-#+begin_src emacs-lisp :tangle "init.el"
-(setq custom-file (make-temp-file "emacs-custom.el"))
-#+end_src
-
-** 3.3 Reproducible package management with =straight= (deprecated for NixOS)
-Install =straight=.
-
-#+begin_src emacs-lisp :tangle no
-(setq straight-repository-branch "develop")
-
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-#+end_src
-
-Configure =use-package= to always the reproducible package manager.
-
-#+begin_src emacs-lisp :tangle no
-(setq straight-defaults '(:depth 1))
-
-(use-package straight
-  :custom
-  (straight-use-package-by-default t))
-#+end_src
-
-** 3.4 Personal Details
-#+begin_src emacs-lisp :tangle "init.el"
+;;; What I'd call "sane" defaults for Emacs
 (use-package emacs
-  :ensure nil
+  :init
+  (setq use-short-answers t
+	custom-file (make-temp-file "emacs-custom.el") ; don't want local adjustments to be saved 
+	ring-bell-function 'ignore
+	help-window-select t
+	inhibit-splash-screen t
+	inhibit-startup-screen t
+	inhibit-startup-buffer-menu t
+        backup-by-copying t
+        backup-directory-alist '((cons "." (file-name-concat user-emacs-directory "backup/")))
+	create-lockfiles nil)
+  :config
+  (electric-pair-mode 1)
+  (auto-save-visited-mode 1)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (tooltip-mode -1)
+  (let ((font-name "Iosevka-12"))
+    (set-frame-font font-name t t)
+    (set-face-attribute 'default nil :family "Iosevka" :height 120))
   :custom
+  (read-extended-command-predicate #'command-completion-default-include-p) ; filters M-x to show relevant to context
   (user-full-name "Kevin De Baerdemaeker"))
-#+end_src
 
+(use-package doom-themes
+  :config
+  (setq doom-themes-enable-bold t    
+        doom-themes-enable-italic t)
+  (load-theme 'doom-tokyo-night t))
 
-* 4. Essentials
-** 4.1 Display hints when pressing keys with =which-key=
-#+begin_src emacs-lisp :tangle "init.el"
+;;; Essentials
+;; Helper functions
+(defun my-future-function ()
+  "TODO: Not implemented yet."
+  (interactive)
+  (message "Function not implemented yet."))
+
+;; Keybindings using keymaps, and evil configuration
 (use-package which-key
-  :ensure nil
-  :hook (after-init . which-key-mode))
-#+end_src
+  :diminish which-key-mode
+  :config
+  (which-key-mode)
+  (which-key-setup-minibuffer))
 
-** 4.2 Keymap defintions
-*** 4.2.1 Buffers
-#+begin_src emacs-lisp :tangle "init.el"
 (autoload 'consult-buffer "consult" t)
 (defvar-keymap my-buffer-map
   "b" (cons "switch buffer" #'consult-buffer)
   "k" (cons "kill buffer" #'kill-current-buffer)
   "n" (cons "next buffer" #'next-buffer)
   "p" (cons "previous buffer" #'previous-buffer))
-#+end_src
 
-*** 4.2.2 Files
-#+begin_src emacs-lisp :tangle "init.el"
 (defvar-keymap my-files-map
   "C" (cons "copy file" #'copy-file)
   "D" (cons "delete file" #'delete-file)
   "f" (cons "find file" #'find-file)
   "R" (cons "rename file" #'rename-file))
-#+end_src
 
-*** 4.2.3 Git
-#+begin_src emacs-lisp :tangle "init.el"
 (defvar-keymap my-git-map
   "g" (cons "git status" #'magit-status))
-#+end_src
 
-*** 4.2.4 Project
-#+begin_src emacs-lisp :tangle "init.el"
 (defvar-keymap my-project-map
   "b" (cons "switch buffer" #'consult-project-buffer)
   "f" (cons "find file" #'project-find-file)
   "s" (cons "switch project" #'project-switch-project))
-#+end_src
 
-*** 4.2.5 Search
-#+begin_src emacs-lisp :tangle "init.el"
 (autoload 'consult-ripgrep "consult" t)
 (defvar-keymap my-search-map
   "r" (cons "rg" #'consult-ripgrep)
   "t" (cons "dictionary" #'dictionary-search))
-#+end_src
 
-*** 4.2.6 Notes
-#+begin_src emacs-lisp :tangle "init.el"
 (defvar-keymap my-notes-map)
-#+end_src
-
-** 4.3 Move around using vim motions with =evil=
-#+begin_src emacs-lisp :tangle "init.el"
-(defun my-future-function ()
-  "TODO: Not implemented yet."
-  (interactive)
-  (message "Function not implemented yet."))
 
 (defvar-keymap my-leader-map
   "b" (cons "buffer" my-buffer-map) 
@@ -218,34 +130,8 @@ Configure =use-package= to always the reproducible package manager.
 (use-package evil-commentary
   :after evil
   :hook (evil-mode . evil-commentary-mode))
-#+end_src
-** 4.4 Theming with =doom-themes=
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package doom-themes
-  :config
-  (setq doom-themes-enable-bold t    
-        doom-themes-enable-italic t)
-  (load-theme 'doom-tokyo-night t))
-#+end_src
 
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package emacs
-  :ensure nil
-  :config
-  (let ((font-name "Iosevka-12"))
-    (set-frame-font font-name t t)
-    (set-face-attribute 'default nil :family "Iosevka" :height 120)))
-#+end_src
-** 4.5 Automatically refresh externally updated files with =autorevert= 
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package autorevert
-  :ensure nil
-  :hook (after-init . global-auto-revert-mode)
-  :custom
-  (auto-revert-verbose t))
-#+end_src
-** 4.6 Bits and bops related to completion of various things
-#+begin_src emacs-lisp :tangle "init.el"
+;; Completion
 (use-package vertico
   :custom
   (vertico-cycle t)
@@ -274,30 +160,52 @@ Configure =use-package= to always the reproducible package manager.
   :config
   (global-corfu-mode))
 
-(use-package emacs
-  :ensure nil
-  :custom
-  (electric-pair-mode 1)
-  (tab-always-indent 'complete)
-  (text-mode-ispell-word-completion nil)
-  (read-extended-command-predicate #'command-completion-default-include-p))
-#+end_src
-** 4.7 Magically git client with =magit=
-#+begin_src emacs-lisp :tangle "init.el"
+;; version control
 (use-package magit
   :commands (magit-status magit-blame))
 
 (use-package magit-todos
   :after magit
   :config (magit-todos-mode 1))
-#+end_src
-** 4.8 Configuring the path with =envrc= and =load-shell=
-#+begin_src emacs-lisp :tangle "init.el"
+
+;; Misc
+(use-package autorevert
+  :hook (after-init . global-auto-revert-mode) ; useful for when files change on disk
+  :custom
+  (auto-revert-verbose t))
+
+(use-package display-line-numbers
+  :hook ((prog-mode . display-line-numbers-mode)
+         (text-mode . display-line-numbers-mode)))
+
 (use-package envrc
   :hook (after-init . envrc-global-mode))
-#+end_src
-** 4.9 Format using recommended tooling with =apheleia= and =editorconfig=
-#+begin_src emacs-lisp :tangle "init.el"
+
+;;; Random tools and software
+(use-package elcord
+  :commands (elcord-mode))
+
+(use-package nov
+  :defer t
+  :mode ("\\.\\(epub\\|mobi\\)\\'" . nov-mode))
+
+(use-package gnuplot
+  :ensure t)
+
+(use-package vterm
+  :commands vterm)
+
+(use-package osm
+  :custom
+  (osm-server 'default)
+  (osm-copyright t))
+
+;;; Programming Languages
+;; Formatting
+(use-package editorconfig
+  :config
+  (editorconfig-mode 1))
+
 (use-package apheleia
   :hook ((javascript-mode . apheleia-mode)
 	 (web-mode . apheleia-mode)
@@ -310,33 +218,19 @@ Configure =use-package= to always the reproducible package manager.
   :custom
   (apheleia-formatters-respect-indent-level nil))
 
-(use-package editorconfig
+;; Code snippets
+(use-package yasnippet
+  :hook
+  ((prog-mode . yas-minor-mode)
+   (text-mode . yas-minor-mode))
+  :init
+  (setq yas-snippet-dirs
+        '("~/.config/emacs/snippets"))
   :config
-  (editorconfig-mode 1))
-#+end_src
-** 4.10 Misc
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package display-line-numbers
-  :ensure nil
-  :hook ((prog-mode . display-line-numbers-mode)
-         (text-mode . display-line-numbers-mode)))
-#+end_src
+  (yas-reload-all))
 
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package ansi-color
-  :ensure nil
-  :hook (compilation-filter . ansi-color-compilation-filter))
-#+end_src
-
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package vterm
-  :commands vterm)
-#+end_src
-* 5. Languages
-** 5.1 Language Server Protocol (LSP) with =Eglot=
-#+begin_src emacs-lisp :tangle "init.el"
+;; Language servers
 (use-package eglot
-  :ensure nil
   :hook ((json-ts-mode . eglot-ensure)
          (go-ts-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
@@ -362,10 +256,8 @@ Configure =use-package= to always the reproducible package manager.
                '(css-ts-mode . ("vscode-css-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
                '(html-ts-mode . ("vscode-html-language-server" "--stdio"))))
-#+end_src
 
-** 5.2 Enable syntax highlighting with =treesitter=
-#+begin_src emacs-lisp :tangle "init.el"
+;; Treesitter
 (use-package emacs
   :ensure nil
   :init
@@ -379,9 +271,35 @@ Configure =use-package= to always the reproducible package manager.
           (javascript-mode . js-ts-mode)
           (html-mode      . html-ts-mode)
           (css-mode      . css-ts-mode))))
-  #+end_src
-** 5.3 Org
-#+begin_src emacs-lisp :tangle "init.el"
+
+;; Major Modes
+(use-package javascript-mode
+  :ensure nil
+  :mode (("\\.mjs\\'" . javascript-mode)))
+
+(use-package typescript-ts-mode
+  :ensure nil
+  :mode (("\\.ts\\'" . typescript-ts-mode)))
+
+(use-package tsx-ts-mode
+  :ensure nil
+  :mode (("\\.jsx\\'" . tsx-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode)))
+
+(use-package web-mode
+  :mode (("\\.eta\\'" . web-mode)
+	 ("\\.astro\\'" . web-mode)))
+
+(use-package nix-ts-mode
+  :mode "\\.nix\\'")
+
+(use-package markdown-mode
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)))
+
+(use-package glsl-mode)
+
+;;; Org-mode
 (use-package org
   :config
   (require 'org-capture)
@@ -457,11 +375,9 @@ Configure =use-package= to always the reproducible package manager.
 (use-package ob-mermaid    :after org) 
 (use-package ob-nix        :after org) 
 (use-package ob-typescript :after org)
-(use-package ob-go         :after org) 
-#+end_src
+(use-package ob-go         :after org)
 
-*** 5.3.1 Notes
-#+begin_src emacs-lisp :tangle "init.el"
+;; Notes
 (use-package denote
   :demand t
   :after (org evil)
@@ -474,10 +390,10 @@ Configure =use-package= to always the reproducible package manager.
 	;; TODO: replace this with interactie hidden org-capture templates
         '((note . "#+modified:   %U\n\n\n* References")))
   (setq denote-org-front-matter "#+title:      %s
-,#+date:       %s
-,#+filetags:   %s
-,#+identifier: %s
-,#+signature:  %s
+#+date:       %s
+#+filetags:   %s
+#+identifier: %s
+#+signature:  %s
 ")
 
   (setq org-capture-templates
@@ -525,20 +441,16 @@ Configure =use-package= to always the reproducible package manager.
   ;; "[D]" followed by the file's title.  Read the doc string of
   ;; `denote-rename-buffer-format' for how to modify this.
   (denote-rename-buffer-mode 1))
-#+end_src
 
-*** 5.3.2 Nutrition 
-#+begin_src emacs-lisp :tangle "init.el"
 (use-package org-ql)
 
+;; Nutrition
 (use-package org
   :config
   (when (file-exists-p "~/org/collections/nutrition.org")
     (org-babel-load-file "~/org/collections/nutrition.org")))
-#+end_src
 
-*** 5.3.3 Extra
-#+begin_src emacs-lisp :tangle "init.el"
+;; Extras
 (use-package org-contrib)
 
 ;(use-package org-contacts
@@ -558,114 +470,3 @@ Configure =use-package= to always the reproducible package manager.
   (org-download-screenshot-method "scrcap")
   (org-download-method 'attach)
   (org-download-timestamp "%Y%m%d-"))
-#+end_src
-
-** 5.4 Web
-Anything Typescript, Javascript related 
-
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package javascript-mode
-  :ensure nil
-  :mode (("\\.mjs\\'" . javascript-mode)))
-
-(use-package typescript-ts-mode
-  :ensure nil
-  :mode (("\\.ts\\'" . typescript-ts-mode)))
-
-(use-package tsx-ts-mode
-  :ensure nil
-  :mode (("\\.jsx\\'" . tsx-ts-mode)
-         ("\\.tsx\\'" . tsx-ts-mode)))
-#+end_src
-
-Allow ~.eta~ templating engine to use web-mode.
-
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package web-mode
-  :mode (("\\.eta\\'" . web-mode)
-	 ("\\.astro\\'" . web-mode)))
-#+end_src
-
-** 5.5 Golang
-For now all configuration sits under eglot.
-
-** TODO 5.6 C#
-For now all configuration sits under eglot.
-
-** TODO 5.7 C/C++
-#+begin_src emacs-lisp
-(setq lsp-clients-clangd-args '("-j=3"
-                                "--background-index"
-                                "--clang-tidy"
-                                "--completion-style=detailed"
-                                "--header-insertion=never"
-                                "--header-insertion-decorators=0"))
-(after! lsp-clangd (set-lsp-priority! 'clangd 2))
-#+end_src
-
-** 5.8 Nix
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package nix-ts-mode
-  :mode "\\.nix\\'")
-#+end_src
-
-** 5.9 Markdown
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package markdown-mode
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)))
-#+end_src
-** 5.10 GLSL
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package glsl-mode) 
-#+end_src
-
-* 6 Extra's
-** 6.1 View coordinates on OpenStreetMap with =osm=
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package osm
-  :custom
-  (osm-server 'default)
-  (osm-copyright t))
-#+end_src
-
-** 6.2 Showing Emacs in Discord with =elcord=
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package elcord
-  :commands (elcord-mode))
-#+end_src
-
-** 6.3 Reading ebooks with =nov=
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package nov
-  :defer t
-  :mode ("\\.\\(epub\\|mobi\\)\\'" . nov-mode))
-#+end_src
-
-** 6.4 TODO LLM's
-#+begin_src emacs-lisp
-(use-package copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)))
-#+end_src
-** 6.5 Plotting
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package gnuplot
-  :ensure t)
-#+end_src
-** 6.6 Snippets
-#+begin_src emacs-lisp :tangle "init.el"
-(use-package yasnippet
-  :hook
-  ((prog-mode . yas-minor-mode)
-   (text-mode . yas-minor-mode))
-  :init
-  (setq yas-snippet-dirs
-        '("~/.config/emacs/snippets"))
-  :config
-  (yas-reload-all))
-#+end_src

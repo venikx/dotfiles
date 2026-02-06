@@ -10,6 +10,7 @@
 let
   inherit (lib) mkIf;
   emacsPackageList = epkgs: [
+    epkgs.diminish
     # vim bindings
     epkgs.evil
     epkgs.evil-surround
@@ -141,23 +142,6 @@ let
       done
     '';
   };
-
-  emacsConfig =
-    pkgs.runCommand "emacs-config"
-      {
-        buildInputs = [
-          emacsWithAdditionalPackages
-          pkgs.git
-        ];
-      }
-      ''
-        mkdir -p $out
-        cp ${./emacs/config.org} $out/config.org
-        # Tangle the config.org file to generate init.el, etc.
-        ${emacsWithAdditionalPackages}/bin/emacs --batch -Q --load=ob-tangle \
-          --eval "(require 'org)" \
-          --eval "(org-babel-tangle-file \"$out/config.org\")"
-      '';
 in
 {
   home.packages = with pkgs; [
@@ -165,12 +149,7 @@ in
   ];
 
   home.file.".config/emacs" = {
-    source = emacsConfig;
-    recursive = true;
-  };
-
-  home.file.".config/emacs/snippets" = {
-    source = ./emacs/snippets;
+    source = ./emacs;
     recursive = true;
   };
 
