@@ -6,14 +6,10 @@
 
 | *Shell*    | zsh           |
 | *WM*       | bspwm         |
-| *Editor*   | Doom Emacs    |
+| *Editor*   | Emacs         |
 | *Terminal* | st            |
 | *Launcher* | dmenu         |
 | *Browser*  | firefox       |
-
-* Naming Scheme
-** Workstations
-** [[https://github.com/venikx/homelab][Servers]]
 
 * Structure
 #+begin_src shell :shebang "#!/usr/bin/env nix-shell\n#!nix-shell -i bash --pure -p tree" :results output :exports results
