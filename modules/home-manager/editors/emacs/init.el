@@ -6,12 +6,12 @@
 ;;; Kevin De Baerdemaeker's Emacs configuration.
 ;;;
 ;;; Requirements:
-;;; 1. evil mode: neovim is still good tho
-;;; 2. org-mode: only reason I'm not using neovim
-;;; 3. minimal: keep maintance burden small
+;;;   - evil mode: neovim is still good tho
+;;;   - org-mode: only reason I'm not using neovim
+;;;   - minimal: keep maintance burden small
 
 ;;; Code 
-;;; Bootstrapping
+;;; Bootstrap
 (setq use-package-always-ensure nil) ; I only use pkgs defined in nix config
 (use-package diminish)
 
@@ -29,6 +29,8 @@
         backup-directory-alist '((cons "." (file-name-concat user-emacs-directory "backup/")))
 	create-lockfiles nil)
   :config
+  (setq-default truncate-lines t
+		indent-tabs-mode nil)          ; Use spaces instead of tabs
   (electric-pair-mode 1)
   (auto-save-visited-mode 1)
   (scroll-bar-mode -1)
@@ -37,6 +39,30 @@
   (let ((font-name "Iosevka-12"))
     (set-frame-font font-name t t)
     (set-face-attribute 'default nil :family "Iosevka" :height 120))
+  (setq-default mode-line-format
+                '(" "
+                  (:eval (propertize
+                          (pcase (bound-and-true-p evil-state)
+                            ('normal  " N ")
+                            ('insert  " I ")
+                            ('visual  " V ")
+                            ('replace " R ")
+                            ('emacs   " E ")
+                            ('motion  " M ")
+                            (_        " - "))
+                          'face (pcase (bound-and-true-p evil-state)
+                                  ('normal  `(:background ,(doom-color 'blue) :foreground ,(doom-color 'bg) :weight bold))
+                                  ('insert  `(:background ,(doom-color 'green) :foreground ,(doom-color 'bg) :weight bold))
+                                  ('visual  `(:background ,(doom-color 'magenta) :foreground ,(doom-color 'bg) :weight bold))
+                                  ('replace `(:background ,(doom-color 'red) :foreground ,(doom-color 'bg) :weight bold))
+                                  (_        `(:background ,(doom-color 'base5) :foreground ,(doom-color 'fg))))))
+                  " "
+                  (:eval (propertize (buffer-name) 'face 'font-lock-constant-face))
+                  " %6l:%c (%o) "
+                  (:eval (when vc-mode (concat " | ⇅ " (substring-no-properties vc-mode 5))))
+                  mode-line-format-right-align
+                  (:eval (concat "  " (symbol-name major-mode)))
+                  "  " mode-line-misc-info))
   :custom
   (read-extended-command-predicate #'command-completion-default-include-p) ; filters M-x to show relevant to context
   (user-full-name "Kevin De Baerdemaeker"))
@@ -45,7 +71,18 @@
   :config
   (setq doom-themes-enable-bold t    
         doom-themes-enable-italic t)
-  (load-theme 'doom-tokyo-night t))
+  ;; dark themes
+  (load-theme 'doom-solarized-dark-high-contrast t)
+  ;;(load-theme 'doom-outrun-electric t)
+  ;;(load-theme 'doom-tokyo-night t)
+  ;; light themes
+  ;;(load-theme 'doom-solarized-light t)
+  ;;(load-theme 'doom-tomorrow-day t)
+  ;;(load-theme 'doom-flatwhite t) ;; cool, but hard to isearch
+  (set-face-attribute 'menu nil
+                      :background (doom-color 'bg)
+                      :foreground (doom-color 'fg)))
+
 
 ;;; Essentials
 ;; Helper functions
@@ -60,6 +97,7 @@
   :config
   (which-key-mode)
   (which-key-setup-minibuffer))
+
 
 (autoload 'consult-buffer "consult" t)
 (defvar-keymap my-buffer-map
@@ -189,8 +227,7 @@
   :defer t
   :mode ("\\.\\(epub\\|mobi\\)\\'" . nov-mode))
 
-(use-package gnuplot
-  :ensure t)
+(use-package gnuplot)
 
 (use-package vterm
   :commands vterm)
@@ -219,6 +256,7 @@
   (apheleia-formatters-respect-indent-level nil))
 
 ;; Code snippets
+(use-package eldoc :diminish eldoc-mode)
 (use-package yasnippet
   :hook
   ((prog-mode . yas-minor-mode)
@@ -259,30 +297,26 @@
 
 ;; Treesitter
 (use-package emacs
-  :ensure nil
   :init
   (setq major-mode-remap-alist
-        '((js-json-mode . json-ts-mode)
-          (c-mode     . c-ts-mode)
-          (c++-mode     . c++-ts-mode)
-          (c-or-c++-mode-hook . c-or-c++-ts-mode)
-          (go-mode     . go-ts-mode)
+        '((js-json-mode    . json-ts-mode)
+          (c-mode          . c-ts-mode)
+          (c++-mode        . c++-ts-mode)
+          (c-or-c++-mode   . c-or-c++-ts-mode)
+          (go-mode         . go-ts-mode)
           (csharp-mode     . csharp-ts-mode)
           (javascript-mode . js-ts-mode)
-          (html-mode      . html-ts-mode)
-          (css-mode      . css-ts-mode))))
+          (html-mode       . html-ts-mode)
+          (css-mode        . css-ts-mode))))
 
 ;; Major Modes
 (use-package javascript-mode
-  :ensure nil
   :mode (("\\.mjs\\'" . javascript-mode)))
 
 (use-package typescript-ts-mode
-  :ensure nil
   :mode (("\\.ts\\'" . typescript-ts-mode)))
 
 (use-package tsx-ts-mode
-  :ensure nil
   :mode (("\\.jsx\\'" . tsx-ts-mode)
          ("\\.tsx\\'" . tsx-ts-mode)))
 
@@ -320,7 +354,6 @@
   (org-attach-use-inheritance t)
   (org-attach-id-to-path-function-list
    '(org-attach-id-uuid-folder-format))
-  (org-attach-method-type 'id)
   :hook (before-save-hook . time-stamp)
   :config
   (unless (file-exists-p org-babel-temporary-directory)
