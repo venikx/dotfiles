@@ -56,7 +56,7 @@ let
     epkgs.markdown-mode
     epkgs.glsl-mode
     # LLM
-    epkgs.copilot # TODO
+    epkgs.eca
     # tools
     epkgs.osm
     epkgs.pdf-tools # TODO

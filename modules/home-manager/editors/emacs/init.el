@@ -307,6 +307,15 @@
   (add-to-list 'eglot-server-programs
                '(html-ts-mode . ("vscode-html-language-server" "--stdio"))))
 
+;; LLM
+(use-package eca
+  :commands eca
+  :config
+  ;; Optional: customize chat window
+  (setq eca-chat-use-side-window t
+        eca-chat-window-side 'right
+        eca-chat-window-width 50))
+
 ;; Treesitter
 (use-package emacs
   :init
