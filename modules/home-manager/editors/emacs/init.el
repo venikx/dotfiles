@@ -177,6 +177,12 @@
   :hook
   (after-init . vertico-mode))
 
+(use-package vertico-prescient
+  :after vertico
+  :config
+  (vertico-prescient-mode 1)
+  (prescient-persist-mode 1))
+
 (use-package marginalia
   :hook (after-init . marginalia-mode))
 
@@ -211,6 +217,12 @@
   :hook (after-init . global-auto-revert-mode) ; useful for when files change on disk
   :custom
   (auto-revert-verbose t))
+
+(use-package recentf
+  :hook (after-init . recentf-mode)
+  :custom (recentf-max-saved-items 60))
+
+(use-package savehist :hook (after-init . savehist-mode))
 
 (use-package display-line-numbers
   :hook ((prog-mode . display-line-numbers-mode)

@@ -22,6 +22,7 @@ let
     epkgs.all-the-icons # TODO
     # completion engine
     epkgs.vertico
+    epkgs.vertico-prescient
     epkgs.marginalia
     epkgs.orderless
     epkgs.consult
