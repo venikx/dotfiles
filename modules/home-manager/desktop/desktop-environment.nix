@@ -82,23 +82,30 @@
 
   services.sxhkd =
     let
-      ask = pkgs.writeShellScript "ask" ''[ "$(printf "No\\nYes" | ${pkgs.dmenu}/bin/dmenu -i -p "$1"  )" = "Yes" ] && $2'';
+      notify-time = pkgs.writeShellScript "notify-time" ''${pkgs.libnotify}/bin/notify-send --expire-time 3000 "$(date +%H:%M)"'';
+      kill-tools = pkgs.writeShellScript "kill-tools" ''
+        case "$(printf "\nkill\npoweroff\nreboot\nbspwmconf" | dmenu -i -c -l 5 -p choose)" in
+            "") exit 0 ;;
+            kill) ps -u $USER -o pid,comm | dmenu -i -c -l 10 -p kill | awk '{print $1}' | xargs -r kill ;;
+            bspwmconf) bspc wm -r ;;
+            poweroff) systemctl poweroff ;;
+            reboot) systemctl reboot ;;
+        esac
+      '';
     in
     {
       enable = true;
       keybindings = {
-        # Shutting down the system
-        "super + shift + x" = ''${ask} "Shuwdown computer?" "shutdown -h now"'';
-        "super + shift + BackSpace" = ''${ask} "Reboot computer?" "reboot"'';
-        "super + shift + Escape" = ''${ask} "Leave Xorg?" "killall Xorg"'';
-        # Restarts bspwm (most when testing out configurations)
-        "super + shift + r" = "bspc wm -r";
-        "super + {_,shift + }q" = "bspc node -{c,k}";
+        "super + shift + x" = "${kill-tools}";
+        "super + {_,shift + }q" = "bspc node -{c,k}"; # kill window
 
         # Opening common commands
         "super + Return" = "${pkgs.alacritty}/bin/alacritty";
-        "super + d" = "dmenu_run";
-        "super + w" = "$BROWSER";
+        "super + d" = "dmenu_run -c -i -l 5";
+        "super + w" = "${pkgs.firefox}/bin/firefox";
+
+        # invoking scripts
+        "super + t" = "${notify-time}";
 
         # Moving around windows
         "super + {_,shift +}{1-9,0}" = "bspc {desktop -f, node -d} {1-9,10}";
@@ -122,7 +129,10 @@
 
   home.packages = with pkgs; [
     (dmenu.overrideAttrs (oldAttrs: rec {
-      patches = [ ./dmenu/dmenu-xresources-4.9.diff ];
+      patches = [
+        ./dmenu/dmenu-xresources-4.9.diff
+        ./dmenu/dmenu-center-5.2.diff
+      ];
     }))
     xclip
   ];
