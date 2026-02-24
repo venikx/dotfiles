@@ -17,6 +17,7 @@ let
     epkgs.evil-collection
     epkgs.evil-goggles
     epkgs.evil-commentary
+    epkgs.evil-org
     # themes
     epkgs.doom-themes
     epkgs.all-the-icons # TODO
@@ -48,6 +49,7 @@ let
     epkgs.org-roam
     epkgs.denote
     epkgs.org-download
+    epkgs.org-cliplink
     epkgs.org-ql
     # languages
     epkgs.treesit-grammars.with-all-grammars

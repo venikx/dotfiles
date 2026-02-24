@@ -159,6 +159,13 @@
   :custom (evil-collection-setup-minibuffer nil)
   :config (evil-collection-init))
 
+(use-package evil-org
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
 (use-package evil-goggles
   :after evil
   :hook (evil-mode . evil-goggles-mode)
@@ -363,6 +370,11 @@
   :custom
   (org-edit-src-content-indentation 0)
   (org-agenda-files '("~/org/gtd" "~/org/collections"))
+  (org-refile-targets '((org-agenda-files :maxlevel . 3)))
+  (org-agenda-show-current-time-in-grid nil)
+  (org-agenda-time-grid nil)
+  (org-refile-use-outline-path 'file)
+  (org-outline-path-complete-in-steps nil)
   (org-startup-folded 'content)
   (org-log-into-drawer t)
   (org-log-done 'time)
@@ -524,3 +536,6 @@
   (org-download-screenshot-method "scrcap")
   (org-download-method 'attach)
   (org-download-timestamp "%Y%m%d-"))
+
+(use-package org-cliplink
+  :after org)
