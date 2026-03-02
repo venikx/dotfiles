@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   programs.zsh.shellAliases = {
     git = "noglob git";
     ga = "git add";
@@ -7,10 +8,8 @@
     gc = "git commit";
     gcm = "git commit -m";
     gca = "git commit --amend";
-    gl = ''
-      git log --graph --pretty="format:%C(yellow)%h%Creset %C(red)%G?%Creset%C(green)%d%Creset %s %Cblue(%cr) %C(bold blue)<%aN>%Creset"'';
-    gll = ''
-      git log --pretty="format:%C(yellow)%h%Creset %C(red)%G?%Creset%C(green)%d%Creset %s %Cblue(%cr) %C(bold blue)<%aN>%Creset"'';
+    gl = ''git log --graph --pretty="format:%C(yellow)%h%Creset %C(red)%G?%Creset%C(green)%d%Creset %s %Cblue(%cr) %C(bold blue)<%aN>%Creset"'';
+    gll = ''git log --pretty="format:%C(yellow)%h%Creset %C(red)%G?%Creset%C(green)%d%Creset %s %Cblue(%cr) %C(bold blue)<%aN>%Creset"'';
     gL = "gl --stat";
     gss = "git status";
     gs = "git status --short .";
@@ -65,7 +64,7 @@
       ".Trash"
       ".Xauthority"
       "thumbs.db"
-      "Icon?"
+      "Icon\\?"
       "Thumbs.db"
       ".cache"
       ".pid"
