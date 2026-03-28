@@ -46,7 +46,7 @@ let
     epkgs.ob-typescript
     epkgs.ob-go
     # epkgs.org-contacts #TODO link was removed from github
-    epkgs.org-roam
+    epkgs.org-noter
     epkgs.denote
     epkgs.org-download
     epkgs.org-cliplink
@@ -57,16 +57,32 @@ let
     epkgs.nix-ts-mode
     epkgs.markdown-mode
     epkgs.glsl-mode
+    epkgs.geiser
     # LLM
     epkgs.eca
     # tools
     epkgs.osm
-    epkgs.pdf-tools # TODO
+    epkgs.pdf-tools
     epkgs.elcord
     epkgs.nov
     epkgs.gnuplot
     epkgs.yasnippet
   ];
+
+  tex = pkgs.texlive.combine {
+    inherit (pkgs.texlive)
+      scheme-small
+      wrapfig
+      ulem
+      capt-of
+      hyperref
+      amsmath
+      graphics
+      latex-bin
+      pgf
+      dvisvgm
+      ;
+  };
 
   emacsExtraPackages =
     with pkgs;
@@ -87,6 +103,7 @@ let
       gnuplot # nutrition.el
       pandoc
       graphviz
+      tex
 
       ### natural languages ###
       languagetool
@@ -127,8 +144,7 @@ let
       scrot # org-download
       ## pdf
       #qpdfview
-      ## racket
-      #racket
+      racket
     ];
 
   emacsWithAdditionalPackages = pkgs.symlinkJoin {

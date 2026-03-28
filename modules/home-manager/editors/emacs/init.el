@@ -314,6 +314,10 @@
   (add-to-list 'eglot-server-programs
                '(html-ts-mode . ("vscode-html-language-server" "--stdio"))))
 
+(use-package geiser
+  :init
+  (setq geiser-active-implementations '(racket)))
+
 ;; LLM
 (use-package eca
   :commands eca
@@ -428,6 +432,7 @@
      (org        . t)
      (http       . t)
      (graphql    . t)
+     (latex      . t)
      (mermaid    . t)
      (nix        . t)
      (css        . t)
@@ -507,6 +512,21 @@
   ;; "[D]" followed by the file's title.  Read the doc string of
   ;; `denote-rename-buffer-format' for how to modify this.
   (denote-rename-buffer-mode 1))
+
+(use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :config
+  (setq pdf-view-display-size 'fit-page
+        pdf-view-resize-factor 1.1))
+
+(use-package org-noter
+  :after (:any org pdf-view)
+  :config
+  ;; do not create separate notes files
+  ;; because Denote already manages them
+  (setq org-noter-separate-notes-from-heading nil)
+  (setq org-noter-doc-split-fraction 0.55)
+  (setq org-noter-always-create-frame nil))
 
 (use-package org-ql)
 
