@@ -50,5 +50,5 @@
 
   colorScheme = nix-colors.colorSchemes.tokyo-city-terminal-dark;
 
-  home.stateVersion = "22.05";
+  home.stateVersion = "26.05";
 }

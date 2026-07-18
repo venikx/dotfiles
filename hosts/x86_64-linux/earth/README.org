@@ -1,7 +1,6 @@
 #+TITLE: earth
 
-* Overview
-** Specs
+* Specs
 | CPU         | AMD Ryzen 7 5800X 8-Core Processor |
 | GPU         | Asus GeForce RTX 3070              |
 | RAM         | KHX3200C16D4/32GX                  |
@@ -9,19 +8,19 @@
 | Storage     | 1TB SSD                            |
 | UEFI        | yes                                |
 
-* Installation
-** Setting up the partitions
-1. The UEFI's boot partition should already by there due to dual-boot with Windows
-
-2. Create partitions
+* Post-install: Secure Boot (lanzaboote)
 #+begin_src sh :eval no
-parted /dev/nvme0n1 -- mkpart primary 451GB 100%
-mkfs.ext4 -L nixos /dev/nvme0n1p5
+sbctl status
+sudo sbctl create-keys
+sudo sbctl enroll-keys --microsoft
+sudo nixos-rebuild switch
+sbctl verify
 #+end_src
 
-3. Mount the partitions
-#+begin_src sh :eval no
-mount /dev/disk/by-label/nixos /mnt
-mount /dev/nvme0n1p5 /mnt/boot # existing EFI partition from Windows
-#+end_src
+Reboot into BIOS, enable Secure Boot, boot again.
 
+* Post-install: Clean stale UEFI entries
+#+begin_src sh :eval no
+efibootmgr -v
+sudo efibootmgr -b <entry-number> -B
+#+end_src

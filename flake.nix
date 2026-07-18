@@ -60,6 +60,7 @@
           system = "x86_64-linux";
           specialArgs = { inherit home-manager emacs-overlay; };
           modules = [
+            disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
 
             ./hosts/${system}/earth

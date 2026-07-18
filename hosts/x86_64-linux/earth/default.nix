@@ -6,8 +6,8 @@
 }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
-  system.stateVersion = "22.05";
+  imports = [ ./hardware-configuration.nix ./disko-config.nix ];
+  system.stateVersion = "26.05";
 
   environment.systemPackages = [
     pkgs.sbctl
@@ -58,16 +58,6 @@
       nasIP = "172.19.20.10";
     in
     {
-      "/" = {
-        device = "/dev/disk/by-uuid/4df3f4a4-fac6-471c-a8e1-11c03c2c093c";
-        fsType = "ext4";
-      };
-
-      "/boot" = {
-        device = "/dev/disk/by-uuid/C831-07CF";
-        fsType = "vfat";
-      };
-
       "/mnt/nas/entertainment" = {
         device = "${nasIP}:/mnt/tank/entertainment";
         fsType = "nfs";
