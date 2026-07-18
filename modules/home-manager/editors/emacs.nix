@@ -121,7 +121,7 @@ let
       typescript
       vscode-langservers-extracted
       yaml-language-server
-      dockerfile-language-server-nodejs
+      dockerfile-language-server
       nixfmt
       shfmt
       ccls

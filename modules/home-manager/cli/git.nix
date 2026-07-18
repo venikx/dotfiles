@@ -18,21 +18,24 @@
     grv = "git rev-parse";
   };
 
+  programs.delta.enable = true;
+
   programs.git = {
     enable = true;
-    delta.enable = true;
     lfs.enable = true;
-    aliases = {
-      "lg" =
-        "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --";
-      "ls" = "ls-files";
-      "undo-commit" = ''reset --soft "HEAD^"'';
-    };
-    userEmail = "code@venikx.com";
-    userName = "Kevin De Baerdemaeker";
     signing.key = "AA445668182C2AD4";
 
-    extraConfig = {
+    settings = {
+      user = {
+        email = "code@venikx.com";
+        name = "Kevin De Baerdemaeker";
+      };
+      alias = {
+        "lg" =
+          "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --";
+        "ls" = "ls-files";
+        "undo-commit" = ''reset --soft "HEAD^"'';
+      };
       core = {
         editor = "nvim";
         autocrlf = "input";

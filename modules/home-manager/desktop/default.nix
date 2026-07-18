@@ -37,16 +37,14 @@
 
   home.packages = with pkgs; [
     # communication
-    (if pkgs.system == "x86_64-linux" then discord else legcord)
-    (lib.mkIf (pkgs.system == "x86_64-linux") slack)
+    (if pkgs.stdenv.hostPlatform.system == "x86_64-linux" then discord else legcord)
+    (lib.mkIf (pkgs.stdenv.hostPlatform.system == "x86_64-linux") slack)
     # learning
     anki
     # media
-    youtube-music
     evince
     calibre
     mpv-unwrapped
-    vlc # in case mpv doesn't work
     # scripts
     (pkgs.writeShellScriptBin "scrcap" ''
       ${pkgs.maim}/bin/maim -s | ${pkgs.xclip}/bin/xclip -selection clipboard -t image/png
