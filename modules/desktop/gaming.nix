@@ -33,6 +33,7 @@ in
       dedicatedServer.openFirewall = true;
       gamescopeSession.enable = true;
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
+      protontricks.enable = true;
     };
 
     environment.systemPackages = with pkgs; [

@@ -2,8 +2,8 @@
 
 {
   programs.zsh.enable = true;
+  programs.nix-ld.enable = true;
 
-  nixpkgs.overlays = [ emacs-overlay.overlay ];
   environment = {
     variables = {
       # TODO(Kevin): I think this is sometimes not setting up correctly?
@@ -14,9 +14,18 @@
       XDG_BIN_HOME = "$HOME/.local/bin";
     };
 
-    systemPackages = with pkgs; [ vim coreutils wget curl git ];
+    systemPackages = with pkgs; [
+      vim
+      coreutils
+      wget
+      curl
+      git
+    ];
 
-    shells = with pkgs; [ bash zsh ];
+    shells = with pkgs; [
+      bash
+      zsh
+    ];
   };
 
   nix = {
