@@ -10,7 +10,7 @@
     extraModulePackages = [ ];
     kernelModules = [ "kvm-amd" ];
     kernelParams = [ ];
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_6_12;
   };
 
   # Are these really needed? Seems so atm.

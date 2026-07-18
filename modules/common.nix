@@ -4,6 +4,8 @@
   programs.zsh.enable = true;
   programs.nix-ld.enable = true;
 
+  nixpkgs.overlays = [ emacs-overlay.overlay ]; # nix communicate binary caching via cachix
+
   environment = {
     variables = {
       # TODO(Kevin): I think this is sometimes not setting up correctly?

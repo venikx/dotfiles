@@ -3,7 +3,6 @@
   lib,
   pkgs,
   options,
-  emacs-overlay,
   ...
 }:
 
@@ -69,20 +68,17 @@ let
     epkgs.yasnippet
   ];
 
-  tex = pkgs.texlive.combine {
-    inherit (pkgs.texlive)
-      scheme-small
-      wrapfig
-      ulem
-      capt-of
-      hyperref
-      amsmath
-      graphics
-      latex-bin
-      pgf
-      dvisvgm
-      ;
-  };
+  tex = pkgs.texliveSmall.withPackages (ps: [
+    ps.wrapfig
+    ps.ulem
+    ps.capt-of
+    ps.hyperref
+    ps.amsmath
+    ps.graphics
+    ps.latex-bin
+    ps.pgf
+    ps.dvisvgm
+  ]);
 
   emacsExtraPackages =
     with pkgs;

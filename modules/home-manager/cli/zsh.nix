@@ -47,8 +47,8 @@
     enableZshIntegration = true;
     defaultOptions = [ "--reverse" "--ansi" ];
     defaultCommand = "fd .";
-    fileWidgetCommand = "fd .";
-    changeDirWidgetCommand = "fd --type d . $HOME";
+    fileWidget.command = "fd .";
+    changeDirWidget.command = "fd --type d . $HOME";
   };
 
   programs.eza = { enable = true; };

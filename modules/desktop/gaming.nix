@@ -40,7 +40,7 @@ in
       mangohud
       lutris
       heroic
-      bottles
+      #bottles
       prismlauncher
     ];
 

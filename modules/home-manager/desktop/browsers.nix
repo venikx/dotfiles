@@ -10,6 +10,7 @@
     chromium.enable = true;
     firefox = {
       enable = true;
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
       profiles.venikx = {
         settings = {
           "devtools.theme" = "dark";
