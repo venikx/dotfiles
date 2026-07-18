@@ -1,11 +1,19 @@
-{ config, lib, pkgs, nix-colors, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  nix-colors,
+  ...
+}:
 
 {
   programs.autorandr = {
     enable = true;
     profiles = {
       "default" = {
-        fingerprint = { eDP-1 = "*"; };
+        fingerprint = {
+          eDP-1 = "*";
+        };
         config = {
           eDP-1 = {
             enable = true;
@@ -22,10 +30,14 @@
   services.syncthing.settings = {
     devices = {
       "earth-nixos" = {
-        id = "QUIA5TB-Q62NJOZ-NXNZPLY-6YXHXEJ-W5A6YMS-LTY2PXH-AZE5YHQ-22SHBQL";
+        id = "PITAODB-6HUUIPZ-3NAFXSE-ZARYL5A-KALLONW-RFU5BUT-MHVMCTH-MMLXUAP";
       };
     };
-    folders = { "org" = { devices = [ "earth-nixos" ]; }; };
+    folders = {
+      "org" = {
+        devices = [ "earth-nixos" ];
+      };
+    };
   };
 
   colorScheme = nix-colors.colorSchemes.tokyo-city-terminal-dark;

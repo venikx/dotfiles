@@ -16,13 +16,20 @@
   services.syncthing.settings = {
     devices = {
       "earth-nixos" = {
-        id = "QUIA5TB-Q62NJOZ-NXNZPLY-6YXHXEJ-W5A6YMS-LTY2PXH-AZE5YHQ-22SHBQL";
+        id = "PITAODB-6HUUIPZ-3NAFXSE-ZARYL5A-KALLONW-RFU5BUT-MHVMCTH-MMLXUAP";
       };
       "air-nixos" = {
         id = "WK7RS2C-362VDSU-6AADX3Q-AFTADBL-PNY3KJO-ALQ6HYO-S6MQMOU-6MSYYAR";
       };
     };
-    folders = { "org" = { devices = [ "earth-nixos" "air-nixos" ]; }; };
+    folders = {
+      "org" = {
+        devices = [
+          "earth-nixos"
+          "air-nixos"
+        ];
+      };
+    };
   };
 
   programs.ssh = {
@@ -38,11 +45,11 @@
         addKeysToAgent = "yes";
       };
     };
-    
+
     extraConfig = ''
       # Ignore unknown SSH options (for compatibility)
       IgnoreUnknown Include
-      
+
       ##### BEGIN METATRON AUTOCONFIG
       # Do not remove the above line. The metatron CLI uses it to update this file.
       # The Include directive was added in 7.3. IgnoreUnknown was added in 6.3. This helps prevent breaking old SSH clients that don't need nflx SSH configuration
