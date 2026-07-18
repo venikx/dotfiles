@@ -342,6 +342,10 @@
           (css-mode        . css-ts-mode))))
 
 ;; Major Modes
+(use-package go-ts-mode
+  :mode (("\\.go\\'" . go-ts-mode)
+         ("/go\\.mod\\'" . go-ts-mode)))
+
 (use-package javascript-mode
   :mode (("\\.mjs\\'" . javascript-mode)))
 

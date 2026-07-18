@@ -117,12 +117,11 @@ let
 
       #### languages ####
       editorconfig-core-c
-      nodePackages.typescript-language-server
-      nodePackages.typescript
-      nodePackages.vscode-langservers-extracted
-      nodePackages.stylelint # TODO
-      nodePackages.yaml-language-server
-      nodePackages.dockerfile-language-server-nodejs
+      typescript-language-server
+      typescript
+      vscode-langservers-extracted
+      yaml-language-server
+      dockerfile-language-server-nodejs
       nixfmt
       shfmt
       ccls
@@ -139,6 +138,8 @@ let
       rustfmt
       rustc
       cargo
+      go
+      gopls
     ]
     ++ lib.optionals stdenv.isLinux [
       scrot # org-download
