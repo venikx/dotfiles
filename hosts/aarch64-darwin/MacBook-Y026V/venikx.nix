@@ -33,16 +33,17 @@
   };
 
   programs.ssh = {
-    matchBlocks = {
-      "*" = {
-        # Default configuration for all hosts
-      };
+    settings = {
       "github-work" = {
-        hostname = "github.com";
-        user = "git";
-        identityFile = "~/.ssh/work_yubi";
-        identitiesOnly = true;
-        addKeysToAgent = "yes";
+        HostName = "github.com";
+        User = "git";
+        IdentityFile = [
+          "~/.ssh/work_sm_yubi"
+          "~/.ssh/work_yubi"
+        ];
+        ControlMaster = "auto";
+        ControlPath = "~/.ssh/control-%r@%h:%p";
+        ControlPersist = "600";
       };
     };
 

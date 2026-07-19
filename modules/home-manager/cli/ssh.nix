@@ -5,7 +5,10 @@
 
     settings = {
       "*" = {
-        IdentityFile = "~/.ssh/personal_yubi";
+        IdentityFile = [
+          "~/.ssh/personal_yubi"
+          "~/.ssh/personal_sm_yubi"
+        ];
         IdentitiesOnly = true;
         AddKeysToAgent = "yes";
       };
