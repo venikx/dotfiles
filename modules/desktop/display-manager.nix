@@ -1,8 +1,16 @@
-{ options, config, lib, pkgs, ... }:
+{
+  options,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
-let cfg = config.modules.desktop.display-manager;
-in {
+let
+  cfg = config.modules.desktop.display-manager;
+in
+{
   options.modules.desktop.display-manager = with types; {
     enable = mkOption {
       type = bool;
@@ -12,7 +20,9 @@ in {
 
   config = mkIf cfg.enable {
     services = {
-      displayManager = { defaultSession = "none+bspwm"; };
+      displayManager = {
+        defaultSession = "none+bspwm";
+      };
 
       xserver = {
         enable = true;
@@ -23,15 +33,14 @@ in {
           enable = true;
           nowlocker = "${pkgs.lightdm}/bin/dm-tool lock";
           locker = "${pkgs.lightdm}/bin/dm-tool lock";
-          notifier =
-            "${pkgs.libnotify}/bin/notify-send 'Move boy! Locking in 10 seconds...'";
+          notifier = "${pkgs.libnotify}/bin/notify-send 'Move boy! Locking in 10 seconds...'";
         };
 
         displayManager = {
           lightdm = {
             enable = true;
             greeters.gtk.enable = true;
-            background = ./login-screen.png;
+            background = ./login-screen.jpg;
           };
         };
       };
