@@ -61,6 +61,8 @@
     '';
   };
 
+  modules.editors.emacs.ai.enable = true;
+
   home.sessionVariables = {
     DEVELOPER_DIR = "/Applications/Xcode.app/Contents/Developer";
   };

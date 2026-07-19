@@ -318,14 +318,14 @@
   :init
   (setq geiser-active-implementations '(racket)))
 
-;; LLM
+;; LLM / AI assistants
 (use-package eca
+  :when (locate-library "eca")
   :commands eca
   :config
-  ;; Optional: customize chat window
   (setq eca-chat-use-side-window t
         eca-chat-window-side 'right
-        eca-chat-window-width 50))
+        eca-chat-window-width 40))
 
 ;; Treesitter
 (use-package emacs
