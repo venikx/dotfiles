@@ -12,6 +12,9 @@
       "github.com" = {
         HostName = "github.com";
         User = "git";
+        ControlMaster = "auto";
+        ControlPath = "~/.ssh/control-%r@%h:%p";
+        ControlPersist = "600";
       };
       "truenas.local" = {
         HostName = "truenas.local";
