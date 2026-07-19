@@ -16,7 +16,7 @@
         HostName = "github.com";
         User = "git";
         ControlMaster = "auto";
-        ControlPath = "~/.ssh/control-%r@%h:%p";
+        ControlPath = "~/.ssh/control-%n@%r:%p";
         ControlPersist = "600";
       };
       "truenas.local" = {
