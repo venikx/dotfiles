@@ -8,6 +8,14 @@
 | Storage     | 1TB SSD                            |
 | UEFI        | yes                                |
 
+* Pre-install: Secure Boot (lanzaboote)
+#+begin_src sh :eval no
+nix-shell -p sbctl
+sbctl status
+sudo sbctl create-keys
+mv /var/lib/sbctl /mnt/var/lib/sbctl
+#+end_src
+
 * Post-install: Secure Boot (lanzaboote)
 #+begin_src sh :eval no
 sbctl status

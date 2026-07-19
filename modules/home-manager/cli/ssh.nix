@@ -2,14 +2,21 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    
-    matchBlocks = {
+
+    settings = {
+      "*" = {
+        IdentityFile = "~/.ssh/personal_yubi";
+        IdentitiesOnly = true;
+        AddKeysToAgent = "yes";
+      };
       "github.com" = {
-        hostname = "github.com";
-        user = "git";
-        identityFile = "~/.ssh/personal_yubi"; 
-        identitiesOnly = true;
-        addKeysToAgent = "yes";
+        HostName = "github.com";
+        User = "git";
+      };
+      "truenas.local" = {
+        HostName = "truenas.local";
+        User = "admin";
+        Port = 69;
       };
     };
   };

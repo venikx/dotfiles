@@ -92,7 +92,7 @@ cd /tmp/dotfiles
 
 sudo nix --experimental-features "nix-command flakes" run \
     github:nix-community/disko/latest -- \
-    --mode disko ./hosts/<platform>/<hostname>/disko-config.nix
+    --mode destroy,format,mount ./hosts/<platform>/<hostname>/disko-config.nix
 
 mount | grep /mnt
 nixos-generate-config --no-filesystems --root /mnt
