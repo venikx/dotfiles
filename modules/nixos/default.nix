@@ -28,6 +28,8 @@
     winbox4
   ];
 
+  programs.nix-ld.enable = true;
+
   programs.winbox = {
     enable = true;
     openFirewall = true;
