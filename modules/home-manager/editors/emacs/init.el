@@ -335,39 +335,26 @@
           (c-mode          . c-ts-mode)
           (c++-mode        . c++-ts-mode)
           (c-or-c++-mode   . c-or-c++-ts-mode)
-          (go-mode         . go-ts-mode)
           (csharp-mode     . csharp-ts-mode)
           (javascript-mode . js-ts-mode)
           (html-mode       . html-ts-mode)
           (css-mode        . css-ts-mode))))
 
 ;; Major Modes
-(use-package go-ts-mode
-  :mode (("\\.go\\'" . go-ts-mode)
-         ("/go\\.mod\\'" . go-ts-mode)))
-
-(use-package javascript-mode
-  :mode (("\\.mjs\\'" . javascript-mode)))
-
-(use-package typescript-ts-mode
-  :mode (("\\.ts\\'" . typescript-ts-mode)))
-
-(use-package tsx-ts-mode
-  :mode (("\\.jsx\\'" . tsx-ts-mode)
-         ("\\.tsx\\'" . tsx-ts-mode)))
-
-(use-package web-mode
-  :mode (("\\.eta\\'" . web-mode)
-	 ("\\.astro\\'" . web-mode)))
-
-(use-package nix-ts-mode
-  :mode "\\.nix\\'")
-
 (use-package markdown-mode
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)))
 
-(use-package glsl-mode)
+(use-package web-mode :mode "\\.eta\\'")
+(use-package astro-ts-mode :mode "\\.astro\\'")
+(use-package javascript-mode :mode "\\.mjs\\'")
+(use-package typescript-ts-mode :mode "\\.ts\\'")
+(use-package tsx-ts-mode :mode ("\\.jsx\\'" "\\.tsx\\'"))
+
+(use-package nix-ts-mode :mode "\\.nix\\'")
+(use-package go-ts-mode :mode "\\.go\\'")
+(use-package go-mod-ts-mode :mode "/go\\.mod\\'")
+(use-package glsl-mode :mode "\\.glsl\\'")
 
 ;;; Org-mode
 (use-package org

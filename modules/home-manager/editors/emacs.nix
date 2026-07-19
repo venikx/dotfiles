@@ -54,10 +54,38 @@ let
       epkgs.org-cliplink
       epkgs.org-ql
       # languages
-      epkgs.treesit-grammars.with-all-grammars
-      epkgs.web-mode
+      (epkgs.treesit-grammars.with-grammars (p: [
+        p.tree-sitter-nix
+        # Upstream's configurePhase picks the grammar subdir via `jq
+        # 'select(.name == env.language)'`, but `language` isn't exported
+        # to jq's environment under structuredAttrs, so the lookup always
+        # misses and falls back to the first grammar (typescript) instead
+        # of tsx. Bypass it by cd-ing into the right subdir directly.
+        (p.tree-sitter-tsx.overrideAttrs (_old: {
+          configurePhase = ''
+            runHook preConfigure
+            cd tsx
+            runHook postConfigure
+          '';
+        }))
+        p.tree-sitter-json
+        p.tree-sitter-typescript
+        p.tree-sitter-javascript
+        p.tree-sitter-astro
+        p.tree-sitter-html
+        p.tree-sitter-css
+        p.tree-sitter-go
+        p.tree-sitter-gomod
+        p.tree-sitter-gdscript
+        p.tree-sitter-c
+        p.tree-sitter-cpp
+        p.tree-sitter-c-sharp
+      ]))
       epkgs.nix-ts-mode
+      epkgs.web-mode
+      epkgs.astro-ts-mode
       epkgs.markdown-mode
+      epkgs.gdscript-mode
       epkgs.glsl-mode
       epkgs.geiser
       # tools
