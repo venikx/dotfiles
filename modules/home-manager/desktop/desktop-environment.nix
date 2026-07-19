@@ -149,12 +149,7 @@
 
     picom = {
       enable = true;
-      fade = true;
-      fadeDelta = 1;
-      fadeSteps = [
-        1.0e-2
-        1.2e-2
-      ];
+      fade = false;
       shadow = true;
       shadowOffsets = [
         (-10)

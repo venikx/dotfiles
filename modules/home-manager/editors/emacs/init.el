@@ -72,9 +72,9 @@
   (setq doom-themes-enable-bold t    
         doom-themes-enable-italic t)
   ;; dark themes
-  (load-theme 'doom-solarized-dark-high-contrast t)
+  ;;(load-theme 'doom-solarized-dark-high-contrast t)
   ;;(load-theme 'doom-outrun-electric t)
-  ;;(load-theme 'doom-tokyo-night t)
+  (load-theme 'doom-tokyo-night t)
   ;; light themes
   ;;(load-theme 'doom-solarized-light t)
   ;;(load-theme 'doom-tomorrow-day t)
