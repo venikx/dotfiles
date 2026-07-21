@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [ ./hardware-configuration.nix ];
@@ -25,9 +30,12 @@
     touchpad.disableWhileTyping = true;
   };
 
+  services.pipewire.enable = true;
+
   modules = {
-    audio = { pipewire.enable = true; };
-    desktop = { display-manager.enable = true; };
+    desktop = {
+      display-manager.enable = true;
+    };
     services = {
       docker.enable = true;
       bluetooth.enable = true;

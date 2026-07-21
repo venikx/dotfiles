@@ -2,7 +2,7 @@
 {
   imports = [
     ../common.nix
-    ../audio
+    ./audio.nix
     ../desktop
     ../services
   ];

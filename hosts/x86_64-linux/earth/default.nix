@@ -6,11 +6,18 @@
 }:
 
 {
-  imports = [ ./hardware-configuration.nix ./disko-config.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ./disko-config.nix
+  ];
   system.stateVersion = "26.05";
 
   environment.systemPackages = [
     pkgs.sbctl
+  ]
+  ++ lib.optionals config.services.pipewire.enable [
+    pkgs.scarlett2
+    pkgs.alsa-scarlett-gui
   ];
 
   boot = {
@@ -40,10 +47,9 @@
     initialPassword = "v3nikx";
   };
 
+  services.pipewire.enable = true;
+
   modules = {
-    audio = {
-      pipewire.enable = true;
-    };
     desktop = {
       display-manager.enable = true;
       gaming.enable = true;
