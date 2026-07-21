@@ -14,10 +14,6 @@
 
   environment.systemPackages = [
     pkgs.sbctl
-  ]
-  ++ lib.optionals config.services.pipewire.enable [
-    pkgs.scarlett2
-    pkgs.alsa-scarlett-gui
   ];
 
   boot = {

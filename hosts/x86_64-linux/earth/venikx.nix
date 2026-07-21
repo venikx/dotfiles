@@ -1,5 +1,5 @@
 {
-  config,
+  osConfig,
   lib,
   pkgs,
   nix-colors,
@@ -48,7 +48,13 @@
     };
   };
 
-  colorScheme = nix-colors.colorSchemes.tokyo-city-terminal-dark;
+  home.packages =
+    [ ]
+    ++ lib.optionals osConfig.services.pipewire.enable [
+      pkgs.scarlett2
+      pkgs.alsa-scarlett-gui
+    ];
 
+  colorScheme = nix-colors.colorSchemes.tokyo-city-terminal-dark;
   home.stateVersion = "26.05";
 }
