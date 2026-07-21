@@ -2,7 +2,6 @@
 
 {
   programs.zsh.enable = true;
-
   nixpkgs.overlays = [ emacs-overlay.overlay ]; # nix communicate binary caching via cachix
 
   environment = {
@@ -16,7 +15,7 @@
     };
 
     systemPackages = with pkgs; [
-      vim
+      neovim
       coreutils
       wget
       curl
@@ -34,7 +33,12 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
-    gc.automatic = true;
+    settings.auto-optimise-store = true;
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
   };
   nixpkgs.config.allowUnfree = true;
 }
