@@ -84,30 +84,6 @@
           ];
         };
 
-        limber-lt-kdb = lib.nixosSystem rec {
-          # laptop
-          system = "x86_64-linux";
-          specialArgs = { inherit home-manager emacs-overlay; };
-          modules = [
-            disko.nixosModules.disko
-            nixos-hardware.nixosModules.framework-13-7040-amd
-            ./hosts/${system}/limber-lt-kdb
-            ./modules/nixos
-
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.venikx = lib.mkMerge [
-                (import ./modules/home-manager/nixos.nix)
-                (import ./hosts/${system}/limber-lt-kdb/venikx.nix)
-                nix-colors.homeManagerModules.default
-              ];
-              home-manager.extraSpecialArgs = { inherit nix-colors; };
-            }
-          ];
-        };
-
         air = lib.nixosSystem rec {
           # asahi macbook
           system = "aarch64-linux";
