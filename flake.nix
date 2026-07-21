@@ -58,7 +58,7 @@
         earth = lib.nixosSystem rec {
           # desktop
           system = "x86_64-linux";
-          specialArgs = { inherit home-manager emacs-overlay; };
+          specialArgs = { inherit self home-manager emacs-overlay; };
           modules = [
             disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
@@ -79,7 +79,7 @@
                 (import ./hosts/${system}/earth/venikx.nix)
                 nix-colors.homeManagerModules.default
               ];
-              home-manager.extraSpecialArgs = { inherit nix-colors; };
+              home-manager.extraSpecialArgs = { inherit self nix-colors; };
             }
           ];
         };
@@ -88,7 +88,12 @@
           # asahi macbook
           system = "aarch64-linux";
           specialArgs = {
-            inherit home-manager emacs-overlay nixos-apple-silicon;
+            inherit
+              self
+              home-manager
+              emacs-overlay
+              nixos-apple-silicon
+              ;
           };
           modules = [
             ./hosts/${system}/air
@@ -103,7 +108,7 @@
                 (import ./hosts/${system}/air/venikx.nix)
                 nix-colors.homeManagerModules.default
               ];
-              home-manager.extraSpecialArgs = { inherit nix-colors; };
+              home-manager.extraSpecialArgs = { inherit self nix-colors; };
             }
           ];
         };
@@ -112,7 +117,7 @@
       darwinConfigurations = {
         "MacBook-Y026V" = darwin.lib.darwinSystem rec {
           system = "aarch64-darwin";
-          specialArgs = { inherit home-manager emacs-overlay; };
+          specialArgs = { inherit self home-manager emacs-overlay; };
           modules = [
             ./hosts/${system}/MacBook-Y026V
             ./modules/darwin
@@ -126,7 +131,7 @@
                 (import ./hosts/${system}/MacBook-Y026V/venikx.nix)
                 nix-colors.homeManagerModules.default
               ];
-              home-manager.extraSpecialArgs = { inherit nix-colors; };
+              home-manager.extraSpecialArgs = { inherit self nix-colors; };
             }
           ];
         };
