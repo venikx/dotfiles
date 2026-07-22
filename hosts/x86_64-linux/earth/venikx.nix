@@ -1,4 +1,5 @@
 {
+  self,
   osConfig,
   lib,
   pkgs,
@@ -42,9 +43,7 @@
 
   modules = {
     desktop = {
-      obs.enable = true;
       emulators.enable = true;
-      game-engines.enable = true;
     };
   };
 
@@ -56,5 +55,12 @@
     ];
 
   colorScheme = nix-colors.colorSchemes.tokyo-city-terminal-dark;
+
+  imports = [
+    "${self}/modules/home-manager/desktop/video-production.nix"
+    "${self}/modules/home-manager/desktop/photography.nix"
+    "${self}/modules/home-manager/desktop/game-development.nix"
+  ];
+
   home.stateVersion = "26.05";
 }
