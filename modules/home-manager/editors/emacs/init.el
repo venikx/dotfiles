@@ -127,13 +127,16 @@
 
 (defvar-keymap my-notes-map)
 
+(defvar-keymap my-open-map)
+
 (defvar-keymap my-leader-map
-  "b" (cons "buffer" my-buffer-map) 
-  "c" (cons "code" #'my-future-function) 
+  "b" (cons "buffer" my-buffer-map)
+  "c" (cons "code" #'my-future-function)
   "f" (cons "files" my-files-map)
-  "g" (cons "git" my-git-map) 
+  "g" (cons "git" my-git-map)
   "h" (cons "help" help-map)
   "n" (cons "notes" my-notes-map)
+  "o" (cons "open" my-open-map)
   "p" (cons "project" my-project-map)
   "s" (cons "search" my-search-map))
 
@@ -249,9 +252,14 @@
 (use-package gnuplot)
 
 (use-package vterm
-  :commands vterm)
+  :commands vterm
+  :init
+  (keymap-set my-open-map "t" (cons "terminal" #'vterm)))
 
 (use-package osm
+  :commands osm
+  :init
+  (keymap-set my-open-map "m" (cons "map" #'osm))
   :custom
   (osm-server 'default)
   (osm-copyright t))
@@ -322,6 +330,8 @@
 (use-package eca
   :when (locate-library "eca")
   :commands eca
+  :init
+  (keymap-set my-open-map "a" (cons "ai" #'eca))
   :config
   (setq eca-chat-use-side-window t
         eca-chat-window-side 'right
