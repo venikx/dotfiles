@@ -377,6 +377,9 @@
   (org-log-reschedule 'time)
   (org-log-refile 'time)
   (org-agenda-show-habits t)
+  (org-habit-graph-column 70)
+  (org-habit-preceding-days 14)
+  (org-habit-following-days 3)
   (org-babel-temporary-directory "~/.cache/emacs/babel-tmp/")
   (org-attach-method-type 'id)
   (org-attach-use-inheritance t)
@@ -396,6 +399,7 @@
 
   (add-hook 'org-mode-hook #'my/org-mode-setup-time-stamp)
 
+  (keymap-set my-notes-map "a" (cons "agenda" #'org-agenda))
   (keymap-set my-notes-map "c" (cons "capture" #'org-capture))
 
   (defvar-keymap my-org-leader-map
@@ -421,6 +425,7 @@
    'org-babel-load-languages
    '((emacs-lisp . t)
      (org        . t)
+     (shell      . t)
      (http       . t)
      (graphql    . t)
      (latex      . t)
