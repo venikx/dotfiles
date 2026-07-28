@@ -30,7 +30,7 @@
   services.syncthing.settings = {
     devices = {
       "earth-nixos" = {
-        id = "PITAODB-6HUUIPZ-3NAFXSE-ZARYL5A-KALLONW-RFU5BUT-MHVMCTH-MMLXUAP";
+        id = "AR7FETE-276TZBN-ZT4SGIG-SYNI6N2-CA66PTX-3FWY5DX-LTI6TXF-P2CFGAV";
       };
     };
     folders = {
