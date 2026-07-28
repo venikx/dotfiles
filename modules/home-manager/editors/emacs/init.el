@@ -278,9 +278,12 @@
 	 (html-ts-mode . apheleia-mode)
 	 (css-ts-mode . apheleia-mode)
 	 (bash-ts-mode . apheleia-mode)
+	 (lua-ts-mode . apheleia-mode)
 	 (nix-ts-mode . apheleia-mode))
   :custom
-  (apheleia-formatters-respect-indent-level nil))
+  (apheleia-formatters-respect-indent-level nil)
+  :config
+  (add-to-list 'apheleia-mode-alist '(lua-ts-mode . stylua)))
 
 ;; Code snippets
 (use-package eldoc :diminish eldoc-mode)
@@ -297,6 +300,7 @@
 ;; Language servers
 (use-package eglot
   :hook ((json-ts-mode . eglot-ensure)
+         (lua-ts-mode . eglot-ensure)
          (go-ts-mode . eglot-ensure)
          (c-ts-mode . eglot-ensure)
          (c++-ts-mode . eglot-ensure)
@@ -312,6 +316,8 @@
                '(json-ts-mode . ("vscode-json-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
                '(go-ts-mode . ("gopls")))
+  (add-to-list 'eglot-server-programs
+               '(lua-ts-mode . ("lua-language-server")))
   (add-to-list 'eglot-server-programs
 	       '(csharp-ts-mode . ("omnisharp" "-lsp")))
   (add-to-list 'eglot-server-programs
@@ -361,6 +367,7 @@
 (use-package typescript-ts-mode :mode "\\.ts\\'")
 (use-package tsx-ts-mode :mode ("\\.jsx\\'" "\\.tsx\\'"))
 
+(use-package lua-ts-mode :mode "\\.lua\\'")
 (use-package nix-ts-mode :mode "\\.nix\\'")
 (use-package go-ts-mode :mode "\\.go\\'")
 (use-package go-mod-ts-mode :mode "/go\\.mod\\'")

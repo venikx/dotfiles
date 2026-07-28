@@ -69,6 +69,7 @@ let
           '';
         }))
         p.tree-sitter-json
+        p.tree-sitter-lua
         p.tree-sitter-typescript
         p.tree-sitter-javascript
         p.tree-sitter-astro
@@ -145,6 +146,8 @@ let
 
       #### languages ####
       editorconfig-core-c
+      lua-language-server
+      stylua
       typescript-language-server
       typescript
       vscode-langservers-extracted

@@ -8,6 +8,7 @@
     enable = true;
     viAlias = true;
     vimAlias = true;
+    initLua = builtins.readFile ./nvim/init.lua;
   };
 
   programs.git.ignores = [
