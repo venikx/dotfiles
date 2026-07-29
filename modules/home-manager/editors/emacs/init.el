@@ -160,6 +160,8 @@
         ("C-k"   . #'vertico-previous)
         ("C-M-k" . #'vertico-previous-group))
   :custom (evil-collection-setup-minibuffer nil)
+          ;; free up `gr' so it can be a prefix for the LSP gr* bindings
+          (evil-collection-want-find-usages-bindings nil)
   :config (evil-collection-init))
 
 (use-package evil-org
@@ -326,7 +328,28 @@
   (add-to-list 'eglot-server-programs
                '(css-ts-mode . ("vscode-css-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs
-               '(html-ts-mode . ("vscode-html-language-server" "--stdio"))))
+               '(html-ts-mode . ("vscode-html-language-server" "--stdio")))
+
+  (defvar-keymap my-code-map
+    "d" (cons "jump to definition"      #'xref-find-definitions)
+    "r" (cons "jump to references"      #'xref-find-references)
+    "i" (cons "jump to implementation"  #'eglot-find-implementation)
+    "t" (cons "jump to type definition" #'eglot-find-typeDefinition)
+    "s" (cons "search symbols"          #'xref-find-apropos)
+    "n" (cons "rename"                  #'eglot-rename)
+    "a" (cons "code action"             #'eglot-code-actions))
+
+  (evil-define-key '(normal visual motion) eglot-mode-map
+    (kbd "SPC c") my-code-map
+    (kbd "C-]")   #'xref-find-definitions
+    (kbd "C-w ]") #'xref-find-definitions-other-window
+    (kbd "C-t")   #'xref-go-back
+    (kbd "g r r") #'xref-find-references
+    (kbd "g r i") #'eglot-find-implementation
+    (kbd "g r t") #'eglot-find-typeDefinition
+    (kbd "g r n") #'eglot-rename
+    (kbd "g r s") #'xref-find-apropos
+    (kbd "g r a") #'eglot-code-actions))
 
 (use-package geiser
   :init
