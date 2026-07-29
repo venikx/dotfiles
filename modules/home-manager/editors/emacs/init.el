@@ -204,8 +204,12 @@
   :custom
   (completion-styles '(orderless basic)))
 
+(autoload 'consult-xref "consult-xref" t)
 (use-package consult
-    :hook (completion-list-mode . consult-preview-at-point-mode))
+    :after xref
+    :init
+    (setq xref-show-xrefs-function #'consult-xref
+          xref-show-definitions-function #'consult-xref))
 
 (use-package corfu
   :custom
