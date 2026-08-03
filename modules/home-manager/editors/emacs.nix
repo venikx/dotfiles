@@ -50,6 +50,7 @@ let
       # epkgs.org-contacts #TODO link was removed from github
       epkgs.org-noter
       epkgs.denote
+      epkgs.denote-org
       epkgs.org-download
       epkgs.org-cliplink
       epkgs.org-ql

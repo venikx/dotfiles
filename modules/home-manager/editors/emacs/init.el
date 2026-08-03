@@ -494,6 +494,7 @@
   :after (org evil)
   :hook (dired-mode . denote-dired-mode)
   :config
+  (require 'denote-org)
   (setq denote-directory (expand-file-name "~/org/"))
   (setq denote-known-keywords '("programming" "emacs"))
   (setq denote-prompts '(title keywords template))
