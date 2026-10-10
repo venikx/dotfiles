@@ -7,7 +7,7 @@ with lib;
       {
         enable = true;
       }
-      (mkIf pkgs.stdenv.isLinux {
+      (mkIf pkgs.stdenv.hostPlatform.isLinux {
         userDirs.enable = true;
         userDirs.download = "$HOME/dl";
         userDirs.documents = "$HOME/docs";
@@ -22,7 +22,7 @@ with lib;
 
     home = {
       username = lib.mkDefault "venikx";
-      homeDirectory = if pkgs.stdenv.isLinux then "/home/${config.home.username}" else "/Users/${config.home.username}";
+      homeDirectory = if pkgs.stdenv.hostPlatform.isLinux then "/home/${config.home.username}" else "/Users/${config.home.username}";
       sessionPath = [ "$HOME/.local/bin" ];
 
       sessionVariables = {

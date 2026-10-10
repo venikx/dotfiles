@@ -140,8 +140,6 @@ let
       (aspellWithDicts (
         ds: with ds; [
           en
-          en-computers
-          en-science
         ]
       ))
 
@@ -173,7 +171,7 @@ let
       go
       gopls
     ]
-    ++ lib.optionals stdenv.isLinux [
+    ++ lib.optionals stdenv.hostPlatform.isLinux [
       scrot # org-download
       ## pdf
       #qpdfview
