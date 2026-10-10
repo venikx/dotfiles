@@ -400,6 +400,10 @@
 (use-package go-mod-ts-mode :mode "/go\\.mod\\'")
 (use-package glsl-mode :mode "\\.glsl\\'")
 
+(use-package gdscript-mode
+  :mode ("\\.gd\\'" "\\.tscn\\'")
+  :hook (gdscript-mode . eglot-ensure))
+
 ;;; Org-mode
 (use-package org
   :config
