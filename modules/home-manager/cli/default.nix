@@ -1,5 +1,8 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
+let
+  agentsLink = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/AGENTS.md";
+in
 {
   imports = [
     ./direnv.nix
@@ -8,10 +11,21 @@
     ./zsh.nix
   ];
 
-  home.packages =
-    with pkgs;
-    [ ]
-    ++ lib.optionals stdenv.hostPlatform.isLinux [
-      claude-code
-    ];
+  programs.claude-code = {
+    enable = pkgs.stdenv.hostPlatform.isLinux;
+    package = if pkgs.stdenv.hostPlatform.isLinux then pkgs.claude-code else null;
+    mutableSettings = true;
+
+    settings = {
+      tui = "fullscreen";
+      theme = "dark-daltonized";
+      model = "opus";
+      autoMemoryEnabled = false;
+      cleanupPeriodDays = 7;
+    };
+  };
+
+  home.file."AGENTS.md".source = ./AGENTS.md;
+  home.file.".claude/CLAUDE.md".source = agentsLink;
+  home.file.".codex/AGENTS.md".source = agentsLink;
 }

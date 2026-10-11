@@ -578,8 +578,8 @@
 ;; Nutrition
 (use-package org
   :config
-  (when (file-exists-p "~/org/collections/nutrition.org")
-    (org-babel-load-file "~/org/collections/nutrition.org")))
+  (when-let ((file (car (file-expand-wildcards "~/org/collections/@@ntrtn--*.org"))))
+    (org-babel-load-file file)))
 
 ;; Extras
 (use-package org-contrib)
